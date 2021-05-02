@@ -17,7 +17,7 @@
     <!--========== bootstrap ==========-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Login | ePalace</title>
+    <title>Admin Login | ePalace</title>
 </head>
 <body>
 
@@ -31,8 +31,8 @@
         <div class="row">
 
           <div id="login-div" class="col-md-4 col-11">
-            <h1 id="login-text">Login</h1>
-            <span class="text-danger">{{ uname_error }}</span>
+            <h1 id="login-text">Admin Login</h1>
+            <span class="text-danger">{{ invalid_error }}</span>
 
                 <form class="needs-validation" id="login-form" novalidate method="POST">
                   {% csrf_token %}
@@ -61,7 +61,7 @@
                    
                     <button class="btn btn-outline-info btn-block mb-3" type="submit">Submit form</button>
                   </form>
-                  <p id="to-sign-up"><a href="{% url 'signup' %}">Create account</a></p>
+                  <!-- <p id="to-sign-up"><a href="{% url 'signup' %}">Create account</a></p> -->
                   
                   <script>
                   // Example starter JavaScript for disabling form submissions if there are invalid fields
