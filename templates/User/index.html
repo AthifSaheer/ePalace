@@ -1,4 +1,5 @@
 {% load static %}
+<!-- {% static "prd_imgs" as baseUrl %} -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -43,8 +44,8 @@
                         <!-- <li class="nav__item"><a href="#home" class="nav__link active-link">Athif</a></li> -->
                         <!-- <li class="nav__item"><a href="#about" class="nav__link">Order</a></li> -->
                         <!-- <li class="nav__item"><a href="#services" class="nav__link">Profile</a></li> -->
-                        <li class="nav__item"><a href="./login.html" class="nav__link">Login</a></li>
-                        <li class="nav__item"><a href="/signup.html" class="nav__link">Signup</a></li>
+                        <li class="nav__item"><a href="{% url 'login' %}" class="nav__link">Login</a></li>
+                        <li class="nav__item"><a href="{% url 'signup' %}" class="nav__link">Signup</a></li>
                         <li class="nav__item"><a href="#menu" class="nav__link"><i class="fas fa-shopping-cart"></i><span class="badge badge-danger">3</span></a></li>
                         <!-- <li class="nav__item"><a href="#contact" class="nav__link">Contact us</a></li> -->
 
@@ -70,7 +71,7 @@
                 </ol>
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img class="d-block w-100" src="{% static '../assets/img/Fresh FieldsPhotography GoDaddy Store Image.png' %}" alt="First slide">
+                    <img class="d-block w-100" src="{% static '../assets/img/flipkart banner1.jpg' %}" alt="First slide">
                   </div>
                   <div class="carousel-item">
                     <img class="d-block w-100" src="../assets/img/Fresh FieldsPhotography GoDaddy Store Image.png" alt="Second slide">
@@ -95,53 +96,18 @@
                 <h2 class="section-title">Offer of the week</h2>
 
                 <div class="menu__container bd-grid">
-                    <div class="menu__content">
-                        <a href="./product-details.html"><img src="../assets/img/mac air.jpg" alt="" class="menu__img"></a>
-                        <h3 class="menu__name">Mac air book</h3>
-                        <span class="menu__detail">Delicious dish</span>
-                        <span class="menu__preci">$22.00</span>
-                        <a href="#" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
-                    </div>
 
+                    {% for prd in product %}
                     <div class="menu__content">
-                        <img src="../assets/img/apple airpod.jpg" alt="" class="menu__img">
-                        <h3 href="www.google.com" class="menu__name">Apple Airpod</h3>
-                        <span class="menu__detail">Delicious dish</span>
-                        <span class="menu__preci">$12.00</span>
+                        <a href=""><img src="{{ prd.image.url }}" alt="" class="menu__img"></a>
+                        <a href="{% url 'prd_detail' prd.slug %}"><h3 class="menu__name">{{ prd.title }}</h3></a>
+                        <span class="menu__detail">{{ prd.description|slice:':22' }}...</span>
+                        <span class="menu__preci">₹{{ prd.selling_price }} <s>₹{{ prd.marked_price }}</s> </span>
+                        
                         <a href="#" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
                     </div>
-                    
-                    <div class="menu__content">
-                        <img src="../assets/img/appl 12 purple.jpg" alt="" class="menu__img">
-                        <h3 class="menu__name">Iphone 12 mini</h3>
-                        <span class="menu__detail">64GB 128GB</span>
-                        <span class="menu__preci">$999</span>
-                        <a href="#" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
-                    </div>
+                    {% endfor %}
 
-                    <div class="menu__content">
-                        <img src="../assets/img/appl 12 purple.jpg" alt="" class="menu__img">
-                        <h3 class="menu__name">Iphone 12 mini</h3>
-                        <span class="menu__detail">64GB 128GB</span>
-                        <span class="menu__preci">$999</span>
-                        <a href="#" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
-                    </div>
-
-                    <div class="menu__content">
-                        <img src="../assets/img/appl 12 purple.jpg" alt="" class="menu__img">
-                        <h3 class="menu__name">Iphone 12 mini</h3>
-                        <span class="menu__detail">64GB 128GB</span>
-                        <span class="menu__preci">$999</span>
-                        <a href="#" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
-                    </div>
-
-                    <div class="menu__content">
-                        <img src="../assets/img/appl 12 purple.jpg" alt="" class="menu__img">
-                        <h3 class="menu__name">Iphone 12 mini</h3>
-                        <span class="menu__detail">64GB 128GB</span>
-                        <span class="menu__preci">$999</span>
-                        <a href="#" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
-                    </div>
                 </div>
             </section>
 
