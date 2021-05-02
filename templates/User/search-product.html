@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--========== BOX ICONS ==========-->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+
+        <!--========== CSS ==========-->
+        <link rel="stylesheet" href="../assets/css/user_styles.css">
+        
+        <!--========== fontawesome ==========-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+        
+        <!--========== bootstrap ==========-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <link rel="shortcut icon" href="../assets/img/logo.svg" type="image/x-icon">
+        
+        <title>Products | ePalace</title>
+    </head>
+    <body>
+
+        <!--========== SCROLL TOP ==========-->
+        <a href="#" class="scrolltop" id="scroll-top">
+            <i class='bx bx-chevron-up scrolltop__icon'></i>
+        </a>
+
+        <!--========== HEADER ==========-->
+        <header class="l-header" id="header">
+            <nav class="nav bd-container">
+                <a href="#" class="nav__logo">ePalace</a>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="#home" class="nav__link">Login</a></li>
+                        <li class="nav__item"><a href="#home" class="nav__link">Signup</a></li>
+                        <!-- <li class="nav__item"><a href="#about" class="nav__link active-link">Athif</a></li>
+                        <li class="nav__item"><a href="#home" class="nav__link">Orders</a></li>
+                        <li class="nav__item"><a href="#services" class="nav__link">Profile</a></li> -->
+                        <li class="nav__item"><a href="#menu" class="nav__link"><i class="fas fa-shopping-cart"></i></a></li>
+                        
+                        <!-- <li><i class='bx bx-moon change-theme' id="theme-button"></i></li> -->
+                        
+                    </ul>
+                </div>
+                
+                
+
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <div class="container">
+                <div class="row" id="section">
+
+                    <div class="col-3" id="filter-div">
+                        <h5 class="mt-3">Price</h5>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Under 10,000
+                            </label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Under 20,000
+                            </label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Under 30,000
+                            </label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Under 50,000
+                            </label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              Under 1,00000
+                            </label>
+                        </div>
+
+
+                        <h5 class="mt-3">Ram</h5>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              4GB
+                            </label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              8GB
+                            </label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              16GB
+                            </label>
+                        </div>
+
+                        <h5 class="mt-3">Storage</h5>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              64GB
+                            </label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              128GB
+                            </label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <label class="form-check-label" for="flexCheckDefault">
+                              512GB
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <div class="col-9">
+                        <div class="row">
+
+                            <div class="col-4">
+                                <img src="../assets/img/apple macbook 500 500.jpg" alt="" >
+                            </div>
+                            
+                            <div class="col-8 mt-3">
+                                <p>APPLE MacBook Air M1 - (8 GB/512 GB SSD/Mac OS Big Sur) MGN73HN/A  (13.3 inch, Space Grey, 1.29 kg)
+                                    <br><span class="mt-3 text-danger">₹1,17,900</span> <s class="text-secondary"><small>₹1,55,900</small></s>
+                                </p>
+                            </div>
+
+                            <hr>
+
+                            <div class="col-4">
+                                <img src="/assets/img/apple macbook pro 500 500.jpg" alt="" >
+                            </div>
+                            
+                            <div class="col-8 mt-3">
+                                <p>APPLcE MacBook Air M1 - (8 GB/512 GB SSD/Mac OS Big Sur) MGN73HN/A  (13.3 inch, Space Grey, 1.29 kg)
+                                    <br><span class="mt-3 text-danger">₹1,17,900</span> <s class="text-secondary"><small>₹1,55,900</small></s>
+                                </p>
+                            </div>
+
+                            <hr>
+
+                            <div class="col-4">
+                                <img src="/assets/img/apple macbook air 500 500.jpg" alt="" >
+                            </div>
+                            
+                            <div class="col-8 mt-3">
+                                <p>APPLE MacBook Air M1 - (8 GB/512 GB SSD/Mac OS Big Sur) MGN73HN/A  (13.3 inch, Space Grey, 1.29 kg)
+                                    <br><span class="mt-3 text-danger">₹1,17,900</span> <s class="text-secondary"><small>₹1,55,900</small></s>
+                                </p>
+                            </div>
+
+                            <hr>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <!--========== FOOTER ==========-->
+
+        <footer class="footer section bd-container">
+            <div class="footer__container bd-grid">
+
+                <div class="footer__content">
+                    <!-- <a href="#" class="footer__logo">ePalace</a> -->
+                    <div>
+                        <br><br><br>
+                        <a href="#" class="footer__social"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="footer__social"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="footer__social"><i class='bx bxl-twitter'></i></a>
+                        <span class="footer__description">Follow us</span>
+                    </div>
+                </div>
+
+                <div class="footer__content">
+                    <h3 class="footer__title">About</h3>
+                    <ul>
+                        <li><a href="#" class="footer__link">Contact Us</a></li>
+                        <li><a href="#" class="footer__link">About Us</a></li>
+                        <li><a href="#" class="footer__link">ePalace stories</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__content">
+                    <h3 class="footer__title">Information</h3>
+                    <ul>
+                        <li><a href="#" class="footer__link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer__link">Return Policy</a></li>
+                        <li><a href="#" class="footer__link">Security</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </footer>
+
+        <!--========== SCROLL REVEAL ==========-->
+        <script src="https://unpkg.com/scrollreveal"></script>
+
+        <!--========== MAIN JS ==========-->
+        <script src="assets/js/main.js"></script>
+        
+        <!--========== BOOTSTRAP JS ==========-->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+       
+    </body>
+</html>
