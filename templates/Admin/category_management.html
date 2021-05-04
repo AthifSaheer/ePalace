@@ -1,0 +1,62 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %} Category Management | Admin panel {% endblock title %}
+{% block content %}
+
+
+<div class="card card-table-border-none" id="recent-orders">
+    <div class="card-header justify-content-between">
+      <h2>User Details</h2>
+      <!-- <div class="date-range-report ">
+        <span></span>
+      </div> -->
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_category' %}">
+        <span class="d-none d-md-inline-block mr-2">Create Category</span>
+      </a>
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_sub_category' %}">
+        <span class="d-none d-md-inline-block mr-2">Create Sub Category</span>
+      </a>
+    </div>
+
+    <div class="card-body pt-0 pb-5">
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cat in category %}
+                        <tr>
+                            <td>{{ cat.category }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+        
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Sub Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sc in sub_category %}
+                        <tr>
+                            <td>{{ sc.sub_category }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+        
+                </table>
+            </div>
+        </div>
+
+
+
+      </div>
+  </div>
+
+{% endblock content %}

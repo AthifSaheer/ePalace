@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Admin panel</title>
+  <title>{% block title %} {% endblock title %}</title>
 
   <!-- GOOGLE FONTS -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500|Poppins:400,500,600,700|Roboto:400,500" rel="stylesheet"/>
@@ -59,7 +59,7 @@
           <div id="sidebar" class="sidebar sidebar-with-footer">
             <!-- Aplication Brand -->
             <div class="app-brand">
-              <a href="#">
+              <a href="{% url 'admin_home' %}">
                 <span class="brand-name">Admin panel</span>
               </a>
             </div>
@@ -83,7 +83,7 @@
                         
                           
                             <li  class="" >
-                              <a class="sidenav-item-link" href="./own_dahboard.html">
+                              <a class="sidenav-item-link" href="{% url 'admin_home' %}">
                                 <span class="nav-text">Dashboard</span>
                                 
                               </a>
@@ -96,7 +96,7 @@
                     </ul>
                   </li>
                 
-                  <li  class="has-sub active expand" >
+                  <li  class="has-sub expand" > <!--active-->
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#ui-elements"
                       aria-expanded="false" aria-controls="ui-elements">
                       <i class="mdi mdi-account"></i>
@@ -106,8 +106,8 @@
                       data-parent="#sidebar-menu">
                       <div class="sub-menu">
                         
-                        <li class="active">
-                            <a class="sidenav-item-link" href="own_user_management.html">
+                        <li class=""> <!--active-->
+                            <a class="sidenav-item-link" href="{% url 'users' %}">
                               <span class="nav-text">User management</span>
                               
                             </a>
@@ -134,7 +134,7 @@
                         
                           
                             <li >
-                              <a class="sidenav-item-link" href="own_order_management.html">
+                              <a class="sidenav-item-link" href="">
                                 <span class="nav-text">Order manage</span>
                                 
                               </a>
@@ -165,7 +165,7 @@
                         
                           
                             <li >
-                              <a class="sidenav-item-link" href="own_product_management.html">
+                              <a class="sidenav-item-link" href="{% url 'products' %}">
                                 <span class="nav-text">Product management</span>
                                 
                               </a>
@@ -192,7 +192,7 @@
                         
                         
                             <li >
-                                <a class="sidenav-item-link" href="own_category_management.html">
+                                <a class="sidenav-item-link" href="{% url 'categories' %}">
                                   <span class="nav-text">Category management</span>
                                   
                                 </a>
@@ -250,17 +250,17 @@
                   <!-- User Account -->
                   <li class="dropdown user-menu">
                     <button href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                      <!-- <img src="assets/img/user/user.png" class="user-image" alt="User Image" /> -->
-                      <span class="d-none d-lg-inline-block">Abdus Salam</span>
+                      <img src="assets/img/user/user.png" class="user-image" alt="User Image" />
+                      <span class="d-none d-lg-inline-block">Admin</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
                       <!-- User image -->
-                      <!-- <li class="dropdown-header">
+                      <li class="dropdown-header">
                         <img src="assets/img/user/user.png" class="img-circle" alt="User Image" />
                         <div class="d-inline-block">
                           Abdus Salam
                         </div>
-                      </li> -->
+                      </li>
 
                       <li>
                         <a href="profile.html">
@@ -280,144 +280,35 @@
 
           </header>
 
-    <div class="content-wrapper">
-        <div class="content">						 
-                <!-- Top Statistics -->
-                <div class="row">
-                  <div class="col-xl-3 col-sm-6">
-                    <div class="card card-mini mb-4">
-                      <div class="card-body">
-                        <h2 class="mb-1">71,503</h2>
-                        <p>Online Signups</p>
-                        <div class="chartjs-wrapper">
-                          <canvas id="barChart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-3 col-sm-6">
-                    <div class="card card-mini  mb-4">
-                      <div class="card-body">
-                        <h2 class="mb-1">9,503</h2>
-                        <p>New Visitors Today</p>
-                        <div class="chartjs-wrapper">
-                          <canvas id="dual-line"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-3 col-sm-6">
-                    <div class="card card-mini mb-4">
-                      <div class="card-body">
-                        <h2 class="mb-1">71,503</h2>
-                        <p>Monthly Total Order</p>
-                        <div class="chartjs-wrapper">
-                          <canvas id="area-chart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-3 col-sm-6">
-                    <div class="card card-mini mb-4">
-                      <div class="card-body">
-                        <h2 class="mb-1">9,503</h2>
-                        <p>Total Revenue This Year</p>
-                        <div class="chartjs-wrapper">
-                          <canvas id="line"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-    
-    
-                <!-- Sales Graph -->
-            <!-- <div class="row">
-                <div class="col-xl-8 col-md-12">
-                    <div class="card card-default" data-scroll-height="675">
-                      <div class="card-header">
-                        <h2>Sales Of The Year</h2>
-                      </div>
-                      <div class="card-body">
-                        <canvas id="linechart" class="chartjs"></canvas>
-                      </div>
-                      <div class="card-footer d-flex flex-wrap bg-white p-0">
-                        <div class="col-6 px-0">
-                          <div class="text-center p-4">
-                            <h4>$6,308</h4>
-                            <p class="mt-2">Total orders of this year</p>
-                          </div>
-                        </div>
-                        <div class="col-6 px-0">
-                          <div class="text-center p-4 border-left">
-                            <h4>$70,506</h4>
-                            <p class="mt-2">Total revenue of this year</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div> -->
 
-                <!-- Doughnut Chart -->
-                <!-- <div class="col-xl-4 col-md-12">
-                <div class="card card-default" data-scroll-height="675">
-                  <div class="card-header justify-content-center">
-                    <h2>Orders Overview</h2>
-                  </div>
-                  <div class="card-body" >
-                    <canvas id="doChart" ></canvas>
-                  </div>
-                  <a href="#" class="pb-5 d-block text-center text-muted"><i class="mdi mdi-download mr-2"></i> Download overall report</a>
-                  <div class="card-footer d-flex flex-wrap bg-white p-0">
-                    <div class="col-6">
-                      <div class="py-4 px-4">
-                        <ul class="d-flex flex-column justify-content-between">
-                          <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: #4c84ff"></i>Order Completed</li>
-                          <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: #80e1c1 "></i>Order Unpaid</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="col-6 border-left">
-                      <div class="py-4 px-4 ">
-                        <ul class="d-flex flex-column justify-content-between">
-                          <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: #8061ef"></i>Order Pending</li>
-                          <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: #ffa128"></i>Order Canceled</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-                      </div> -->
-    
-
-</div>
-</div>
+          {% block content %}
+          {% endblock content %}
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCn8TFXGg17HAUcNpkwtxxyT9Io9B_NcM" defer></script>
-<script src="/assets/plugins/jquery/jquery.min.js"></script>
-<script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/plugins/toaster/toastr.min.js"></script>
-<script src="/assets/plugins/slimscrollbar/jquery.slimscroll.min.js"></script>
-<script src="/assets/plugins/charts/Chart.min.js"></script>
-<script src="/assets/plugins/ladda/spin.min.js"></script>
-<script src="/assets/plugins/ladda/ladda.min.js"></script>
-<script src="/assets/plugins/jquery-mask-input/jquery.mask.min.js"></script>
-<script src="/assets/plugins/select2/js/select2.min.js"></script>
-<script src="/assets/plugins/jvectormap/jquery-jvectormap-2.0.3.min.js"></script>
-<script src="/assets/plugins/jvectormap/jquery-jvectormap-world-mill.js"></script>
-<script src="/assets/plugins/daterangepicker/moment.min.js"></script>
-<script src="/assets/plugins/daterangepicker/daterangepicker.js"></script>
-<script src="/assets/plugins/jekyll-search.min.js"></script>
-<script src="/assets/js/sleek.js"></script>
-<script src="/assets/js/chart.js"></script>
-<script src="/assets/js/date-range.js"></script>
-<script src="/assets/js/map.js"></script>
-<script src="/assets/js/custom.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCn8TFXGg17HAUcNpkwtxxyT9Io9B_NcM" defer></script>
+    <script src="/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/plugins/toaster/toastr.min.js"></script>
+    <script src="/assets/plugins/slimscrollbar/jquery.slimscroll.min.js"></script>
+    <script src="/assets/plugins/charts/Chart.min.js"></script>
+    <script src="/assets/plugins/ladda/spin.min.js"></script>
+    <script src="/assets/plugins/ladda/ladda.min.js"></script>
+    <script src="/assets/plugins/jquery-mask-input/jquery.mask.min.js"></script>
+    <script src="/assets/plugins/select2/js/select2.min.js"></script>
+    <script src="/assets/plugins/jvectormap/jquery-jvectormap-2.0.3.min.js"></script>
+    <script src="/assets/plugins/jvectormap/jquery-jvectormap-world-mill.js"></script>
+    <script src="/assets/plugins/daterangepicker/moment.min.js"></script>
+    <script src="/assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="/assets/plugins/jekyll-search.min.js"></script>
+    <script src="/assets/js/sleek.js"></script>
+    <script src="/assets/js/chart.js"></script>
+    <script src="/assets/js/date-range.js"></script>
+    <script src="/assets/js/map.js"></script>
+    <script src="/assets/js/custom.js"></script>
 
 
 
-
-</body>
+  </body>
 </html>
+
+          

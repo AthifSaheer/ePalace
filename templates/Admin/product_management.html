@@ -1,0 +1,86 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %} Product Management | Admin panel {% endblock title %}
+{% block content %}
+
+
+    <!-- Recent Order Table -->
+    <div class="card card-table-border-none" id="recent-orders">
+      <div class="card-header justify-content-between">
+        <h2>Product Details</h2>
+        <!-- <div class="date-range-report ">
+          <span></span>
+        </div> -->
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_products' %}">
+          <span class="d-none d-md-inline-block mr-2">Create Product</span>
+        </a>
+      </div>
+      <div class="card-body pt-0 pb-5">
+        <table class="table card-table table-responsive table-responsive-large" style="width:100%">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>ID</th>
+              <th class="d-none d-md-table-cell">Item Name</th>
+              <th class="d-none d-md-table-cell">Image</th>
+              <th class="d-none d-md-table-cell">Marked price</th>
+              <th class="d-none d-md-table-cell">Selling price</th>
+              <th class="d-none d-md-table-cell">quantity</th>
+              <!-- <th>Actions</th> -->
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for prd in products %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td >{{ prd.id }}</td>
+              <td >
+                <a class="text-dark" href="">{{ prd.title }}</a>
+              </td>
+              <td><img src="{{ prd.image.url }}" width="50px" height="50px" alt="no"></td>
+              <td class="d-none d-md-table-cell">{{ prd.marked_price }}</td>
+              <td class="d-none d-md-table-cell">{{ prd.selling_price }}</td>
+              <td >
+                <span class="badge badge-success">{{ prd.quantity }}</span>
+              </td>
+              <td class="text-right">
+                <div class="dropdown show d-inline-block widget-dropdown">
+                  <a class="dropdown-toggle icon-burger-mini" href="" role="button" id="dropdown-recent-order1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static"></a>
+                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-recent-order1">
+                    <li class="dropdown-item">
+                      <a href="" onclick="deletePrd()">Delete Item</a>
+                      <a href="{% url 'delete_product' prd.id %}" id="btnClick"></a>
+                    </li>
+                    <li class="dropdown-item">
+                      <a href="{% url 'edit_product' prd.id %}">Edit Item</a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+      </div>
+  </div>
+
+  <script>
+    function deletePrd() {
+      var x = confirm("Do you want delete this item?")
+      if (x == true) {
+        final()
+      }else{
+        console.log(x)
+      }
+    }
+
+    function final(){
+      var btnClick = document.getElementById("btnClick")
+      btnClick.click()
+    }
+  </script>
+                
+
+{% endblock content %}

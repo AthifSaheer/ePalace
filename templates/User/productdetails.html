@@ -8,7 +8,7 @@
         <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
 
         <!--========== CSS ==========-->
-        <link rel="stylesheet" href="../assets/css/user_styles.css">
+        <link rel="stylesheet" href="/assets/css/user_styles.css">
         
         <!--========== fontawesome ==========-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -16,9 +16,9 @@
         <!--========== bootstrap ==========-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-        <link rel="shortcut icon" href="../assets/img/logo.svg" type="image/x-icon">
+        <link rel="shortcut icon" href="/assets/img/logo.svg" type="image/x-icon">
         
-        <title>Products | ePalace</title>
+        <title>Product Details | ePalace</title>
     </head>
     <body>
 
@@ -30,7 +30,7 @@
         <!--========== HEADER ==========-->
         <header class="l-header" id="header">
             <nav class="nav bd-container">
-                <a href="#" class="nav__logo">ePalace</a>
+                <a href="{% url 'user_home' %}" class="nav__logo">ePalace</a>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -50,46 +50,61 @@
                 </div>
                 
                 
-
+                
                 <div class="nav__toggle" id="nav-toggle">
                     <i class='bx bx-menu'></i>
                 </div>
             </nav>
         </header>
-
+        
         <main>
             <div class="container">
                 <div class="row" id="prd-dtl-div">
 
-                    <div class="col-md-6">
-                        <img src="../assets/img/mac air (1).jpg" alt="">
+                    {% for prd in product_detailed %}
 
+                    <div class="col-md-6">
+                        <img src="{{ prd.image.url }}" width="1500px" height="1500px" alt="">
+                        
                         <hr>
-
+                        
                         <div class="row">
-                            <div class="col-md-3" id="more-imge-div"><img src="../assets/img/mac1.jpg" alt=""></div>
-                            <div class="col-md-3" id="more-imge-div"><img src="../assets/img/mac2.jpg" alt=""></div>
-                            <div class="col-md-3" id="more-imge-div"><img src="../assets/img/mac3.jpg" alt=""></div>
-                            <div class="col-md-3" id="more-imge-div"><img src="../assets/img/mac4.jpg" alt=""></div>
+                            <div class="col-md-3" id="more-imge-div"><img src="/assets/img/mac1.jpg" alt=""></div>
+                            <div class="col-md-3" id="more-imge-div"><img src="/assets/img/mac2.jpg" alt=""></div>
+                            <div class="col-md-3" id="more-imge-div"><img src="/assets/img/mac3.jpg" alt=""></div>
+                            <div class="col-md-3" id="more-imge-div"><img src="/assets/img/mac4.jpg" alt=""></div>
                         </div>
-
+                        
                     </div>
-
+                    
                     <div class="col-md-6">
-                        <h3 class="text-info" id="prd-txt">APPLE MacBook Air M1</h3>
+                        <h3 class="text-info" id="prd-txt">{{ prd.title }}</h3>
 
                         <br>
-                        <h4>APPLE MacBook Air M1 - (8 GB/512 GB SSD/Mac OS Big Sur) MGN73HN/A  (13.3 inch, Space Grey, 1.29 kg)</h4>
-                        <!-- <br> -->
+                        <h4>{{ prd.description }}</h4>
                         <span class="badge badge-success" id="guarandeed">Guarandeed</span>
                         <br>
+                        {% if prd.quantity <= 0 %}
+                            <span class="text-danger">Out of Stock</span><br>
+                        {% endif %}
+                        <!-- <br> -->
+                        <br>
                         <div id="price">
-                            <span class="mt-3 text-danger">₹1,17,900</span> <s class="text-secondary"><small>₹1,55,900</small></s>
+                            <span class="mt-3 text-danger">₹{{ prd.selling_price }}</span> <s class="text-secondary"><small>₹{{ prd.marked_price }}</small></s>
                         </div>
                         <br>
-                        <button class="btn" id="add-to-cart-btn">Add to Cart</button>
+                        {% if prd.quantity <= 0 %}
+
+                        <button disabled class="btn" id="add-to-cart-btn">Add to Cart</button>
+                        <button disabled class="btn" id="buy-now-btn">Buy Now</button>
+
+                        {% else %}
+
+                        <a href="----"><button class="btn" id="add-to-cart-btn">Add to Cart</button></a>
                         <button class="btn" id="buy-now-btn">Buy Now</button>
                         
+                        {% endif %}
+
                         <div id="spec">
                             <h4 class="text-muted">Specifications</h4>
                            
@@ -102,17 +117,22 @@
                                 <tbody>
                                     <tr>
                                         <td class="text-secondary">Model Number</td>
-                                        <td>NMSD1002</td>
+                                        <td>{{ prd.model_number }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-secondary">Model Name</td>
+                                        <td>{{ prd.model_name }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="text-secondary">Color</td>
-                                        <td>Silver</td>
+                                        <td>{{ prd.color }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="text-secondary">Size</td>
-                                        <td>13 Inch</td>
+                                        <td>{{ prd.size }}</td>
                                     </tr>
                                 </tbody>
 
@@ -125,22 +145,22 @@
                                 <tbody>
                                     <tr>
                                         <td class="text-secondary">Processor Brand</td>
-                                        <td>Intel</td>
+                                        <td>{{ prd.processor_brand }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="text-secondary">Processor Name</td>
-                                        <td>Core i3</td>
+                                        <td>{{ prd.processor_name }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="text-secondary">Storage</td>
-                                        <td>512 GB</td>
+                                        <td>{{ prd.storage }}</td>
                                     </tr>
 
                                     <tr>
                                         <td class="text-secondary">Ram</td>
-                                        <td>8 GB</td>
+                                        <td>{{ prd.ram }}</td>
                                     </tr>
                                 </tbody>
                                 
@@ -148,6 +168,8 @@
                         </div>
                         
                     </div>
+
+                    {% endfor %}
 
                 </div>
             </div>

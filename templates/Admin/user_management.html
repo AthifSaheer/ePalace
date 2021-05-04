@@ -1,0 +1,95 @@
+
+{% extends 'Admin/base.html' %}
+
+{% block title %} User Management | Admin panel {% endblock title %}
+{% block content %}
+
+    <!-- Recent Order Table -->
+    <div class="card card-table-border-none" id="recent-orders">
+      <div class="card-header justify-content-between">
+        <h2>User Details</h2>
+        <!-- <div class="date-range-report ">
+          <span></span>
+        </div> -->
+      </div>
+      <div class="card-body pt-0 pb-5">
+        <table class="table card-table table-responsive table-responsive-large" style="width:100%">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>ID</th>
+              <th class="d-none d-md-table-cell">Username</th>
+              <th class="d-none d-md-table-cell">Email</th>
+              <th class="d-none d-md-table-cell">Joined on</th>
+              <th class="d-none d-md-table-cell">Last Login</th>
+              <!-- <th>Actions</th> -->
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for usr in user %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td >{{ usr.id }}</td>
+              <td >
+                <a class="text-dark" href="">{{ usr.username }}</a>
+              </td>
+              <td class="d-none d-md-table-cell">{{ usr.email }}</td>
+              <td class="d-none d-md-table-cell">{{ usr.date_joined }}</td>
+              <td class="d-none d-md-table-cell">{{ usr.last_login }}</td>
+              {% if usr.is_active %}
+              <td >
+                <span class="badge badge-success">Active</span>
+              </td>
+              {% else %}
+              <td>
+                <span class="badge badge-danger">Blocked</span>
+              </td>
+              {% endif %}
+              <td class="text-right">
+                <div class="dropdown show d-inline-block widget-dropdown">
+                  <a class="dropdown-toggle icon-burger-mini" href="" role="button" id="dropdown-recent-order1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static"></a>
+                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-recent-order1">
+                    {% if usr.is_active %}
+                    <li class="dropdown-item">
+                      <a href="{% url 'block_user' usr.id %}">Block User</a>
+                    </li>
+                    {% else %}
+                    <li class="dropdown-item">
+                      <a href="{% url 'un_block_user' usr.id %}">Unblock User</a>
+                    </li>
+                    {% endif %}
+                    <li class="dropdown-item">
+                      <a href="" onclick="dltUser()">Delete User</a>
+                      <a href="{% url 'delete_user' usr.id %}" id="dtlBtn"></a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+  </div>
+
+
+  <script>
+    function dltUser() {
+      var x = confirm("Do you want delete this user?")
+      if (x == true){
+        final()
+      }else {
+        console.log("false")
+      }
+    }
+
+    function final() {
+      document.getElementById('dtlBtn').click()
+      // location.reload()
+    }
+  </script>
+                
+
+{% endblock content %}
