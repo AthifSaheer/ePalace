@@ -69,10 +69,9 @@
                         <hr>
                         
                         <div class="row">
-                            <div class="col-md-3" id="more-imge-div"><img src="/assets/img/mac1.jpg" alt=""></div>
-                            <div class="col-md-3" id="more-imge-div"><img src="/assets/img/mac2.jpg" alt=""></div>
-                            <div class="col-md-3" id="more-imge-div"><img src="/assets/img/mac3.jpg" alt=""></div>
-                            <div class="col-md-3" id="more-imge-div"><img src="/assets/img/mac4.jpg" alt=""></div>
+                            <div class="col-md-4" id="more-imge-div"><img src="{{ prd.more_image_one.url }}" alt=""></div>
+                            <div class="col-md-4" id="more-imge-div"><img src="{{ prd.more_image_two.url }}" alt=""></div>
+                            <div class="col-md-4" id="more-imge-div"><img src="{{ prd.more_image_three.url }}" alt=""></div>
                         </div>
                         
                     </div>
@@ -82,7 +81,9 @@
 
                         <br>
                         <h4>{{ prd.description }}</h4>
+                        {% if prd.guarandeed %}
                         <span class="badge badge-success" id="guarandeed">Guarandeed</span>
+                        {% endif %}
                         <br>
                         {% if prd.quantity <= 0 %}
                             <span class="text-danger">Out of Stock</span><br>

@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
 
 def login(request):
+    user = request.user
     if user.is_authenticated:
         return redirect('user_home')
     else:
@@ -24,6 +25,7 @@ def login(request):
 
 
 def signup(request):
+    user = request.user
     if user.is_authenticated:
         return redirect('user_home')
     else:
@@ -46,8 +48,8 @@ def signup(request):
 
 
 def logout(request):
-    logout(request)
-    return redirect('login')
+    auth_logout(request)
+    return redirect('user_home')
 
 def admin_login(request):
     uname = 'admin'

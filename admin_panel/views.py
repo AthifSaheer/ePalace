@@ -31,6 +31,7 @@ def create_products(request):
     if request.method == 'POST':
 
         if form.is_valid():
+            print(form)
             title = form.cleaned_data.get('title')
             slug = form.cleaned_data.get('slug')
             category = form.cleaned_data.get('category')
