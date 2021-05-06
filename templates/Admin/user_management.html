@@ -60,8 +60,9 @@
                     </li>
                     {% endif %}
                     <li class="dropdown-item">
-                      <a href="" onclick="dltUser()">Delete User</a>
-                      <a href="{% url 'delete_user' usr.id %}" id="dtlBtn"></a>
+                      <a href="{% url 'delete_user' usr.id %}">Delete user</a>
+                      <!-- <a href="" onclick="dltUser()">Delete User</a>
+                      <a href="{% url 'delete_user' usr.id %}" id="dtlBtn"></a> -->
                     </li>
                   </ul>
                 </div>

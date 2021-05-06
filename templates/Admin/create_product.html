@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load crispy_forms_tags %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,13 +15,13 @@
     <div class="container" id="create-prd-main-div">
         <div class="row">
             <h3 class="text-center text-info mt-3">Create Product</h3>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ create_prd_form.as_p }}
-                    <button type="submit" class="btn btn-outline-primary btn-sm">Submit</button>
+                    {{ create_prd_form|crispy }}
+                    <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
                 </form>
-                <a href="{% url 'products' %}"><button class="btn btn-outline-success btn-sm">Cancel</button></a>
+                <a href="{% url 'products' %}"><button class="btn btn-outline-success btn-block mt-2 mb-5">Cancel</button></a>
             </div>
             <div class="col-md-6"></div>
         </div>

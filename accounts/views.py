@@ -1,6 +1,6 @@
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
 
 def login(request):
@@ -8,18 +8,19 @@ def login(request):
     if user.is_authenticated:
         return redirect('user_home')
     else:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            auth_login(request, user)
-            return redirect('user_home')
-        else:
-            uname_error = 'Invalid creditials ! !'
-            print(uname_error)
-            return render(request, 'User/login.html', {'uname_error':uname_error})
+            if user is not None:
+                auth_login(request, user)
+                return redirect('user_home')
+            else:
+                uname_error = 'Invalid creditials ! !'
+                print(uname_error)
+                return render(request, 'User/login.html', {'uname_error':uname_error})
 
     return render(request, 'User/login.html')
 
@@ -49,23 +50,36 @@ def signup(request):
 
 def logout(request):
     auth_logout(request)
+    request.session['is_value'] = True
     return redirect('user_home')
 
+
+
 def admin_login(request):
-    uname = 'admin'
-    pword = 'admin'
+    if request.session.has_key('is_value'):
+        return render(request, 'Admin/dashboard.html')
+        # return redirect('admin_home')
 
-    username = request.POST.get('username')
-    password = request.POST.get('password')
+    if request.method == 'POST':
+        uname = 'admin'
+        pword = 'admin'
 
-    if username == uname and password == pword:
-        print('admin logged in')
-        return redirect('admin_home')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if username == uname and password == pword:
+            print('admin logged in')
+            request.session['is_value'] = True
+            return redirect('admin_home')
+        else:
+            invalid_error = "Invalid creditials ! !"
+            print(invalid_error)
+            return redirect('admin_login')
+            # return render(request, 'Admin/admin_login.html')
     else:
-        invalid_error = "Invalid creditials ! !"
-        print(invalid_error)
-    return render(request, 'Admin/admin_login.html', {'invalid_error':invalid_error})
+        return render(request, 'Admin/admin_login.html')
 
 
 def admin_logout(request):
-    print("admin log out")
+    del request.session['is_value']
+    return redirect('admin_login')

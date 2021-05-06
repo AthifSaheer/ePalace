@@ -1,16 +1,21 @@
+from django.contrib.auth.models import Permission
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from user_panel.models import *
 from .forms import *
-from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Permission
 
 
 
 # =========== Admin Dashboard =========================
 
 def admin_home(request):
-    return render(request, 'Admin/dashboard.html')
+    if request.session.has_key('is_value'):
+        return render(request, 'Admin/dashboard.html')
+        # return redirect('admin_home')
+    else:
+        # return render(request, 'Admin/admin_login.html')
+        return redirect('admin_login')
 
 
 # =========== Product Management =========================
@@ -77,6 +82,7 @@ def edit_product(request, id):
 
 def users(request):
     user = User.objects.all().order_by('id')
+    # user.exclude(is_staff=1)
     return render(request, 'Admin/user_management.html', {'user':user})
 
 

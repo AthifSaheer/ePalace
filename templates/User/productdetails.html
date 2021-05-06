@@ -60,27 +60,74 @@
         <main>
             <div class="container">
                 <div class="row" id="prd-dtl-div">
+                    <style>
+                        #img1-big, #img2-big, #img3-big{
+                            display: none;
+                        }
+                    </style>
 
                     {% for prd in product_detailed %}
 
                     <div class="col-md-6">
-                        <img src="{{ prd.image.url }}" width="1500px" height="1500px" alt="">
+                        <img id="imgbig" src="{{ prd.image.url }}" id="main-img" width="1500px" height="1500px" alt="">
+                        <img id="img1-big" src="{{ prd.more_image_one.url }}" id="main-img" width="1500px" height="1500px" alt="">
+                        <img id="img2-big" src="{{ prd.more_image_two.url }}" id="main-img" width="1500px" height="1500px" alt="">
+                        <img id="img3-big" src="{{ prd.more_image_three.url }}" id="main-img" width="1500px" height="1500px" alt="">
                         
-                        <hr>
+                        <!-- <hr> -->
                         
                         <div class="row">
-                            <div class="col-md-4" id="more-imge-div"><img src="{{ prd.more_image_one.url }}" alt=""></div>
-                            <div class="col-md-4" id="more-imge-div"><img src="{{ prd.more_image_two.url }}" alt=""></div>
-                            <div class="col-md-4" id="more-imge-div"><img src="{{ prd.more_image_three.url }}" alt=""></div>
+                            <div class="col-md-3"><img onclick="imfunc()" src="{{ prd.image.url }}" alt=""></div>
+                            <div class="col-md-3"><img onclick="img1Func()" src="{{ prd.more_image_one.url }}" alt=""></div>
+                            <div class="col-md-3"><img onclick="img2Func()" src="{{ prd.more_image_two.url }}" alt=""></div>
+                            <div class="col-md-3"><img onclick="img3Func()" src="{{ prd.more_image_three.url }}" alt=""></div>
                         </div>
                         
                     </div>
+
+                    <script>
+
+                        mainImgBig = document.getElementById('imgbig')
+                        img1big = document.getElementById('img1-big')
+                        img2big = document.getElementById('img2-big')
+                        img3big = document.getElementById('img3-big')
+
+                        function imfunc(){
+                            mainImgBig.style.display = 'block'
+                            img1big.style.display = 'none'
+                            img2big.style.display = 'none'
+                            img3big.style.display = 'none'
+                        }
+                        function img1Func(){
+                            mainImgBig.style.display = 'none'
+                            img1big.style.display = 'block'
+                            img2big.style.display = 'none'
+                            img3big.style.display = 'none'
+                        }
+                        function img2Func(){
+                            mainImgBig.style.display = 'none'
+                            img1big.style.display = 'none'
+                            img2big.style.display = 'block'
+                            img3big.style.display = 'none'
+                        }
+                        function img3Func(){
+                            mainImgBig.style.display = 'none'
+                            img1big.style.display = 'none'
+                            img2big.style.display = 'none'
+                            img3big.style.display = 'block'
+                        }
+
+                        //====================== Image Zoom Script====================================
+                        
+                        
+                    </script>
+                   
                     
                     <div class="col-md-6">
-                        <h3 class="text-info" id="prd-txt">{{ prd.title }}</h3>
 
-                        <br>
-                        <h4>{{ prd.description }}</h4>
+                        <h4 class="text-info" id="prd-txt">{{ prd.title }}</h4>
+
+                        <h5>{{ prd.description }}</h5>
                         {% if prd.guarandeed %}
                         <span class="badge badge-success" id="guarandeed">Guarandeed</span>
                         {% endif %}
@@ -225,5 +272,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
        
+        
     </body>
 </html>

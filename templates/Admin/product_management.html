@@ -49,8 +49,9 @@
                   <a class="dropdown-toggle icon-burger-mini" href="" role="button" id="dropdown-recent-order1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static"></a>
                   <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-recent-order1">
                     <li class="dropdown-item">
-                      <a href="" onclick="deletePrd()">Delete Item</a>
-                      <a href="{% url 'delete_product' prd.id %}" id="btnClick"></a>
+                      <a href="{% url 'delete_product' prd.id %}">Delete Item</a>
+                      <!-- <a href="" onclick="deletePrd()">Delete Item</a>
+                      <a href="{% url 'delete_product' prd.id %}" id="btnClick"></a> -->
                     </li>
                     <li class="dropdown-item">
                       <a href="{% url 'edit_product' prd.id %}">Edit Item</a>

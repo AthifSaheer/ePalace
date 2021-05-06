@@ -5,28 +5,39 @@
 
 
 <div class="card card-table-border-none" id="recent-orders">
-    <div class="card-header justify-content-between">
-      <h2>User Details</h2>
+    <div class="card-header justify-content">
+      <h2 class="mr-3">Category Details</h2>
       <!-- <div class="date-range-report ">
         <span></span>
       </div> -->
-      <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_category' %}">
-        <span class="d-none d-md-inline-block mr-2">Create Category</span>
-      </a>
-      <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_sub_category' %}">
-        <span class="d-none d-md-inline-block mr-2">Create Sub Category</span>
-      </a>
+      
+      <div class="row">
+          <div class="col-md-6">
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_sub_category' %}">
+                <span class="d-none d-md-inline-block mr-2">Create Sub Category</span>
+              </a>
+          </div>
+
+          <div class="col-md-6">
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_category' %}">
+                <span class="d-none d-md-inline-block mr-2">Create Category</span>
+            </a>
+          </div>
+      </div>
+
     </div>
 
     <div class="card-body pt-0 pb-5">
 
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
                             <th>Category</th>
+                            <th></th>
+                            <!-- <a href="{% url 'create_category' %}"><th >Create Category</th></a> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -36,8 +47,13 @@
                         </tr>
                         {% endfor %}
                     </tbody>
-        
-                    <thead class="thead-light">
+                </table>
+            </div>
+
+            <div class="col-md-6">
+
+                <table class="table">
+                    <thead class="thead-dark">
                         <tr>
                             <th>Sub Category</th>
                         </tr>
@@ -49,7 +65,6 @@
                         </tr>
                         {% endfor %}
                     </tbody>
-        
                 </table>
             </div>
         </div>
