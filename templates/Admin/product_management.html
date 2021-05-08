@@ -3,20 +3,32 @@
 {% block title %} Product Management | Admin panel {% endblock title %}
 {% block content %}
 
+<style>
+  #myInput{
+    border: 3px solid rgb(175, 175, 175);
+    margin-right: 300px;
+    border-radius: 100px;
+    padding: 5px;
+    background: rgb(255, 255, 255);
+    width: 300px;
+  }
+</style>
 
     <!-- Recent Order Table -->
     <div class="card card-table-border-none" id="recent-orders">
       <div class="card-header justify-content-between">
         <h2>Product Details</h2>
-        <!-- <div class="date-range-report ">
-          <span></span>
-        </div> -->
+        
+        <div class="">
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search products...">
+        </div>
+        
         <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_products' %}">
           <span class="d-none d-md-inline-block mr-2">Create Product</span>
         </a>
       </div>
       <div class="card-body pt-0 pb-5">
-        <table class="table card-table table-responsive table-responsive-large" style="width:100%">
+        <table id="myTable" class="table card-table table-responsive table-responsive-large" style="width:100%">
           <thead>
             <tr>
               <th>No</th>
@@ -30,7 +42,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody >
             {% for prd in products %}
             <tr>
               <td>{{ forloop.counter }}</td>
@@ -82,6 +94,30 @@
       btnClick.click()
     }
   </script>
+
+  <!--======= Search Item =======-->
+  <script>
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+    </script> 
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+
                 
 
 {% endblock content %}

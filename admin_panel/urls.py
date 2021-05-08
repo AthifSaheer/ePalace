@@ -14,14 +14,20 @@ urlpatterns = [
     
     # User management
     path('users', views.users, name='users'),
-    path('block_user/<int:id>', views.block_user, name='block_user'),
+    path('block_user/<str:username>', views.block_user, name='block_user'),
     path('un_block_user/<int:id>', views.un_block_user, name='un_block_user'),
     path('delete_user/<int:id>', views.delete_user, name='delete_user'),
     
     # Category management
     path('categories', views.categories, name='categories'),
+
     path('create_category', views.create_category, name='create_category'),
+    path('edit_category/<int:id>', views.edit_category, name='edit_category'),
+    path('delete_category/<int:id>', views.delete_category, name='delete_category'),
+
     path('create_sub_category', views.create_sub_category, name='create_sub_category'),
+    path('edit_sub_category/<int:id>', views.edit_sub_category, name='edit_sub_category'),
+    path('delete_sub_category/<int:id>', views.delete_sub_category, name='delete_sub_category'),
 
     # Order management
     # path('orders', views.orders, name='orders'),

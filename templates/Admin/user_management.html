@@ -52,7 +52,7 @@
                   <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-recent-order1">
                     {% if usr.is_active %}
                     <li class="dropdown-item">
-                      <a href="{% url 'block_user' usr.id %}">Block User</a>
+                      <a href="{% url 'block_user' usr.username %}">Block User</a>
                     </li>
                     {% else %}
                     <li class="dropdown-item">

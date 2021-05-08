@@ -7,6 +7,9 @@ class CreateProductForm(forms.ModelForm):
         model = Product
         # fields = ['title', 'slug', 'category', 'sub_category', 'image', 'marked_price']
         fields = ('__all__')
+        # widgets = {
+        #     'color': forms.TextInput(attrs={'type': 'color'}),
+        # }
 
 class CreateCategory(forms.ModelForm):
     class Meta:

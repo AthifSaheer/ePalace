@@ -75,8 +75,8 @@
                       aria-expanded="false" aria-controls="dashboard">
                       <i class="mdi mdi-view-dashboard-outline"></i>
                       <span class="nav-text">Dashboard</span> <b class="caret"></b>
-                    </a>
-                    <ul  class="collapse show"  id="dashboard"
+                    </a> <!--- class="show" (Show the sub dashboardname then you add neara collapse it.---> 
+                    <ul  class="collapse" id="dashboard"
                       data-parent="#sidebar-menu">
                       <div class="sub-menu">
                         
@@ -100,7 +100,7 @@
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#ui-elements"
                       aria-expanded="false" aria-controls="ui-elements">
                       <i class="mdi mdi-account"></i>
-                      <span class="nav-text">User management</span> <b class="caret"></b>
+                      <span class="nav-text">User manage</span> <b class="caret"></b>
                     </a>
                     <ul  class="collapse"  id="ui-elements"
                       data-parent="#sidebar-menu">
@@ -108,7 +108,7 @@
                         
                         <li class=""> <!--active-->
                             <a class="sidenav-item-link" href="{% url 'users' %}">
-                              <span class="nav-text">User management</span>
+                              <span class="nav-text">User manage</span>
                               
                             </a>
                           </li>
@@ -125,7 +125,7 @@
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#charts"
                       aria-expanded="false" aria-controls="charts">
                       <i class="mdi mdi-format-list-bulleted"></i>
-                      <span class="nav-text">Order Managment</span> <b class="caret"></b>
+                      <span class="nav-text">Order manage</span> <b class="caret"></b>
                     </a>
                     <ul  class="collapse"  id="charts"
                       data-parent="#sidebar-menu">
@@ -156,7 +156,7 @@
                       aria-expanded="false" aria-controls="pages">
                       <!-- <i class="mdi mdi-image-filter-none"></i> -->
                       <i class="mdi mdi-cart"></i>
-                      <span class="nav-text">Product management</span> <b class="caret"></b>
+                      <span class="nav-text">Product manage</span> <b class="caret"></b>
                     </a>
                     <ul  class="collapse"  id="pages"
                       data-parent="#sidebar-menu">
@@ -166,7 +166,7 @@
                           
                             <li >
                               <a class="sidenav-item-link" href="{% url 'products' %}">
-                                <span class="nav-text">Product management</span>
+                                <span class="nav-text">Product manage</span>
                                 
                               </a>
                             </li>
@@ -184,7 +184,7 @@
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#documentation"
                       aria-expanded="false" aria-controls="documentation">
                       <i class="mdi mdi-book-open-page-variant"></i>
-                      <span class="nav-text">Category management</span> <b class="caret"></b>
+                      <span class="nav-text">Category manage</span> <b class="caret"></b>
                     </a>
                     <ul  class="collapse"  id="documentation"
                       data-parent="#sidebar-menu">
@@ -193,7 +193,7 @@
                         
                             <li >
                                 <a class="sidenav-item-link" href="{% url 'categories' %}">
-                                  <span class="nav-text">Category management</span>
+                                  <span class="nav-text">Category manage</span>
                                   
                                 </a>
                               </li>
@@ -241,7 +241,7 @@
                 <ul class="nav navbar-nav">
                   <!-- Github Link Button -->
                   <li class="github-link mr-3">
-                    <a class="btn btn-outline-secondary btn-sm" href="-------------" target="_blank">
+                    <a class="btn btn-outline-secondary btn-sm" href="{% url 'user_home' %}" target="_blank">
                       <span class="d-none d-md-inline-block mr-2">Visite Site</span>
                     </a>
 

@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+# from admin_panel.views import block_user
 
 
 def login(request):
@@ -13,15 +15,29 @@ def login(request):
             password = request.POST.get('password')
 
             user = authenticate(request, username=username, password=password)
+                
+            try:
+                user_obj = User.objects.get(username=username)
+            except User.DoesNotExist:
+                if user is None:
+                    uname_error = 'Invalid creditials ! !'
+                    context = {
+                        'uname_error':uname_error,
+                    }
+                    return render(request, 'User/login.html', context)
 
-            if user is not None:
+            block_user_login = user_obj.is_active
+            print(user_obj)
+
+            if block_user_login == False:
+                block_error = 'This user was blocked'
+                context = {'block_error':block_error,}
+                return render(request, 'User/login.html', context)
+                
+            elif user is not None:
                 auth_login(request, user)
                 return redirect('user_home')
-            else:
-                uname_error = 'Invalid creditials ! !'
-                print(uname_error)
-                return render(request, 'User/login.html', {'uname_error':uname_error})
-
+         
     return render(request, 'User/login.html')
 
 
@@ -53,12 +69,15 @@ def logout(request):
     request.session['is_value'] = True
     return redirect('user_home')
 
-
-
-def admin_login(request):
+def admin_session(request):
     if request.session.has_key('is_value'):
         return render(request, 'Admin/dashboard.html')
         # return redirect('admin_home')
+    else:
+        return redirect('admin_login')
+
+def admin_login(request):
+    admin_session(request) 
 
     if request.method == 'POST':
         uname = 'admin'
@@ -70,12 +89,14 @@ def admin_login(request):
         if username == uname and password == pword:
             print('admin logged in')
             request.session['is_value'] = True
+            # return JsonResponse({'status': 'ok'});
             return redirect('admin_home')
         else:
             invalid_error = "Invalid creditials ! !"
             print(invalid_error)
-            return redirect('admin_login')
-            # return render(request, 'Admin/admin_login.html')
+            # return JsonResponse({'status': 'login failed'})
+            # return redirect('admin_login')
+            return render(request, 'Admin/admin_login.html', {'invalid_error':invalid_error})
     else:
         return render(request, 'Admin/admin_login.html')
 

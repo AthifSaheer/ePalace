@@ -3,75 +3,114 @@
 {% block title %} Category Management | Admin panel {% endblock title %}
 {% block content %}
 
+<!----========================-->
 
-<div class="card card-table-border-none" id="recent-orders">
-    <div class="card-header justify-content">
-      <h2 class="mr-3">Category Details</h2>
-      <!-- <div class="date-range-report ">
-        <span></span>
-      </div> -->
-      
-      <div class="row">
-          <div class="col-md-6">
-            <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_sub_category' %}">
-                <span class="d-none d-md-inline-block mr-2">Create Sub Category</span>
-              </a>
-          </div>
+<style>
+    #table-div{
+        background: rgb(255, 255, 255);
+        padding: 10px;
+        border: 1px solid rgb(207, 207, 207);
+        margin-left: 15px;
+    }
+</style>
 
-          <div class="col-md-6">
-            <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_category' %}">
-                <span class="d-none d-md-inline-block mr-2">Create Category</span>
-            </a>
-          </div>
-      </div>
 
+
+<div class="row">
+
+    <div class="col-md-12">
+        <h2 class="mr-3 text-info text-center">Category Details</h2>
     </div>
 
-    <div class="card-body pt-0 pb-5">
+    <div class="col-md-5 mt-3" id="table-div">
+
+        <a class="btn btn-outline-secondary btn-sm float-right mb-3" href="{% url 'create_category' %}">
+            <span class="d-none d-md-inline-block mr-2">Create Category</span>
+        </a>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Category</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for cat in category %}
+                <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ cat.category }}
+                    <p class="float-right ">
+                        <!---- Edit Icon ---->
+                        <a href="{% url 'edit_category' cat.id %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                        </a>
+                        <!---- Delete Icon ---->
+                        <a href="{% url 'delete_category' cat.id %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </a>
+                    </p>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-1"></div>
+
+    <div class="col-md-5 mt-3" id="table-div">
+
+        <a class="btn btn-outline-secondary btn-sm float-right mb-3" href="{% url 'create_sub_category' %}">
+            <span class="d-none d-md-inline-block mr-2">Create Sub Category</span>
+        </a>
 
 
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Category</th>
-                            <th></th>
-                            <!-- <a href="{% url 'create_category' %}"><th >Create Category</th></a> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for cat in category %}
-                        <tr>
-                            <td>{{ cat.category }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Category</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sub_cat in sub_category %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ sub_cat.category }}
+                    <p class="float-right ">
+                        <!---- Edit Icon ---->
+                        <a href="{% url 'edit_sub_category' sub_cat.id %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                        </a>
+                        <!---- Delete Icon ---->
+                        <a href="{% url 'delete_sub_category' sub_cat.id %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </a>
+                    </p>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-            <div class="col-md-6">
-
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Sub Category</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for sc in sub_category %}
-                        <tr>
-                            <td>{{ sc.sub_category }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-
-
-      </div>
+    </div>
   </div>
 
+
 {% endblock content %}
+
+

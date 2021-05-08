@@ -4,18 +4,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from user_panel.models import *
 from .forms import *
-
+from accounts.views import admin_session
+import json
 
 
 # =========== Admin Dashboard =========================
 
 def admin_home(request):
-    if request.session.has_key('is_value'):
-        return render(request, 'Admin/dashboard.html')
-        # return redirect('admin_home')
-    else:
-        # return render(request, 'Admin/admin_login.html')
-        return redirect('admin_login')
+    admin_session(request)
+    return render(request, 'Admin/dashboard.html')
 
 
 # =========== Product Management =========================
@@ -86,8 +83,8 @@ def users(request):
     return render(request, 'Admin/user_management.html', {'user':user})
 
 
-def block_user(request, id):
-    user = User.objects.get(id=id)
+def block_user(request, username):
+    user = User.objects.get(username=username)
     user.is_active = False
     user.save()
     print(user)
@@ -111,8 +108,8 @@ def delete_user(request, id):
 # =========== Category Management =========================
 
 def categories(request):
-    category = Category.objects.all()
-    sub_category = SubCategory.objects.all()
+    category = Category.objects.all().order_by('id')
+    sub_category = SubCategory.objects.all().order_by('id')
     return render(request, 'Admin/category_management.html', {'category':category, 'sub_category':sub_category})
 
 
@@ -133,6 +130,24 @@ def create_category(request):
 
     return render(request, 'Admin/create_category.html', {'form':form})
 
+def edit_category(request, id):
+    cat = Category.objects.get(id=id)
+    form = CreateCategory(instance=cat)
+
+    if request.method == 'POST':
+        form = CreateCategory(request.POST, request.FILES, instance=cat)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+    
+    return render(request, 'Admin/edit_category.html', {'form':form})
+
+
+def delete_category(request, id):
+    del_category = Category.objects.get(id=id)
+    del_category.delete()
+    return redirect('categories')
+
 
 def create_sub_category(request):
     form = CreateSubCategory(request.POST)
@@ -149,3 +164,22 @@ def create_sub_category(request):
             return redirect('categories')
 
     return render(request, 'Admin/create_sub_category.html', {'form':form})
+
+
+def edit_sub_category(request, id):
+    sub_cat = SubCategory.objects.get(id=id)
+    form = CreateSubCategory(instance=sub_cat)
+
+    if request.method == 'POST':
+        form = CreateSubCategory(request.POST, request.FILES, instance=sub_cat)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+    
+    return render(request, 'Admin/edit_sub_category.html', {'form':form})
+
+
+def delete_sub_category(request, id):
+    del_sub_category = SubCategory.objects.get(id=id)
+    del_sub_category.delete()
+    return redirect('categories')

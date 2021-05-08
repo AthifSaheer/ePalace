@@ -359,12 +359,19 @@ img{
   font-size: var(--normal-font-size);
 }
 
-.menu__detail, .menu__preci{
-  font-size: var(--small-font-size);
+.menu__preci{
+  font-size: 18px;
+  color: #0f0f0f;
+}
+
+.menu__preci s {
+  font-size: 12px;
+  color: #636363;
 }
 
 .menu__detail{
   margin-bottom: var(--mb-1);
+  font-size: var(--small-font-size);
 }
 
 .menu__button{
@@ -700,3 +707,4 @@ hr {
   margin-top: 50px;
   padding: 10px;
 }
+

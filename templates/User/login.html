@@ -33,8 +33,9 @@
           <div id="login-div" class="col-md-4 col-11">
             <h1 id="login-text">Login</h1>
             <span class="text-danger">{{ uname_error }}</span>
+            <span class="text-danger">{{ block_error }}</span>
 
-                <form class="needs-validation" id="login-form" novalidate method="POST">
+                <form class="needs-validation form_login" id="login-form" novalidate method="POST">
                   {% csrf_token %}
                     <div class="form-row">
 
@@ -59,7 +60,7 @@
                       </div>
                     </div>
                    
-                    <button class="btn btn-outline-info btn-block mb-3" type="submit">Submit form</button>
+                    <button class="btn btn-outline-info btn-block mb-3" type="submit">Login</button>
                   </form>
                   <p id="to-sin-up"><a href="{% url 'signup' %}">Create account</a></p>
                   
@@ -83,6 +84,23 @@
                     }, false);
                   })();
                   </script>
+
+                  <!-- <script>
+                    // Ajax Form validation
+                    $('.form_login').on('submit', function(e) {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://127.0.0.1:8000/user_login/',
+                        data: {'username': $('.login_username').val(),
+                                'password': $('.login_password').val()},
+                        success: function (data) {
+                            console.log(data)
+                                }
+                        }
+                    )
+                    })
+                  </script> -->
           </div>
 
             <div class="col-md-10" >

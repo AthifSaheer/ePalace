@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user_panel',
     'admin_panel',
     'crispy_forms',
+    'colorfield',
 ]
 
 MIDDLEWARE = [
