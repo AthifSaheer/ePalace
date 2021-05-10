@@ -1,0 +1,71 @@
+{% extends 'User/base.html' %}
+{% load static %}
+
+{% block title %} Order | ePalace {% endblock title %}
+        
+{% block content %} 
+
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-12" id="top-div">
+            
+            <div class="row">
+
+                <div class="col-md-4" id="img">
+                    <img src="/assets/img/mac air (1).jpg" class="image" width="200px" height="200px" alt="">      
+                </div>
+
+                <div class="col-md-3" id="between-div">
+                    <a href="{% url 'order_detail' %}"><h5 id="title">APPLE MacBook Air M1</h5></a>
+                </div>
+
+                <div class="col-md-3" id="between-div">
+                    <h5 id="title">$9809</h5>
+                </div>
+
+                <div class="col-md-2" id="between-div">
+                    <span class="badge badge-success badge-l">Delivered</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    #div-bottom{
+        padding: 20px;
+    }
+    #between-div {
+        margin-top: 3%;
+    }
+
+    #title {
+        font-weight: bold;
+        color: rgb(184, 184, 184);
+    }
+
+    #sub-txt {
+        color: seagreen;
+        font-weight: bold;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    #top-div{
+        background: rgb(255, 255, 255);
+        margin-top: 93px;
+        border-radius: 40px;
+        box-shadow: 2px 3px 3px 2px #e2e2e2;
+        padding: 20px;
+    }   
+  
+</style>
+{% endblock content %}

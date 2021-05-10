@@ -1,5 +1,5 @@
+from user_panel.models import *
 from django import forms
-from user_panel.models import Product, Category, SubCategory
 
 
 class CreateProductForm(forms.ModelForm):
@@ -20,3 +20,8 @@ class CreateSubCategory(forms.ModelForm):
     class Meta:
         model = SubCategory
         fields = ('__all__')
+
+class ChangeProfileImageForm(forms.ModelForm):
+    class Meta:
+        model = ProfileImage
+        fields = ['image',]

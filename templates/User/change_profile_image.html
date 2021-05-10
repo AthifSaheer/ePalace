@@ -1,0 +1,29 @@
+{% extends 'User/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %} Profile | ePalace {% endblock title %}
+        
+{% block content %} 
+
+
+<div class="container" id="container">
+    <div class="row">
+        <h3 class="text-center text-info mt-3">Change profile image</h3>
+        <div class="col-md-10 ml-5">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
+            </form>
+            <a href="{% url 'profile' user.id %}"><button class="btn btn-outline-success btn-block mt-2 mb-5">Cancel</button></a>
+        </div>
+    </div>
+
+<style>
+    #container {
+        margin-top: 90px;
+    }
+</style>
+
+{% endblock content %}

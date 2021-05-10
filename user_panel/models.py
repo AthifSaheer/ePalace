@@ -1,5 +1,7 @@
 from colorfield.fields import ColorField
 from django.db import models
+from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -61,3 +63,41 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Cart(models.Model):
+    cart_id = models.CharField(max_length=250, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.cart_id
+
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.PositiveIntegerField()
+    sub_total = models.PositiveIntegerField()
+    is_active = models.BooleanField(default=True)
+
+    def su_btotal(self):
+        total = self.quantity * self.price
+        return total
+
+
+    def __str__(self):
+        return self.product.title
+      
+    
+
+class ProfileImage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='profile_imgs')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.user.username
+    
+    

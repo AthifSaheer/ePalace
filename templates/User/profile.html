@@ -1,0 +1,165 @@
+{% extends 'User/base.html' %}
+{% load static %}
+
+{% block title %} Profile | ePalace {% endblock title %}
+        
+{% block content %} 
+
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-12" id="top-div">
+            
+            <div class="row">
+
+                <div class="col-md-7">
+                    <h4 id="title">My Details</h4>
+                </div>
+
+                <div class="col-md-5">
+                    <button class="btn btn-outline-info btn-sm" id="prf-btn-1">Change password</button>
+                    <button class="btn btn-outline-danger btn-sm" id="prf-btn-2">Logout</button>
+                </div>
+                
+                <hr>
+
+                <div class="col-md-4" id="img">
+                    {% if profile.image %}
+                    <img src="{{ profile.image.url }}" class="image" width="200px" height="200px" alt="{{ error }}">
+                    {% else %}
+                    <img src="/assets/img/avatar.png" class="image" width="200px" height="200px" alt="">
+                    {% endif %}
+                    
+                    
+                    <div class="middle">
+                        <a href="{% url 'change_profile_image' user.id %}"><div class="text">Change Image</div></a>
+                      </div>
+                      
+                </div>
+
+                <div class="col-md-3" id="between-div">
+                    <h5 id="title">Username:</h5>
+                    <p id="sub-txt">Athif Saheer</p>
+                    <h5 id="title">Gender:</h5>
+                    <p id="sub-txt">Male</p>
+                </div>
+
+                <div class="col-md-3" id="between-div">
+                    <h5 id="title">Email:</h5>
+                    <p id="sub-txt">jflkslk@gjlg.com</p>
+                    <h5 id="title">Phone no:</h5>
+                    <p id="sub-txt">+91 90 89893 898</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-12" id="top-div">
+            
+            <div class="row">
+
+                <div class="col-md-7">
+                    <h4 id="title">My Address</h4>
+                </div>
+                
+                <div class="col-md-5">
+                    <button class="btn btn-outline-warning btn-sm">My orders</button>
+                    <button class="btn btn-outline-success btn-sm">Add address</button>
+                </div>
+
+                <div class="col-md-12" id="div-bottom">
+                    <h5>Athif Saheer +91 8175 9088 89</h5>
+                    <p>Near appolo hospital c/o rbe group C/o rbe sanu street Punjab - 100032 <a href="" class="float-right mr-5">Edit</a></p>
+                    
+                    <hr>
+                    <h5>Athif Saheer +91 8175 9088 89</h5>
+                    <p>Near appolo hospital c/o rbe group C/o rbe sanu street Punjab - 100032 <a href="" class="float-right mr-5">Edit</a></p>
+                </div>
+                
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    #div-bottom{
+        padding: 20px;
+    }
+    #between-div {
+        margin-top: 3%;
+    }
+
+    #title {
+        font-weight: bold;
+        color: rgb(184, 184, 184);
+    }
+
+    #sub-txt {
+        color: seagreen;
+        font-weight: bold;
+    }
+
+    /* #prf-btn-1 {
+        width: 160px;
+    }
+    #prf-btn-2 {
+        margin-top: 140px;
+        width: 160px;
+    } */
+
+    a {
+        text-decoration: none;
+    }
+
+    #top-div{
+        background: rgb(255, 255, 255);
+        margin-top: 93px;
+        border-radius: 40px;
+        box-shadow: 2px 3px 3px 2px #e2e2e2;
+        padding: 20px;
+    }
+        
+    .image {
+        opacity: 1;
+        display: block;
+        width: 70%;
+        height: auto;
+        transition: .5s ease;
+        backface-visibility: hidden;
+    }
+
+    .middle {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform: translate(-30%, -30%);
+        -ms-transform: translate(-30%, -30%);
+        text-align: center;
+    }
+
+    #img:hover .image {
+        opacity: 1;
+    }
+
+    #img:hover .middle {
+        opacity: 1;
+    }
+
+    .text {
+        margin-top: 180px;
+        background-color: #04AA6D;
+        color: white;
+        /* width: 70%; */
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+</style>
+{% endblock content %}

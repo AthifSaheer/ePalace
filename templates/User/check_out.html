@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--========== BOX ICONS ==========-->
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+
+    <!--========== CSS ==========-->
+    <link rel="stylesheet" href="{% static '../assets/css/user_styles.css' %}">
+    
+    <!--========== fontawesome ==========-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    
+    <!--========== bootstrap ==========-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Check out | ePalace</title>
+</head>
+<body>
+
+  <header class="l-header" id="header">
+    <nav class="nav bd-container">
+        <a href="{% url 'user_home' %}" class="nav__logo">ePalace</a>
+    </nav>
+  </header>
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-7" id="top-div">
+            
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h4 id="title">Address</h4>
+                </div>
+                
+                <form action="">
+
+                    <div class="col-md-10">
+                        <input type="radio" name="address">Athif Saheer +91 8175 9088 89</input>                    
+                        <h6>Near appolo hospital c/o rbe group C/o rbe sanu street Punjab - 100032</h6>
+                    </div>
+
+                    <div class="col-md-2">
+                        <a href="">Edit</a>
+                    </div>
+
+                    <div class="col-md-10">
+                        <input type="radio" name="address">Athif Saheer +91 8175 9088 89</input>                    
+                        <h6>Near appolo hospital c/o rbe group C/o rbe sanu street Punjab - 100032</h6>
+                    </div>
+
+                    <div class="col-md-2">
+                        <a href="">Edit</a>
+                    </div>
+
+                    <button class="btn btn-warning">Add new address</button>
+                    <button class="btn btn-success">Delivery here</button>
+                    
+                    <hr>
+
+                <div class="col-md-12">
+                    <h4 id="title">Payment</h4>
+                </div>
+
+                <form action="">
+
+                    <div class="col-md-12">
+                        <input type="radio" name="payment">
+                        <label for="">Paypal</label>
+                        <br>
+                        <input type="radio" name="payment">
+                        <label for="">COD</label>
+                    </div>
+                    <button class="btn btn-info">Confirm order</button>
+                    
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4" id="right-div">
+
+            <div class="col-md-12">
+                Price details
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Price(2items)</td>
+                            <td>$4455</td>
+                        </tr>
+
+                        <tr>
+                            <td>Delivery charge</td>
+                            <td>Free</td>
+                        </tr>
+
+                        <tr>
+                            <td>Total Amount</td>
+                            <td>$909009</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-12">
+                <button class="btn btn-outline-info btn-sm" id="prf-btn-1">Countinue shopping</button>
+                <button class="btn btn-outline-success btn-sm" id="prf-btn-2">Place order</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    #right-div {
+        background: rgb(247, 247, 247);
+        margin-top: 93px;
+        border-radius: 20px;
+        /* box-shadow: 2px 3px 3px 2px #e2e2e2; */
+        padding: 20px;
+        margin-left: 20px;
+        position: sticky;
+    }
+    #between-div {
+        margin-top: 3%;
+    }
+
+    #title {
+        font-weight: bold;
+        color: rgb(184, 184, 184);
+    }
+
+    #sub-txt {
+        color: seagreen;
+        font-weight: bold;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    #top-div{
+        background: rgb(255, 255, 255);
+        margin-top: 93px;
+        border-radius: 20px;
+        box-shadow: 2px 3px 3px 2px #e2e2e2;
+        padding: 20px;
+    }
+        
+    .image {
+        opacity: 1;
+        display: block;
+        width: 70%;
+        height: auto;
+        transition: .5s ease;
+        backface-visibility: hidden;
+    }
+
+    .middle {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform: translate(-30%, -30%);
+        -ms-transform: translate(-30%, -30%);
+        text-align: center;
+    }
+
+    #img:hover .image {
+        opacity: 1;
+    }
+
+    #img:hover .middle {
+        opacity: 1;
+    }
+
+    .text {
+        margin-top: 180px;
+        background-color: #04AA6D;
+        color: white;
+        /* width: 70%; */
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+    #input {
+        width: 30px;
+        padding-left: 8px;
+        border: 2px solid rgb(238, 238, 238);
+        background: rgb(216, 216, 216);
+        color: white;
+    }
+
+    .plu-min-btn{
+        border: 2px solid gray;
+        color: white;
+        background: rgb(160, 160, 160);
+    }
+
+</style>
+
+<script>
+
+function increaseValue() {
+  var value = document.getElementById('input').value;
+  value = value ++;
+  value.innerHTML = fValue;
+}
+
+function decreaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value < 1 ? value = 1 : '';
+  value--;
+  document.getElementById('number').value = value;
+}
+
+</script>
+    
+
+
+
+    <!--========== SCROLL REVEAL ==========-->
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <!--========== MAIN JS ==========-->
+    <script src="{% static '../assets/js/main.js' %}"></script>
+    
+    <!--========== BOOTSTRAP JS ==========-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+</body>
+</html>

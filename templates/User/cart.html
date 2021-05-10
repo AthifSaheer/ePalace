@@ -1,0 +1,199 @@
+{% extends 'User/base.html' %}
+{% load static %}
+
+{% block title %} Cart | ePalace {% endblock title %}
+        
+{% block content %} 
+
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-7" id="top-div">
+            
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h4 id="title">My cart({{ count }})</h4>
+                </div>
+                
+                <hr>
+                {% if count <= 0 %}
+                <p class="text-info ">Cart is empty</p>
+                {% endif %}
+                {% for crt in cart_item %}
+
+                <div class="col-md-3">
+                    <a href="{% url 'prd_detail' crt.product.slug %}"><img src="{{ crt.product.image.url}}" class="image" width="200px" height="200px" alt=""></a>
+                </div>
+
+                <div class="col-md-4" id="between-div">
+                    <h6 class="text-info">{{ crt.product.title }}</h6>
+                    <p class="text-secondary">&#8377;{{ crt.su_btotal }}</p>
+                </div>
+
+                <div class="col-md-5" id="between-div">
+                    <form>
+                        <a href="{% url 'item_decrement' crt.product.id %}" class="plus-min-btn">-</a>
+                        <input type="text" id="input" value="{{ crt.quantity }}" disabled>
+                        <a href="{% url 'add_to_cart' crt.product.id %}" class="plus-min-btn">+</a>
+                        <a href="{% url 'remove_item' crt.product.id %}" class="text-secondary">Remove</a>
+                    </form>
+                </div>
+
+                <hr>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4" id="right-div">
+
+            <div class="col-md-12">
+                Price details
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Price({{ count }}items)</td>
+                            <td>&#8377;{{ total }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Delivery charge</td>
+                            <td class="text-success">Free</td>
+                        </tr>
+
+                        <tr>
+                            <td>Total Amount</td>
+                            <td>&#8377;{{ total }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-12">
+                {% if cart_count <= 0 %}
+                <a href="{% url 'user_home' %}"><button class="btn btn-outline-info btn-sm" id="prf-btn-1">Countinue shopping</button></a>
+                {% else %}
+                <a href="{% url 'user_home' %}"><button class="btn btn-outline-info btn-sm" id="prf-btn-1">Countinue shopping</button></a>
+                <a href="{% url 'check_out' %}"><button class="btn btn-outline-success btn-sm" id="prf-btn-2">Place order</button></a>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    #right-div {
+        background: rgb(247, 247, 247);
+        margin-top: 93px;
+        border-radius: 20px;
+        /* box-shadow: 2px 3px 3px 2px #e2e2e2; */
+        padding: 20px;
+        margin-left: 20px;
+        position: sticky;
+    }
+    #between-div {
+        margin-top: 3%;
+    }
+
+    #title {
+        font-weight: bold;
+        color: rgb(184, 184, 184);
+    }
+
+    #sub-txt {
+        color: seagreen;
+        font-weight: bold;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    #top-div{
+        background: rgb(255, 255, 255);
+        margin-top: 93px;
+        border-radius: 20px;
+        box-shadow: 2px 3px 3px 2px #e2e2e2;
+        padding: 20px;
+    }
+        
+    .image {
+        opacity: 1;
+        display: block;
+        width: 70%;
+        height: auto;
+        transition: .5s ease;
+        backface-visibility: hidden;
+    }
+
+    .middle {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform: translate(-30%, -30%);
+        -ms-transform: translate(-30%, -30%);
+        text-align: center;
+    }
+
+    #img:hover .image {
+        opacity: 1;
+    }
+
+    #img:hover .middle {
+        opacity: 1;
+    }
+
+    .text {
+        margin-top: 180px;
+        background-color: #04AA6D;
+        color: white;
+        /* width: 70%; */
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+    #input {
+        width: 30px;
+        padding-left: 8px;
+        border: 2px solid rgb(238, 238, 238);
+        background: rgb(216, 216, 216);
+        color: white;
+    }
+
+    .plus-min-btn{
+        border: 2px solid gray;
+        color: white;
+        background: rgb(160, 160, 160);
+        padding: 3px;
+    }
+
+</style>
+
+<script>
+
+function increaseValue() {
+  var value = document.getElementById('input').value;
+  value = value ++;
+  value.innerHTML = fValue;
+}
+
+function decreaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value < 1 ? value = 1 : '';
+  value--;
+  document.getElementById('number').value = value;
+}
+
+</script>
+    
+
+{% endblock content %}

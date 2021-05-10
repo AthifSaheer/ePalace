@@ -1,0 +1,119 @@
+{% load static %}
+<!-- {% static "prd_imgs" as baseUrl %} -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--========== BOX ICONS ==========-->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+
+        <!--========== CSS ==========-->
+        <link rel="stylesheet" href="{% static '../assets/css/user_styles.css' %}">
+        
+        <!--========== BOOTSTRAP ==========-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        
+        <!--========== FONT AWESOME ==========-->
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+        <link rel="shortcut icon" href="{% static '../assets/img/logo.svg' %}" type="image/x-icon">
+
+        <title>{% block title %} Home | ePalace {% endblock title %}</title>
+    </head>
+    <body>
+
+        <!--========== SCROLL TOP ==========-->
+        <a href="#" class="scrolltop" id="scroll-top">
+            <i class='bx bx-chevron-up scrolltop__icon'></i>
+        </a>
+
+        <!--========== HEADER ==========-->
+        <header class="l-header" id="header">
+            <nav class="nav bd-container">
+                <a href="{% url 'user_home' %}" class="nav__logo">ePalace</a>
+
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list">
+                        {% if user.is_authenticated %}
+                        <li class="nav__item"><a href="" class="nav__link active-link">{{ user.username }}</a></li>
+                        <li class="nav__item"><a href="{% url 'order' %}" class="nav__link">Order</a></li>
+                        <li class="nav__item"><a href="{% url 'profile' user.id %}" class="nav__link">Profile</a></li>
+                        <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link">Logout</a></li>
+                        <li class="nav__item"><a href="{% url 'cart' %}" class="nav__link"><i class="fas fa-shopping-cart"></i><span class="badge badge-danger">{{ cart_count }}</span></a></li>
+                        {% else %}
+                        <li class="nav__item"><a href="{% url 'login' %}" class="nav__link">Login</a></li>
+                        <li class="nav__item"><a href="{% url 'signup' %}" class="nav__link">Signup</a></li>
+                        <li class="nav__item"><a href="{% url 'cart' %}" class="nav__link"><i class="fas fa-shopping-cart"></i><span class="badge badge-danger">{{ cart_count }}</span></a></li>
+                        <!-- <li class="nav__item"><a href="#contact" class="nav__link">Contact us</a></li> -->
+                        <!-- <li><i class='bx bx-moon change-theme' id="theme-button"></i></li> -->
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </nav>
+        </header>
+
+        {% block content %} 
+        
+        {% endblock content %}
+
+
+        <!--========== FOOTER ==========-->
+        <footer class="footer section bd-container">
+            <div class="footer__container bd-grid">
+
+                <div class="footer__content">
+                    <!-- <a href="#" class="footer__logo">ePalace</a> -->
+                    <div>
+                        <br><br><br>
+                        <a href="#" class="footer__social"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="footer__social"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="footer__social"><i class='bx bxl-twitter'></i></a>
+                        <span class="footer__description">Follow us</span>
+                    </div>
+                </div>
+
+                <div class="footer__content">
+                    <h3 class="footer__title">About</h3>
+                    <ul>
+                        <li><a href="#" class="footer__link">Contact Us</a></li>
+                        <li><a href="#" class="footer__link">About Us</a></li>
+                        <li><a href="#" class="footer__link">ePalace stories</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__content">
+                    <h3 class="footer__title">Information</h3>
+                    <ul>
+                        <li><a href="#" class="footer__link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer__link">Return Policy</a></li>
+                        <li><a href="#" class="footer__link">Security</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </footer>
+
+        <!--========== SCROLL REVEAL ==========-->
+        <script src="https://unpkg.com/scrollreveal"></script>
+
+        <!--========== MAIN JS ==========-->
+        <script src="../assets/js/main.js"></script>
+        
+        <!--==========  BOOTSTRAP ==========-->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>
