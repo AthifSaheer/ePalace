@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from user_panel.views import _cart_session_id
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-# from admin_panel.views import block_user
-
+from user_panel.models import *
 
 def login(request):
     user = request.user
@@ -35,8 +35,21 @@ def login(request):
                 return render(request, 'User/login.html', context)
                 
             elif user is not None:
+                # This try and exception are guest cartItems merge to the user cart
+                try:
+                    cart = Cart.objects.get(cart_id=_cart_session_id(request))
+                    exists = CartItem.objects.filter(cart=cart).exists()
+                    if exists:
+                        cart_item = CartItem.objects.filter(cart=cart)
+
+                        for ct in cart_item:
+                            ct.user = user
+                            ct.save()
+                except:
+                    pass
+                
                 auth_login(request, user)
-                return redirect('user_home')
+                return redirect('user_home') #?next={{request.path}}
          
     return render(request, 'User/login.html')
 

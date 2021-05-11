@@ -43,12 +43,12 @@
                     <ul class="nav__list">
                         {% if user.is_authenticated %}
                         <li class="nav__item"><a href="" class="nav__link active-link">{{ user.username }}</a></li>
-                        <li class="nav__item"><a href="{% url 'order' %}" class="nav__link">Order</a></li>
+                        <li class="nav__item"><a href="{% url 'order' user.id %}" class="nav__link">Order</a></li>
                         <li class="nav__item"><a href="{% url 'profile' user.id %}" class="nav__link">Profile</a></li>
                         <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link">Logout</a></li>
                         <li class="nav__item"><a href="{% url 'cart' %}" class="nav__link"><i class="fas fa-shopping-cart"></i><span class="badge badge-danger">{{ cart_count }}</span></a></li>
                         {% else %}
-                        <li class="nav__item"><a href="{% url 'login' %}" class="nav__link">Login</a></li>
+                        <li class="nav__item"><a href="{% url 'login' %}?next={{request.path}}" class="nav__link">Login</a></li>
                         <li class="nav__item"><a href="{% url 'signup' %}" class="nav__link">Signup</a></li>
                         <li class="nav__item"><a href="{% url 'cart' %}" class="nav__link"><i class="fas fa-shopping-cart"></i><span class="badge badge-danger">{{ cart_count }}</span></a></li>
                         <!-- <li class="nav__item"><a href="#contact" class="nav__link">Contact us</a></li> -->

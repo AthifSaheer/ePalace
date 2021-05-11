@@ -15,10 +15,9 @@ urlpatterns = [
     path('profile/<int:id>', views.profile, name="profile"),
     path('change_profile_image/<int:id>', views.change_profile_image, name="change_profile_image"),
 
-    path('order', views.order, name="order"),
+    path('order<int:id>', views.order, name="order"),
     path('order-detail', views.order_detail, name="order_detail"),
     
     path('check_out', views.check_out, name="check_out"),
-
-    path('update_item', views.update_item, name="update_item"),
+    path('place_order', views.place_order, name="place_order"),
 ]

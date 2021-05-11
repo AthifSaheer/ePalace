@@ -1,4 +1,6 @@
+from re import L
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from admin_panel.forms import ChangeProfileImageForm
 from django.contrib.sessions.models import Session
@@ -27,8 +29,37 @@ def _cart_session_id(request):
     return cart
 
 
+
+def cart(request):
+    try:
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.filter(user=request.user, is_active=True).order_by('id')
+        else:
+            cart = Cart.objects.get(cart_id=_cart_session_id(request))
+            cart_item = CartItem.objects.filter(cart=cart, is_active=True).order_by('id')
+
+    except ObjectDoesNotExist:
+        pass
+
+    count = cart_item.count()
+    total = 0
+
+    for crt_itm in cart_item:
+        total += (crt_itm.price * crt_itm.quantity)
+        
+    CartItem(sub_total=total)
+
+    context = {
+        'cart_item':cart_item,
+        'count':count,
+        'total':total,
+    }
+        
+    return render(request, 'User/cart.html', context)
+
+
+
 def add_to_cart(request, id):
-    # cart = Cart(request)
     product = Product.objects.get(id=id)
     try:
         cart = Cart.objects.get(cart_id=_cart_session_id(request))
@@ -37,59 +68,103 @@ def add_to_cart(request, id):
     cart.save()
 
     try:
-        cart_item = CartItem.objects.get(product=product, cart=cart)
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.get(product=product, user=request.user)
+        else:
+            cart_item = CartItem.objects.get(product=product, cart=cart)
         cart_item.quantity += 1
         cart_item.save()
     except CartItem.DoesNotExist:
+
         cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
         cart_item.save()
+
     return redirect('cart')
-
-
-def cart(request):
-    try:
-        cart = Cart.objects.get(cart_id=_cart_session_id(request))
-        cart_item = CartItem.objects.filter(cart=cart, is_active=True).order_by('id')
-        count = cart_item.count()
-        total = 0
-
-        for crt_itm in cart_item:
-            total += (crt_itm.price * crt_itm.quantity)
-
-        context = {
-            'cart_item':cart_item,
-            'count':count,
-            'total':total,
-            }
-        return render(request, 'User/cart.html', context)
-    except ObjectDoesNotExist:
-        pass
-    return render(request, 'User/cart.html')
-
 
 
 
 def item_decrement(request, id):
-    cart = Cart.objects.get(cart_id=_cart_session_id(request))
     product = get_object_or_404(Product, id=id)
-    cart_item = CartItem.objects.get(product=product, cart=cart)
 
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
-        cart_item.delete()
+    try:
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.get(product=product, user=request.user)
+        else:
+            cart = Cart.objects.get(cart_id=_cart_session_id(request))
+            cart_item = CartItem.objects.get(product=product, cart=cart)
+
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
+
+    except:
+        pass
+
     return redirect('cart')
 
 
 def remove_item(request, id):
-    cart = Cart.objects.get(cart_id=_cart_session_id(request))
     product = get_object_or_404(Product, id=id)
-    cart_item = CartItem.objects.get(product=product, cart=cart)
+
+    if request.user.is_authenticated:
+        cart_item = CartItem.objects.get(product=product, user=request.user)
+    else:
+        cart = Cart.objects.get(cart_id=_cart_session_id(request))
+        cart_item = CartItem.objects.get(product=product, cart=cart)
 
     cart_item.delete()
     return redirect('cart')
 
+
+@login_required(login_url='login')
+def check_out(request):
+    display_address = Address.objects.all()
+    current_user = request.user
+
+    # cart = Cart.objects.get(cart_id=_cart_session_id(request))
+    products = CartItem.objects.filter(user=current_user)
+    cart_item = CartItem.objects.get(user=current_user)
+    print(products)
+    
+    count = CartItem.objects.all().count()
+    if count <= 0:
+        return redirect('cart')
+
+    if request.method == "POST":
+        ord = Order()
+        ord.user = current_user
+
+        address = request.POST.get('address')
+        address_id = Address.objects.get(id=address)
+        ord.shipping_address = address_id
+
+        payment = request.POST.get('payment')
+        ord.payment = payment
+
+        ord.product = cart_item.product
+        ord.product_price = cart_item.sub_total
+        ord.product_quantity = cart_item.quantity
+        ord.save()
+
+        return redirect('order',current_user.id )
+    return render(request, 'User/check_out.html', {'display_address':display_address, 'products':products})
+
+
+def place_order(request):
+    pass
+
+def order(request, id):
+    orders = Order.objects.filter(user=id).order_by('-id')
+    context = {
+        'orders':orders
+    }
+    return render(request, 'User/order.html', context)
+
+
+def order_detail(request):
+    return render(request, 'User/order-detail.html')
 
 
 def profile(request, id):
@@ -130,20 +205,3 @@ def change_profile_image(request, id):
                 return redirect('profile', user.pk)
 
     return render(request, 'User/change_profile_image.html', {'form':form})
-
-
-
-def order(request):
-    return render(request, 'User/order.html')
-
-
-def order_detail(request):
-    return render(request, 'User/order-detail.html')
-
-
-def check_out(request):
-    return render(request, 'User/check_out.html')
-
-
-def update_item(request):
-    return JsonResponse('Item was added', safe=False)

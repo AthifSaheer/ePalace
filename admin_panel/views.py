@@ -183,3 +183,21 @@ def delete_sub_category(request, id):
     del_sub_category = SubCategory.objects.get(id=id)
     del_sub_category.delete()
     return redirect('categories')
+
+
+# =========== Order Management =========================
+
+def orders(request):
+    cart_item = CartItem.objects.all().order_by('-id')
+    context = {
+        'cart_item':cart_item
+    }
+    print(cart_item)
+    return render(request, 'Admin/order_management.html', context)
+
+def orders_status_change(request, id):
+    cart_item = CartItem.objects.filter(id=id)
+    context = {
+        'cart_item':cart_item,
+    }
+    return render(request, 'Admin/orders_status_change.html', context)

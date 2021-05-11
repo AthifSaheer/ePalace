@@ -17,6 +17,9 @@
     <!--========== bootstrap ==========-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <!-- FAVICON -->
+    <link href="/assets/img/logo.svg" rel="shortcut icon" />
+
     <title>Check out | ePalace</title>
 </head>
 <body>
@@ -34,46 +37,69 @@
             
             <div class="row">
 
-                <div class="col-md-12">
-                    <h4 id="title">Address</h4>
+                <div class="col-md-8">
+                    <h4 id="title">Delivery Address</h4>
                 </div>
-                
-                <form action="">
+                <div class="col-md-4">
+                    <button class="btn btn-outline-warning btn-sm ml-3">Add new address</button>
+                </div>
+
+                {% for adrs in display_address %}
+                <form action="" method="POST">
+                    {% csrf_token %}
 
                     <div class="col-md-10">
-                        <input type="radio" name="address">Athif Saheer +91 8175 9088 89</input>                    
-                        <h6>Near appolo hospital c/o rbe group C/o rbe sanu street Punjab - 100032</h6>
+                        <input type="radio" value="{{ adrs.id }}" name="address" required >                    
+                        <label for=""address>{{ adrs.name }}, +91 {{ adrs.mobile_number }}</label>
+                        <label class="ml-2">{{ adrs.address }}, {{ adrs.city }}, Pincode: {{ adrs.pincode }}</label>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-2 ml-2">
                         <a href="">Edit</a>
                     </div>
 
-                    <div class="col-md-10">
-                        <input type="radio" name="address">Athif Saheer +91 8175 9088 89</input>                    
-                        <h6>Near appolo hospital c/o rbe group C/o rbe sanu street Punjab - 100032</h6>
-                    </div>
+                    <!-- <button class="btn btn-success btn-sm">Delivery here</button> -->
+                {% endfor %}
 
-                    <div class="col-md-2">
-                        <a href="">Edit</a>
-                    </div>
-
-                    <button class="btn btn-warning">Add new address</button>
-                    <button class="btn btn-success">Delivery here</button>
-                    
-                    <hr>
-
-                <div class="col-md-12">
-                    <h4 id="title">Payment</h4>
-                </div>
-
-                <form action="">
+                    <!-- <hr>
 
                     <div class="col-md-12">
-                        <input type="radio" name="payment">
+                        <h4 id="title">Order Summary</h4>
+                    </div>
+                    {% for prd in products %}
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th><h5>{{ prd.product.title }}</h5></th>
+                                    <th><p>{{ prd.quantity }}</p></th>
+                                    <th><p>&#8377;{{ total }}</p></th>
+                                    <th><img src="{{ prd.product.image.url }}" width="50px" height="50px" alt=""></th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" value="{{ prd.quantity }}" name="product_quantity" hidden>
+                                        <input type="text" value="2000" name="total" hidden>
+                                        <input type="checkbox" name="prd_id" value="{{ prd.id }}">
+                                        <label for="">Confirm this product</label>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>                        
+                    </div>
+                    {% endfor %} -->
+
+                    <hr>
+
+                    <div class="col-md-12">
+                        <h4 id="title">Payment Options</h4>
+                    </div>
+
+                    <div class="col-md-12">
+                        <input type="radio" disabled name="payment" required>
                         <label for="">Paypal</label>
                         <br>
-                        <input type="radio" name="payment">
+                        <input type="radio" name="payment" value="COD" required>
                         <label for="">COD</label>
                     </div>
                     <button class="btn btn-info">Confirm order</button>
@@ -108,10 +134,10 @@
                 </table>
             </div>
 
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
                 <button class="btn btn-outline-info btn-sm" id="prf-btn-1">Countinue shopping</button>
                 <button class="btn btn-outline-success btn-sm" id="prf-btn-2">Place order</button>
-            </div>
+            </div> -->
 
         </div>
 

@@ -1,7 +1,8 @@
-from colorfield.fields import ColorField
-from django.db import models
+from django.core.validators import MaxValueValidator
 from django.contrib.auth.models import User
+from colorfield.fields import ColorField
 from django.urls import reverse
+from django.db import models
 
 
 class Category(models.Model):
@@ -76,9 +77,9 @@ class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
-    price = models.PositiveIntegerField()
-    sub_total = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(null=True, blank=True)
+    price = models.PositiveIntegerField(null=True, blank=True)
+    sub_total = models.PositiveIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def su_btotal(self):
@@ -99,5 +100,57 @@ class ProfileImage(models.Model):
 
     def __str__(self):
         return self.user.username
+
+state = [
+    ("Kerala","Kerala"),
+    ('UP',"UP"),
+    ('Tamilnad',"Tamilnad"),
+]
+
+address_type = [
+    ("Home","Home"),
+    ('Work',"Work"),
+]
+
+class Address(models.Model):
+    name = models.CharField(max_length=25)
+    mobile_number = models.PositiveIntegerField(validators=[MaxValueValidator(9999999999)])
+    pincode = models.PositiveIntegerField(validators=[MaxValueValidator(999999)])
+    # email = models.CharField(max_length=250)
+    address = models.CharField(max_length=245)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, choices=state)
+    landmark = models.CharField(max_length=100, null=True, blank=True)
+    address_type = models.CharField(max_length=5, choices=address_type)
+
+
+    def __str__(self):
+        return self.name
     
+payment = [
+    ('Paypal','Paypal'),
+    ('COD','COD'),
+]
+
+order_status = [
+    ('Ordered','Ordered'),
+    ('Packed','Packed'),
+    ('Shipped','Shipped'),
+    ('Delivered','Delivered'),
+    ('Cancelled','Cancelled'),
+]
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    shipping_address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    payment = models.CharField(max_length=20, choices=payment)
+    order_status = models.CharField(max_length=50, choices=order_status, default='Ordered')
+    date = models.DateTimeField(auto_now_add=True)
+   
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    product_price = models.PositiveIntegerField()
+    product_quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.user.username
     

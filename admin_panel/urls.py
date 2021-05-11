@@ -30,6 +30,7 @@ urlpatterns = [
     path('delete_sub_category/<int:id>', views.delete_sub_category, name='delete_sub_category'),
 
     # Order management
-    # path('orders', views.orders, name='orders'),
+    path('orders', views.orders, name='orders'),
+    path('orders_status_change/<int:id>', views.orders_status_change, name='orders_status_change'),
 
 ]

@@ -19,11 +19,19 @@
             <a href="{% url 'profile' user.id %}"><button class="btn btn-outline-success btn-block mt-2 mb-5">Cancel</button></a>
         </div>
     </div>
+    {% cropped_thumbnail yourmodelinstance "ratiofieldname" [scale=INT|width=INT|height=INT|max_size="INTxINT"] %}
+
 
 <style>
     #container {
         margin-top: 90px;
     }
 </style>
+
+<!-- Image Cropping -->
+<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/cropper.min.js' %}"></script>
+
 
 {% endblock content %}
