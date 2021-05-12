@@ -29,31 +29,45 @@
           </tr>
         </thead>
         <tbody>
-          {% for item in cart_item %}
+          {% for ord in orders %}
           <tr>
             <td>{{ forloop.counter }}</td>
-            <td>John</td>
-            <td ><a class="text-dark" href="{% url 'orders_status_change' item.id %}">#ePlc{{ item.id }}</a></td>
-            <td >{{ item.product.title }}</td>
-            <td >{{ item.product.title }}</td>
-            <td class="d-none d-md-table-cell">&#8377;9080</td>
-            <td class="d-none d-md-table-cell">Oct 20, 2018</td>
+            <td>{{ ord.user.username }}</td>
+            <td ><a class="text-dark" href="{% url 'orders_status_change' ord.id %}">#EPLC9{{ ord.id }}</a></td>
+            <td >{{ ord.product.title }}</td>
+            <td >{{ ord.product_quantity }}</td>
+            <td class="d-none d-md-table-cell">&#8377;{{ total }}</td>
+            <td class="d-none d-md-table-cell">{{ ord.date.time }}</td>
             <td >
-              <span class="badge badge-success">Completed</span>
+              {% if ord.order_status == "Ordered" %}
+              <span class="badge badge-warning">Ordered</span>
+
+              {% elif ord.order_status == "Packed" %}
+              <span class="badge badge-primary">Packed</span>
+
+              {% elif ord.order_status == "Shipped" %}
+              <span class="badge badge-info">Shipped</span>
+
+              {% elif ord.order_status == "Delivered" %}
+              <span class="badge badge-success">Delivered</span>
+
+              {% elif ord.order_status == "Cancelled" %}
+              <span class="badge badge-danger">Cancelled</span>
+              {% endif %}
             </td>
-            <td class="text-right">
+            <!-- <td class="text-right">
               <div class="dropdown show d-inline-block widget-dropdown">
                 <a class="dropdown-toggle icon-burger-mini" href="" role="button" id="dropdown-recent-order1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static"></a>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-recent-order1">
                   <li class="dropdown-item">
-                    <a href="#">Change order status</a>
+                    <a href="{% url 'orders_status_change' ord.id %}">Change order status</a>
                   </li>
                   <li class="dropdown-item">
-                    <!-- <a href="#">Delete User</a> -->
+                    <a href="#">Delete User</a>
                   </li>
                 </ul>
               </div>
-            </td>
+            </td> -->
           </tr>
           {% endfor %}
 

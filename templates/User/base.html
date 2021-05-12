@@ -43,7 +43,7 @@
                     <ul class="nav__list">
                         {% if user.is_authenticated %}
                         <li class="nav__item"><a href="" class="nav__link active-link">{{ user.username }}</a></li>
-                        <li class="nav__item"><a href="{% url 'order' user.id %}" class="nav__link">Order</a></li>
+                        <li class="nav__item"><a href="{% url 'order' %}" class="nav__link">Order</a></li>
                         <li class="nav__item"><a href="{% url 'profile' user.id %}" class="nav__link">Profile</a></li>
                         <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link">Logout</a></li>
                         <li class="nav__item"><a href="{% url 'cart' %}" class="nav__link"><i class="fas fa-shopping-cart"></i><span class="badge badge-danger">{{ cart_count }}</span></a></li>

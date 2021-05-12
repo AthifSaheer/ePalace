@@ -5,54 +5,63 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-8">
+    <div class="row ml-5">
+        <div class="col-md-8 ml-5">
             <table class="table">
                 <thead>
-                    {% for crt in cart_item %}
+                    {% for ord in orders %}
                     <tr>
                         <th>User</th>
-                        <td>{{ crt.user }}</td>
-                    </tr>
-                    <tr>
-                        <th>User</th>
-                        <td>{{ crt.user }}</td>
+                        <td>{{ ord.user }}</td>
                     </tr>
                     <tr>
                         <th>Id</th>
-                        <td>{{ crt.user }}</td>
+                        <td>#EPLC{{ ord.id }}</td>
                     </tr>
                     <tr>
                         <th>Item</th>
-                        <td>{{ crt.product.title }}</td>
+                        <td>{{ ord.product.title }}</td>
+                    </tr>
+                    <tr>
+                        <th>Quantity</th>
+                        <td>{{ ord.product_quantity }}</td>
                     </tr>
                     <tr>
                         <th>Price</th>
-                        <td>&#8377;{{ crt.price }}</td>
+                        <td>&#8377;{{ ord.product_price }}</td>
+                    </tr>
+                    <tr>
+                        <th>Total</th>
+                        <td>&#8377;{{ total }}</td>
                     </tr>
                     <tr>
                         <th>Date</th>
-                        <td>{{ crt.user }}</td>
+                        <td>{{ ord.date }}</td>
                     </tr>
                     <tr>
                         <th>Status</th>
-                        <td>{{ crt.user }}</td>
+                        <th>{{ ord.order_status }}</th>
                     </tr>
                     <tr>
-                        <th>Change status</th>
-                        <td>{{ crt.user }}</td>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {{ form }}
+                            <th>
+                                <Button class="btn btn-outline-primary w-25">Submit</Button>  
+                                <a href="{% url 'orders' %}" class="btn btn-outline-info mr-5">Back to order page</a>
+                            </th> 
+                        </form>
                     </tr>
                     {% endfor %}
                 </thead>
                 <!-- <tbody>
-                    <tr><td>{{ crt.quantity }}</td></tr>
-                    <tr><td>{{ crt.quantity }}</td></tr>
+                    <tr><td>{{ ord.quantity }}</td></tr>
+                    <tr><td>{{ ord.quantity }}</td></tr>
                 </tbody> -->
             </table>
         </div>
     </div>
 </div>
 
-<a href="{% url 'orders' %}" class="btn btn-outline-info mr-5">Back to order page</a>
                
 {% endblock content %}

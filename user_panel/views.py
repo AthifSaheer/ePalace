@@ -37,7 +37,7 @@ def cart(request):
         else:
             cart = Cart.objects.get(cart_id=_cart_session_id(request))
             cart_item = CartItem.objects.filter(cart=cart, is_active=True).order_by('id')
-
+            context = {'cart':cart,}
     except ObjectDoesNotExist:
         pass
 
@@ -123,48 +123,62 @@ def check_out(request):
     display_address = Address.objects.all()
     current_user = request.user
 
-    # cart = Cart.objects.get(cart_id=_cart_session_id(request))
-    products = CartItem.objects.filter(user=current_user)
-    cart_item = CartItem.objects.get(user=current_user)
-    print(products)
-    
+    # try:
+    #     cart_item = CartItem.objects.get(user=current_user)
+    # except CartItem.MultipleObjectsReturned:
+    cart_item = CartItem.objects.filter(user=current_user)
+    print(str(cart_item) + '-----cart item filter')
+
     count = CartItem.objects.all().count()
     if count <= 0:
         return redirect('cart')
 
     if request.method == "POST":
-        ord = Order()
-        ord.user = current_user
-
         address = request.POST.get('address')
-        address_id = Address.objects.get(id=address)
-        ord.shipping_address = address_id
-
         payment = request.POST.get('payment')
-        ord.payment = payment
 
-        ord.product = cart_item.product
-        ord.product_price = cart_item.sub_total
-        ord.product_quantity = cart_item.quantity
-        ord.save()
+        for item in cart_item:
+            ord = Order()
+            ord.user = current_user
 
-        return redirect('order',current_user.id )
-    return render(request, 'User/check_out.html', {'display_address':display_address, 'products':products})
+            address_id = Address.objects.get(id=address)
+            ord.shipping_address = address_id
+
+            ord.payment = payment
+            ord.product = item.product
+
+            ord.product_price = item.sub_total
+            ord.product_quantity = item.quantity
+            ord.save()
+
+        item.cart.delete()
+        return redirect('order_place_animation')
+
+    return render(request, 'User/check_out.html', {'display_address':display_address})
 
 
-def place_order(request):
-    pass
+def order_place_animation(request):
+    return render(request, 'User/order_place_animation.html')
 
-def order(request, id):
-    orders = Order.objects.filter(user=id).order_by('-id')
+def order(request):
+    orders = Order.objects.filter(user=request.user).order_by('-id')
     context = {
         'orders':orders
     }
     return render(request, 'User/order.html', context)
 
 
-def order_detail(request):
-    return render(request, 'User/order-detail.html')
+def order_detail(request, id):
+    order_prd = Order.objects.filter(id=id)
+    total = 0
+    for x in order_prd:
+        total += x.product_price * x.product_quantity
+
+    context = {
+        'order_prd':order_prd,
+        'total':total,
+    }
+    return render(request, 'User/order-detail.html', context)
 
 
 def profile(request, id):

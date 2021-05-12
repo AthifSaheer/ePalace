@@ -152,5 +152,5 @@ class Order(models.Model):
     product_quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.user.username
+        return 'ID: ' + str(self.id) + ' | User: ' + self.user.username + ' | Product: ' + str(self.product.title)
     

@@ -77,14 +77,14 @@
             <thead>
             <tr>
                 <th scope="col">No</th>
-                <th scope="col">Category</th>
+                <th scope="col">Sub category</th>
             </tr>
             </thead>
             <tbody>
             {% for sub_cat in sub_category %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ sub_cat.category }}
+                <td>{{ sub_cat.sub_category }}
                     <p class="float-right ">
                         <!---- Edit Icon ---->
                         <a href="{% url 'edit_sub_category' sub_cat.id %}">

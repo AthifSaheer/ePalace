@@ -1,3 +1,4 @@
+import re
 from django.contrib.auth.models import Permission
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
@@ -188,16 +189,37 @@ def delete_sub_category(request, id):
 # =========== Order Management =========================
 
 def orders(request):
-    cart_item = CartItem.objects.all().order_by('-id')
+    orders = Order.objects.all().order_by('-id')
+    total = 0
+    for x in orders:
+        total += x.product_price * x.product_quantity
+
     context = {
-        'cart_item':cart_item
+        'orders':orders,
+        'total':total,
     }
-    print(cart_item)
     return render(request, 'Admin/order_management.html', context)
 
 def orders_status_change(request, id):
-    cart_item = CartItem.objects.filter(id=id)
+    orders = Order.objects.filter(id=id)
+    total = 0
+    for x in orders:
+        total += x.product_price * x.product_quantity
+
+    # =========================================================
+    # form = OrderStatusChangeForm(request=POST)
+    ord_sts_chng = Order.objects.get(id=id)
+    form = OrderStatusChangeForm(instance=ord_sts_chng)
+
+    if request.method == 'POST':
+        form = OrderStatusChangeForm(request.POST, request.FILES, instance=ord_sts_chng)
+        if form.is_valid():
+            form.save()
+            return redirect('orders')
+    # =========================================================
     context = {
-        'cart_item':cart_item,
+        'orders':orders,
+        'total':total,
+        'form':form,
     }
     return render(request, 'Admin/orders_status_change.html', context)

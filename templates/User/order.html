@@ -15,42 +15,38 @@
                 {% for ord in orders %}
                 
                 <div class="col-md-4" id="img">
-                    <img src="{{ ord.product.image.url }}" class="image" width="50px" height="50px" alt="">      
+                    <img src="{{ ord.product.image.url }}" class="image" width="150px" height="150px" alt="">      
                 </div>
                 
                 <div class="col-md-3" id="between-div">
-                    <a href="{% url 'order_detail' %}"><h5 id="title">{{ ord.product.title }}</h5></a>
+                    <a href="{% url 'order_detail' ord.id %}"><h5 id="title">{{ ord.product.title }}</h5></a>
                 </div>
                 
                 <div class="col-md-3" id="between-div">
                     <h5 id="title">&#8377;{{ ord.product_price }}</h5>
                 </div>
                 
-                {% if order_status == Ordered %}
+                {% if ord.order_status == "Ordered" %}
                 <div class="col-md-2" id="between-div">
                     <span class="badge badge-warning badge-l">Ordered</span>
                 </div>
-                {% endif %}
                 
-                {% if order_status == Packed %}
+                {% elif ord.order_status == "Packed" %}
                 <div class="col-md-2" id="between-div">
                     <span class="badge badge-primary badge-l">Packed</span>
                 </div>
-                {% endif %}
                 
-                {% if order_status == Shipped %}
+                {% elif ord.order_status == "Shipped" %}
                 <div class="col-md-2" id="between-div">
                     <span class="badge badge-info badge-l">Shipped</span>
                 </div>
-                {% endif %}
                 
-                {% if order_status == Delivered %}
+                {% elif ord.order_status == "Delivered" %}
                 <div class="col-md-2" id="between-div">
                     <span class="badge badge-success badge-l">Delivered</span>
                 </div>
-                {% endif %}
                 
-                {% if order_status == Cancelled %}
+                {% else %}
                 <div class="col-md-2" id="between-div">
                     <span class="badge badge-danger badge-l">Cancelled</span>
                 </div>

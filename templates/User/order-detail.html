@@ -12,22 +12,47 @@
       <div class="col-md-12" id="top-div">
           
           <div class="row">
+            {% for ord in order_prd %}
 
               <div class="col-md-4" id="img">
-                  <img src="/assets/img/mac air (1).jpg" class="image" width="200px" height="200px" alt="">      
+                  <img src="{{ ord.product.image.url }}" class="image" width="200px" height="200px" alt="">      
               </div>
 
               <div class="col-md-3" id="between-div">
-                  <a href=""><h5 id="title">APPLE MacBook Air M1</h5></a>
+                  <a href=""><h5 id="title">Item :{{ ord.product.title }}</h5></a>
+                  <h5 id="title">Quantity: {{ ord.product_quantity }}</h5>
               </div>
 
               <div class="col-md-3" id="between-div">
-                  <h5 id="title">$9809</h5>
+                  <h5 id="title">Price: &#8377;{{ ord.product_price }}</h5>
+                  <h5 id="title">Total: &#8377;{{ total }}</h5>
               </div>
 
-              <div class="col-md-2" id="between-div">
-                  <span class="badge badge-success badge-l">Delivered</span>
-              </div>
+              {% if ord.order_status == "Ordered" %}
+                <div class="col-md-2" id="between-div">
+                    <span class="badge badge-warning badge-l">Ordered</span>
+                </div>
+                
+                {% elif ord.order_status == "Packed" %}
+                <div class="col-md-2" id="between-div">
+                    <span class="badge badge-primary badge-l">Packed</span>
+                </div>
+                
+                {% elif ord.order_status == "Shipped" %}
+                <div class="col-md-2" id="between-div">
+                    <span class="badge badge-info badge-l">Shipped</span>
+                </div>
+                
+                {% elif ord.order_status == "Delivered" %}
+                <div class="col-md-2" id="between-div">
+                    <span class="badge badge-success badge-l">Delivered</span>
+                </div>
+                
+                {% else %}
+                <div class="col-md-2" id="between-div">
+                    <span class="badge badge-danger badge-l">Cancelled</span>
+                </div>
+                {% endif %}
 
           </div>
 
@@ -45,14 +70,14 @@
           <figcaption>
             <h4>Tracking Details</h4>
             <h6>Order Number</h6>
-            <h2># A61452B</h2>
+            <h2>#EPLC9{{ ord.id }}</h2>
           </figcaption>
         </div>
         
         <div class="col-md-6">
           <figcaption>
             <h2 class="text-info">Delivery address</h2>
-            <p class="text-secondary">Athif Saheer abcd house, Nilambur, Malappuram District 679443, Kerala Phone number 81 8908 778 90</p>
+            <p class="text-secondary">{{ ord.shipping_address.name }}, {{ ord.shipping_address.address }}, {{ ord.shipping_address.city }}, {{ ord.shipping_address.pincode }}, {{ ord.shipping_address.state }} District, +91 {{ ord.shipping_address.mobile_number }}</p>
           </figcaption>
         </div>
         
@@ -60,50 +85,218 @@
     </figure>
 
     <div class="order-track">
+      <!-- Item Ordered -->
+      {% if ord.order_status == "Ordered" %}
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Ordered</p>
+            <span class="order-track-text-sub">1st November, 2019</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-pending"></span>
+            <span class="order-track-status-line-pending"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Packed - 123 Start St.Seattle, WA </p>
+            <span class="order-track-text-sub">11 hours ago</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-pending"></span>
+            <span class="order-track-status-line-pending"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Shipped - 123 Start St.Seattle, WA </p>
+            <span class="order-track-text-sub">8 hours ago</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-pending"></span>
+            <span class="order-track-status-line-pending"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Delivered - 456 End St.New York City, NY</p>
+            <span class="order-track-text-sub">10 hours ago</span>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Item Packed -->
+      {% if ord.order_status == "Packed" %}
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Ordered</p>
+            <span class="order-track-text-sub">1st November, 2019</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Packed - 123 Start St.Seattle, WA </p>
+            <span class="order-track-text-sub">11 hours ago</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-pending"></span>
+            <span class="order-track-status-line-pending"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Shipped - 123 Start St.Seattle, WA </p>
+            <span class="order-track-text-sub">8 hours ago</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-pending"></span>
+            <span class="order-track-status-line-pending"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Delivered - 456 End St.New York City, NY</p>
+            <span class="order-track-text-sub">10 hours ago</span>
+          </div>
+        </div>
+      {% endif %}
       
-      <div class="order-track-step">
-        <div class="order-track-status">
-          <span class="order-track-status-dot-success"></span>
-          <span class="order-track-status-line-success"></span>
+      <!-- Item Shipped -->
+      {% if ord.order_status == "Shipped" %}
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Ordered</p>
+            <span class="order-track-text-sub">1st November, 2019</span>
+          </div>
         </div>
-        <div class="order-track-text">
-          <p class="order-track-text-stat">Item packed</p>
-          <span class="order-track-text-sub">1st November, 2019</span>
-        </div>
-      </div>
 
-      <div class="order-track-step">
-        <div class="order-track-status">
-          <span class="order-track-status-dot-pending"></span>
-          <span class="order-track-status-line-pending"></span>
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Packed - 123 Start St.Seattle, WA </p>
+            <span class="order-track-text-sub">11 hours ago</span>
+          </div>
         </div>
-        <div class="order-track-text">
-          <p class="order-track-text-stat"> Shipped - 123 Start St.Seattle, WA </p>
-          <span class="order-track-text-sub">1st November, 2019</span>
-        </div>
-      </div>
 
-      <div class="order-track-step">
-        <div class="order-track-status">
-          <span class="order-track-status-dot-pending"></span>
-          <span class="order-track-status-line-pending"></span>
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Shipped - 123 Start St.Seattle, WA </p>
+            <span class="order-track-text-sub">8 hours ago</span>
+          </div>
         </div>
-        <div class="order-track-text">
-          <p class="order-track-text-stat"> On the way - 123 Start St.Seattle, WA </p>
-          <span class="order-track-text-sub">1st November, 2019</span>
-        </div>
-      </div>
 
-      <div class="order-track-step">
-        <div class="order-track-status">
-          <span class="order-track-status-dot-pending"></span>
-          <span class="order-track-status-line-pending"></span>
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-pending"></span>
+            <span class="order-track-status-line-pending"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Delivered - 456 End St.New York City, NY</p>
+            <span class="order-track-text-sub">10 hours ago</span>
+          </div>
         </div>
-        <div class="order-track-text">
-          <p class="order-track-text-stat"> Delivered - 456 End St.New York City, NY</p>
-          <span class="order-track-text-sub">3rd November, 2019</span>
+      {% endif %}
+
+      <!-- Item delivered -->
+      {% if ord.order_status == "Delivered" %}
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Ordered</p>
+            <span class="order-track-text-sub">1st November, 2019</span>
+          </div>
         </div>
-      </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Packed - 123 Start St.Seattle, WA </p>
+            <span class="order-track-text-sub">11 hours ago</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Shipped - 123 Start St.Seattle, WA </p>
+            <span class="order-track-text-sub">8 hours ago</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Delivered - 456 End St.New York City, NY</p>
+            <span class="order-track-text-sub">10 hours ago</span>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Item Cancelled -->
+      {% if ord.order_status == "Cancelled" %}
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-success"></span>
+            <span class="order-track-status-line-success"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat">Ordered</p>
+            <span class="order-track-text-sub">1st November, 2019</span>
+          </div>
+        </div>
+
+        <div class="order-track-step">
+          <div class="order-track-status">
+            <span class="order-track-status-dot-danger"></span>
+            <span class="order-track-status-line-danger"></span>
+          </div>
+          <div class="order-track-text">
+            <p class="order-track-text-stat"> Cancelled </p>
+            <span class="order-track-text-sub">11 hours ago</span>
+          </div>
+        </div>
+      {% endif %}
 
     </div>
 
@@ -118,6 +311,7 @@
       </div>
 
     </div>
+    {% endfor %}
   </section>
 
 </div>
@@ -239,6 +433,14 @@ figure figcaption h2 {
   background: #38c500;
 }
 
+.order-track-status-dot-danger {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background: #c50700;
+}
+
 .order-track-status-line-pending {
   display: block;
   margin: 0 auto;
@@ -253,6 +455,14 @@ figure figcaption h2 {
   width: 2px;
   height: 6rem;
   background: #38c500;
+}
+
+.order-track-status-line-danger {
+  display: block;
+  margin: 0 auto;
+  width: 2px;
+  height: 6rem;
+  background: #c50700;
 }
 
 .order-track-text-stat {
