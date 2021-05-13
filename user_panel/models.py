@@ -1,3 +1,4 @@
+from re import U
 from django.core.validators import MaxValueValidator
 from django.contrib.auth.models import User
 from colorfield.fields import ColorField
@@ -113,9 +114,10 @@ address_type = [
 ]
 
 class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=25)
-    mobile_number = models.PositiveIntegerField(validators=[MaxValueValidator(9999999999)])
-    pincode = models.PositiveIntegerField(validators=[MaxValueValidator(999999)])
+    mobile_number = models.PositiveIntegerField()
+    pincode = models.PositiveIntegerField()
     # email = models.CharField(max_length=250)
     address = models.CharField(max_length=245)
     city = models.CharField(max_length=100)
@@ -125,7 +127,7 @@ class Address(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return self.name +' | ' + self.user.username
     
 payment = [
     ('Paypal','Paypal'),

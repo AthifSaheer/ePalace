@@ -32,3 +32,10 @@ class OrderStatusChangeForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ("order_status",)
+
+
+class AddAddressForm(forms.ModelForm):
+    
+    class Meta:
+        model = Address
+        fields = ('name', 'mobile_number', 'pincode', 'address', 'city', 'state', 'landmark', 'address_type')

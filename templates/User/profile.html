@@ -19,7 +19,7 @@
 
                 <div class="col-md-5">
                     <button class="btn btn-outline-info btn-sm" id="prf-btn-1">Change password</button>
-                    <button class="btn btn-outline-danger btn-sm" id="prf-btn-2">Logout</button>
+                    <a href="{% url 'logout' %}"><button class="btn btn-outline-danger btn-sm" id="prf-btn-2">Logout</button></a>
                 </div>
                 
                 <hr>
@@ -65,18 +65,20 @@
                 </div>
                 
                 <div class="col-md-5">
-                    <button class="btn btn-outline-warning btn-sm">My orders</button>
-                    <button class="btn btn-outline-success btn-sm">Add address</button>
+                    <a href="{% url 'order' %}"><button class="btn btn-outline-warning btn-sm">My orders</button></a>
+                    <a href="{% url 'add_address' user.id %}"><button class="btn btn-outline-success btn-sm">Add address</button></a>
                 </div>
 
+                {% for adrs in address %}
                 <div class="col-md-12" id="div-bottom">
-                    <h5>Athif Saheer +91 8175 9088 89</h5>
-                    <p>Near appolo hospital c/o rbe group C/o rbe sanu street Punjab - 100032 <a href="" class="float-right mr-5">Edit</a></p>
-                    
-                    <hr>
-                    <h5>Athif Saheer +91 8175 9088 89</h5>
-                    <p>Near appolo hospital c/o rbe group C/o rbe sanu street Punjab - 100032 <a href="" class="float-right mr-5">Edit</a></p>
+                    <h5>{{ adrs.name }} +91 {{ adrs.mobile_number }}</h5>
+                    <p>
+                        {{ adrs.address }}, {{ adrs.sity }}, {{ adrs.pincode }}, {{ adrs.state }}
+                        <a href="{% url 'delete_address' adrs.id %}" class="float-right mr-5">Delete</a>
+                        <a href="{% url 'edit_address' adrs.id %}" class="float-right mr-3">Edit</a>
+                    </p>
                 </div>
+                {% endfor %}
                 
             </div>
 

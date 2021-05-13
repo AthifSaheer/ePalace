@@ -11,6 +11,10 @@
         
         <div class="col-md-12" id="top-div">
             
+            {% if orders.id <= 0 %}
+            <div class="row"><h1>No order yet</h1></div>
+
+            {% else %}
             <div class="row">
                 {% for ord in orders %}
                 
@@ -54,6 +58,7 @@
 
                 {% endfor %}
             </div>
+            {% endif %}
 
         </div>
 

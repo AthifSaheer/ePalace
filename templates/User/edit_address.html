@@ -1,0 +1,106 @@
+{% extends 'User/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} Profile | ePalace {% endblock title %}
+        
+{% block content %} 
+
+
+<div class="container">
+    <div class="row mt-2">
+
+        <div class="col-md-12 mt-5">
+            <h3 class="text-center text-info mt-5">Edit address</h3>
+        </div>
+
+        <div class="col-md-8 ml-5">
+            <form action="" method="POST" class="ml-5">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-outline-info">Submit</button>
+                <a href="{% url 'profile' user.id %}" class="btn btn-outline-success">Cancel</a>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    #div-bottom{
+        padding: 20px;
+    }
+    #between-div {
+        margin-top: 3%;
+    }
+
+    #title {
+        font-weight: bold;
+        color: rgb(184, 184, 184);
+    }
+
+    #sub-txt {
+        color: seagreen;
+        font-weight: bold;
+    }
+
+    /* #prf-btn-1 {
+        width: 160px;
+    }
+    #prf-btn-2 {
+        margin-top: 140px;
+        width: 160px;
+    } */
+
+    a {
+        text-decoration: none;
+    }
+
+    #top-div{
+        background: rgb(255, 255, 255);
+        margin-top: 93px;
+        border-radius: 40px;
+        box-shadow: 2px 3px 3px 2px #e2e2e2;
+        padding: 20px;
+    }
+        
+    .image {
+        opacity: 1;
+        display: block;
+        width: 70%;
+        height: auto;
+        transition: .5s ease;
+        backface-visibility: hidden;
+    }
+
+    .middle {
+        transition: .5s ease;
+        opacity: 0;
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        transform: translate(-30%, -30%);
+        -ms-transform: translate(-30%, -30%);
+        text-align: center;
+    }
+
+    #img:hover .image {
+        opacity: 1;
+    }
+
+    #img:hover .middle {
+        opacity: 1;
+    }
+
+    .text {
+        margin-top: 180px;
+        background-color: #04AA6D;
+        color: white;
+        /* width: 70%; */
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+</style>
+{% endblock content %}

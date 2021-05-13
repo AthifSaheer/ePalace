@@ -297,18 +297,39 @@
           </div>
         </div>
       {% endif %}
-
+      
     </div>
-
+    
     <div class="row" id="btns">
       
+      {% if ord.order_status == "Cancelled" %}
       <div class="col-md-6">
-        <span class="btn btn-outline-danger btn-block">Cancel order</span>
+        <a href="{% url 'cancel_order' ord.id %}"><span class="btn btn-outline-danger btn-block" hidden>Cancel order</span></a>
+      </div>
+      
+      <div class="col-md-6">
+        <span class="btn btn-outline-info btn-block" hidden>Need help</span>
+      </div>
+
+      {% elif ord.order_status == "Delivered" %}
+      <div class="col-md-6">
+        <a href="{% url 'cancel_order' ord.id %}"><span class="btn btn-outline-danger btn-block">Return Order</span></a>
       </div>
       
       <div class="col-md-6">
         <span class="btn btn-outline-info btn-block">Need help</span>
       </div>
+
+      {% else %}
+      <div class="col-md-6">
+        <a href="{% url 'cancel_order' ord.id %}"><span class="btn btn-outline-danger btn-block">Cancel order</span></a>
+      </div>
+      
+      <div class="col-md-6">
+        <span class="btn btn-outline-info btn-block">Need help</span>
+      </div>
+
+      {% endif %}
 
     </div>
     {% endfor %}

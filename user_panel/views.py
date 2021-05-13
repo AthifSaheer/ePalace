@@ -1,11 +1,12 @@
 from re import L
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from admin_panel.forms import ChangeProfileImageForm
 from django.contrib.sessions.models import Session
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import authenticate
+from admin_panel.forms import *
 from .models import *
 
 
@@ -181,17 +182,38 @@ def order_detail(request, id):
     return render(request, 'User/order-detail.html', context)
 
 
+def cancel_order(request, id):
+    order = Order.objects.get(id=id)
+    order.order_status = "Cancelled"
+    order.save()
+    return redirect('order_detail', id)
+    
+
 def profile(request, id):
     user = User.objects.get(id=id)
     try:
+        address = Address.objects.filter(user=user)
+        print(address)
         profile = ProfileImage.objects.get(user=user)
         print('-----------'+str(profile))
-        return render(request, 'User/profile.html', {'profile':profile})
-    except ProfileImage.DoesNotExist:
-        error = 'Image does not exist'
-        return render(request, 'User/profile.html', {'error':error})
 
-    return render(request, 'User/profile.html')
+        context = {
+            'profile':profile,
+            'address':address,
+        }
+
+        return render(request, 'User/profile.html', context)
+    except ProfileImage.DoesNotExist:
+        address = Address.objects.filter(user=user)
+        error = 'Image does not exist'
+
+        context = {
+            'address':address,
+            'error':error,
+        }
+
+        return render(request, 'User/profile.html', context)
+
 
 
 
@@ -219,3 +241,47 @@ def change_profile_image(request, id):
                 return redirect('profile', user.pk)
 
     return render(request, 'User/change_profile_image.html', {'form':form})
+
+
+
+def add_address(request, id):
+    form = AddAddressForm(request.POST)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            adrs = Address()
+            adrs.user = request.user
+            adrs.name = form.cleaned_data.get('name')
+            adrs.mobile_number = form.cleaned_data.get('mobile_number')
+            adrs.pincode = form.cleaned_data.get('pincode')
+            adrs.address = form.cleaned_data.get('address')
+            adrs.city = form.cleaned_data.get('city')
+            adrs.state = form.cleaned_data.get('state')
+            adrs.landmark = form.cleaned_data.get('landmark')
+            adrs.address_type = form.cleaned_data.get('address_type')
+            adrs.save()
+            return redirect('profile', id)
+
+    return render(request, 'User/add_address.html', {'form':form})
+
+
+def edit_address(request, id):
+    user = request.user
+    address = Address.objects.get(id=id)
+    form = AddAddressForm(instance=address)
+
+    if request.method == 'POST':
+        form = AddAddressForm(request.POST, request.FILES, instance=address)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', user.id)
+
+    return render(request, 'User/edit_address.html', {'form':form})
+
+
+def delete_address(request, id):
+    user = request.user
+    address = Address.objects.get(id=id)
+    address.delete()
+    return redirect('profile', user.id)
+
