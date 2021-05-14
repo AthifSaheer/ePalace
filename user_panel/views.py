@@ -13,6 +13,7 @@ from .models import *
 
 
 def home(request):
+    print(request)
     product = Product.objects.all().order_by('-id')
     return render(request, 'User/index.html' ,{'product':product})
 
@@ -21,6 +22,7 @@ def product_detail(request, slug):
     url_slug = slug
     product_detailed = Product.objects.filter(slug=url_slug)
     return render(request, 'User/productdetails.html' ,{'product_detailed':product_detailed})
+
 
 def _cart_session_id(request):
     cart = request.session.session_key
@@ -35,28 +37,32 @@ def cart(request):
     try:
         if request.user.is_authenticated:
             cart_item = CartItem.objects.filter(user=request.user, is_active=True).order_by('id')
+            # context = {'cart':cart,}
         else:
             cart = Cart.objects.get(cart_id=_cart_session_id(request))
             cart_item = CartItem.objects.filter(cart=cart, is_active=True).order_by('id')
-            context = {'cart':cart,}
+            # context = {'cart':cart,}
+        count = cart_item.count()
+        total = 0
+
+        for crt_itm in cart_item:
+            total += (crt_itm.price * crt_itm.quantity)
+        
+        CartItem(sub_total=total)
+
+        context = {
+            'cart_item':cart_item,
+            'count':count,
+            'total':total,
+        }
+
+        return render(request, 'User/cart.html', context)
+
     except ObjectDoesNotExist:
         pass
-
-    count = cart_item.count()
-    total = 0
-
-    for crt_itm in cart_item:
-        total += (crt_itm.price * crt_itm.quantity)
         
-    CartItem(sub_total=total)
-
-    context = {
-        'cart_item':cart_item,
-        'count':count,
-        'total':total,
-    }
+    return render(request, 'User/cart.html')
         
-    return render(request, 'User/cart.html', context)
 
 
 
@@ -70,15 +76,23 @@ def add_to_cart(request, id):
 
     try:
         if request.user.is_authenticated:
-            cart_item = CartItem.objects.get(product=product, user=request.user)
+            cart_item = CartItem.objects.get(user=request.user, product=product, cart=cart)
         else:
             cart_item = CartItem.objects.get(product=product, cart=cart)
-        cart_item.quantity += 1
-        cart_item.save()
-    except CartItem.DoesNotExist:
+           
+        if product.quantity ==  cart_item.quantity:
+            pass
+        else:
+            cart_item.quantity += 1
+            cart_item.save()
 
-        cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
-        cart_item.save()
+    except CartItem.DoesNotExist:
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.create(user=request.user, product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
+            cart_item.save()
+        else:
+            cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
+            cart_item.save()
 
     return redirect('cart')
 
@@ -121,8 +135,9 @@ def remove_item(request, id):
 
 @login_required(login_url='login')
 def check_out(request):
-    display_address = Address.objects.all()
     current_user = request.user
+    display_address = Address.objects.filter(user=current_user)
+    adrs_count = display_address.count()
 
     # try:
     #     cart_item = CartItem.objects.get(user=current_user)
@@ -150,12 +165,18 @@ def check_out(request):
 
             ord.product_price = item.sub_total
             ord.product_quantity = item.quantity
+            print('checkout item quantity' + str(item.quantity) + '----------')
             ord.save()
 
+            product = Product.objects.get(id=item.product.id)
+            product.quantity -= item.quantity
+            product.save()
+
         item.cart.delete()
+
         return redirect('order_place_animation')
 
-    return render(request, 'User/check_out.html', {'display_address':display_address})
+    return render(request, 'User/check_out.html', {'display_address':display_address, 'adrs_count':adrs_count})
 
 
 def order_place_animation(request):
@@ -163,8 +184,10 @@ def order_place_animation(request):
 
 def order(request):
     orders = Order.objects.filter(user=request.user).order_by('-id')
+    ord_count = orders.count()
     context = {
-        'orders':orders
+        'orders':orders,
+        'ord_count':ord_count,
     }
     return render(request, 'User/order.html', context)
 
@@ -193,13 +216,14 @@ def profile(request, id):
     user = User.objects.get(id=id)
     try:
         address = Address.objects.filter(user=user)
-        print(address)
+        adrs_count = address.count()
+        print(adrs_count)
         profile = ProfileImage.objects.get(user=user)
-        print('-----------'+str(profile))
 
         context = {
             'profile':profile,
             'address':address,
+            'adrs_count':adrs_count,
         }
 
         return render(request, 'User/profile.html', context)

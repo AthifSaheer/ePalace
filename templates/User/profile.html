@@ -69,6 +69,10 @@
                     <a href="{% url 'add_address' user.id %}"><button class="btn btn-outline-success btn-sm">Add address</button></a>
                 </div>
 
+                {% if adrs_count <= 0 %}
+                <p class="ml-3 text-dark">No address, Add new address</p>
+                {% endif %}
+
                 {% for adrs in address %}
                 <div class="col-md-12" id="div-bottom">
                     <h5>{{ adrs.name }} +91 {{ adrs.mobile_number }}</h5>

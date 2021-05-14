@@ -14,14 +14,14 @@
                             display: none;
                         }
                     </style>
-
+                        
                     {% for prd in product_detailed %}
 
                     <div class="col-md-6">
-                        <img id="imgbig" src="{{ prd.image.url }}" id="main-img" width="1500px" height="1500px" alt="">
-                        <img id="img1-big" src="{{ prd.more_image_one.url }}" id="main-img" width="1500px" height="1500px" alt="">
-                        <img id="img2-big" src="{{ prd.more_image_two.url }}" id="main-img" width="1500px" height="1500px" alt="">
-                        <img id="img3-big" src="{{ prd.more_image_three.url }}" id="main-img" width="1500px" height="1500px" alt="">
+                        <img id="imgbig" src="{{ prd.image.url }}" class="myimage" width="1500px" height="1500px" alt="">
+                        <img id="img1-big" src="{{ prd.more_image_one.url }}" width="1500px" height="1500px" alt="">
+                        <img id="img2-big" src="{{ prd.more_image_two.url }}" width="1500px" height="1500px" alt="">
+                        <img id="img3-big" src="{{ prd.more_image_three.url }}" width="1500px" height="1500px" alt="">
                         
                         <!-- <hr> -->
                         
@@ -30,46 +30,11 @@
                             <div class="col-md-3"><img onclick="img1Func()" src="{{ prd.more_image_one.url }}" alt=""></div>
                             <div class="col-md-3"><img onclick="img2Func()" src="{{ prd.more_image_two.url }}" alt=""></div>
                             <div class="col-md-3"><img onclick="img3Func()" src="{{ prd.more_image_three.url }}" alt=""></div>
+                            <div id="myresult" class="img-zoom-result"></div>
                         </div>
                         
                     </div>
 
-                    <script>
-
-                        mainImgBig = document.getElementById('imgbig')
-                        img1big = document.getElementById('img1-big')
-                        img2big = document.getElementById('img2-big')
-                        img3big = document.getElementById('img3-big')
-
-                        function imfunc(){
-                            mainImgBig.style.display = 'block'
-                            img1big.style.display = 'none'
-                            img2big.style.display = 'none'
-                            img3big.style.display = 'none'
-                        }
-                        function img1Func(){
-                            mainImgBig.style.display = 'none'
-                            img1big.style.display = 'block'
-                            img2big.style.display = 'none'
-                            img3big.style.display = 'none'
-                        }
-                        function img2Func(){
-                            mainImgBig.style.display = 'none'
-                            img1big.style.display = 'none'
-                            img2big.style.display = 'block'
-                            img3big.style.display = 'none'
-                        }
-                        function img3Func(){
-                            mainImgBig.style.display = 'none'
-                            img1big.style.display = 'none'
-                            img2big.style.display = 'none'
-                            img3big.style.display = 'block'
-                        }
-
-                        //====================== Image Zoom Script====================================
-                        
-                        
-                    </script>
                    
                     
                     <div class="col-md-6">
@@ -78,7 +43,7 @@
 
                         <h5>{{ prd.description }}</h5>
                         {% if prd.guarandeed %}
-                        <span class="badge badge-success" id="guarandeed">Guarandeed</span>
+                        <span class="badge badge-success" id="guarandeed" onclick="ff()">Guarandeed</span>
                         {% endif %}
                         <br>
                         {% if prd.quantity <= 0 %}
@@ -175,5 +140,5 @@
         </main>
 
        <script src="/assets/js/cart.js"></script>
-
+        <script src="/assets/js/imageZoom.js"></script>
 {% endblock %}

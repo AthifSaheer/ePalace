@@ -116,8 +116,8 @@ address_type = [
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=25)
-    mobile_number = models.PositiveIntegerField()
-    pincode = models.PositiveIntegerField()
+    mobile_number = models.CharField(max_length=12)
+    pincode = models.CharField(max_length=6)
     # email = models.CharField(max_length=250)
     address = models.CharField(max_length=245)
     city = models.CharField(max_length=100)

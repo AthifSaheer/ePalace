@@ -11,8 +11,11 @@
         
         <div class="col-md-12" id="top-div">
             
-            {% if orders.id <= 0 %}
-            <div class="row"><h1>No order yet</h1></div>
+            {% if ord_count <= 0 %}
+            <div class="row ml-5">
+                <h5 class="text-center text-warning">No order yet</h5>
+                <a href="{% url 'user_home' %}" class="btn btn-outline-info btn-sm ml-3">Back to home page</a>
+            </div>
 
             {% else %}
             <div class="row">
