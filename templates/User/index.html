@@ -56,7 +56,12 @@
                         <span class="menu__detail">{{ prd.description|slice:':22' }}...</span>
                         <span class="menu__preci">₹{{ prd.selling_price }} <s>₹{{ prd.marked_price }}</s> </span>
                         
+                        {% if prd.quantity <= 0 %}
+                        <a href="{% url 'add_to_cart' prd.id %}" hidden class="button menu__button"><i class='bx bx-cart-alt'></i></a>
+                        {% else %}
                         <a href="{% url 'add_to_cart' prd.id %}" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
+                        {% endif %}
+                        
                     </div>
                     {% endfor %}
 

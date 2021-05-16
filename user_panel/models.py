@@ -22,13 +22,15 @@ class SubCategory(models.Model):
         return self.sub_category
 
 color_choice = [
-    ('#FFFF',"white"),
-    ('#0000',"Black"),
+    ('Silver',"Silver"),
+    ('Gold',"Gold"),
+    ('Black',"Black"),
 ]
 ram_choice = [
     ('4GB',"4GB"),
     ('8GB',"8GB"),
-    ('8GB',"8GB"),
+    ('12GB',"12GB"),
+    ('16GB',"16GB"),
 ]
 storage_choice = [
     ("64GB","64GB"),
@@ -55,7 +57,7 @@ class Product(models.Model):
     
     model_number = models.CharField(max_length=10, null=True, blank=True)
     model_name = models.CharField(max_length=10, null=True, blank=True)
-    color = ColorField(default='#FF0000')
+    color = models.CharField(max_length=20 ,choices=color_choice)
     battery_backup = models.CharField(max_length=15, null=True, blank=True, default='Upto 3 hours')
     processor_brand = models.CharField(max_length=15, null=True, blank=True)
     processor_name = models.CharField(max_length=15, null=True, blank=True)

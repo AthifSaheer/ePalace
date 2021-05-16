@@ -53,9 +53,10 @@
                     {% csrf_token %}
 
                     <div class="col-md-10">
-                        <input type="radio" value="{{ adrs.id }}" name="address" required >                    
-                        <label for=""address>{{ adrs.name }}, +91 {{ adrs.mobile_number }}</label>
-                        <label class="ml-2">{{ adrs.address }}, {{ adrs.city }}, Pincode: {{ adrs.pincode }}</label>
+                        <label for="address">
+                            <input type="radio" value="{{ adrs.id }}" name="address" required >
+                            {{ adrs.name }}, +91 {{ adrs.mobile_number }}, {{ adrs.address }}, {{ adrs.city }}, Pincode: {{ adrs.pincode }}
+                        </label>
                     </div>
 
                     <div class="col-md-2 ml-2">
@@ -100,13 +101,27 @@
                     </div>
 
                     <div class="col-md-12">
-                        <input type="radio" disabled name="payment" required>
-                        <label for="">Paypal</label>
+
+                        <label>
+                            <input type="radio" name="payment-option" value="paypal" checked>
+                            Pay with PayPal
+                        </label>
+
                         <br>
-                        <input type="radio" name="payment" value="COD" required>
-                        <label for="">COD</label>
+
+                        <label>
+                            <input type="radio" name="payment-option" value="cod">
+                            Cash on Delivery
+                        </label>
+
+                        <div id="paypal-buttons-container">
+                            <button class="" hidden id="cnfrmOrdrBtn"></button>
+                        </div>
+                        <div id="cod-button-container">
+                            <button class="btn btn-warning btn-block" id="cnfrmOrdrBtn">Confirm Order</button>
+                        </div>
+
                     </div>
-                    <button class="btn btn-info">Confirm order</button>
                     
                 </form>
 
@@ -255,8 +270,47 @@ function decreaseValue() {
 }
 
 </script>
-    
 
+
+<!-- Add the PayPal JavaScript SDK with both buttons and marks components -->
+
+<script src="https://www.paypal.com/sdk/js?client-id=test&components=buttons,marks"></script>
+    
+<script>
+    // Render the PayPal marks
+    paypal.Marks().render('#paypal-marks-container');
+  
+    // Render the PayPal buttons
+    paypal.Buttons().render('#paypal-buttons-container');
+  
+    // Listen for changes to the radio buttons
+    document.querySelectorAll('input[name=payment-option]')
+      .forEach(function (el) {
+        el.addEventListener('change', function (event) {
+  
+          // If PayPal is selected, show the PayPal button
+          if (event.target.value === 'paypal') {
+            codBtn = document.body.querySelector('#cod-button-container')
+            codBtn.style.display = 'none';
+            codBtn.click()
+            document.body.querySelector('#paypal-buttons-container')
+              .style.display = 'block';
+          }
+  
+          // If cod funding is selected, show a different button
+          if (event.target.value === 'cod') {
+            document.body.querySelector('#cod-button-container')
+              .style.display = 'block';
+            document.body.querySelector('#paypal-buttons-container')
+              .style.display = 'none';
+          }
+        });
+      });
+  
+    // Hide non-PayPal button by default
+    document.body.querySelector('#cod-button-container')
+      .style.display = 'none';
+  </script>
 
 
     <!--========== SCROLL REVEAL ==========-->

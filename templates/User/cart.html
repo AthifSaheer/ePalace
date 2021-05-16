@@ -35,7 +35,11 @@
 
                 <div class="col-md-5" id="between-div">
                     <form>
+                        {% if crt.quantity == 1 %}
+                        <a class="plus-min-btn">-</a>
+                        {% else %}
                         <a href="{% url 'item_decrement' crt.product.id %}" class="plus-min-btn">-</a>
+                        {% endif %}
                         <input type="text" id="input" value="{{ crt.quantity }}" disabled>
                         <a href="{% url 'add_to_cart' crt.product.id %}" class="plus-min-btn">+</a>
                         <a href="{% url 'remove_item' crt.product.id %}" class="text-secondary">Remove</a>

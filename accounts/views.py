@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from user_panel.models import *
+from .models import Admin
+
 
 def login(request):
     user = request.user
@@ -79,41 +81,42 @@ def signup(request):
 
 def logout(request):
     auth_logout(request)
-    request.session['is_value'] = True
+    request.session['admin'] = True
     return redirect('user_home')
 
-def admin_session(request):
-    if request.session.has_key('is_value'):
-        return render(request, 'Admin/dashboard.html')
-        # return redirect('admin_home')
-    else:
-        return redirect('admin_login')
+# def admin_session(request):
+#     if request.session.has_key('admin'):
+#         return render(request, 'Admin/dashboard.html')
+#     else:
+#         return render(request, 'Admin/admin_login.html')
 
 def admin_login(request):
-    admin_session(request) 
-
-    if request.method == 'POST':
-        uname = 'admin'
-        pword = 'admin'
-
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        if username == uname and password == pword:
-            print('admin logged in')
-            request.session['is_value'] = True
-            # return JsonResponse({'status': 'ok'});
-            return redirect('admin_home')
-        else:
-            invalid_error = "Invalid creditials ! !"
-            print(invalid_error)
-            # return JsonResponse({'status': 'login failed'})
-            # return redirect('admin_login')
-            return render(request, 'Admin/admin_login.html', {'invalid_error':invalid_error})
+    if request.session.has_key('admin'):
+        return render(request, 'Admin/dashboard.html')
     else:
-        return render(request, 'Admin/admin_login.html')
+
+        if request.method == 'POST':
+
+            admin = Admin.objects.get(username='admin', password='admin')
+
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            if username == admin.username and password == admin.password:
+                print('admin logged in')
+                request.session['admin'] = True
+                # return JsonResponse({'status': 'ok'});
+                return redirect('admin_home')
+            else:
+                invalid_error = "Invalid creditials ! !"
+                print(invalid_error)
+                # return JsonResponse({'status': 'login failed'})
+                # return redirect('admin_login')
+                return render(request, 'Admin/admin_login.html', {'invalid_error':invalid_error})
+        else:
+            return render(request, 'Admin/admin_login.html')
 
 
 def admin_logout(request):
-    del request.session['is_value']
+    del request.session['admin']
     return redirect('admin_login')

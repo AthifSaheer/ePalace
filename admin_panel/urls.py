@@ -23,7 +23,7 @@ urlpatterns = [
 
     path('create_category', views.create_category, name='create_category'),
     path('edit_category/<int:id>', views.edit_category, name='edit_category'),
-    path('delete_category/<int:id>', views.delete_category, name='delete_category'),
+    path('delete/category/<int:id>', views.delete_category, name='delete_category'),
 
     path('create_sub_category', views.create_sub_category, name='create_sub_category'),
     path('edit_sub_category/<int:id>', views.edit_sub_category, name='edit_sub_category'),
@@ -31,6 +31,6 @@ urlpatterns = [
 
     # Order management
     path('orders', views.orders, name='orders'),
-    path('orders_status_change/<int:id>', views.orders_status_change, name='orders_status_change'),
+    path('orders/change/status/<int:id>', views.orders_status_change, name='orders_status_change'),
 
 ]

@@ -1,5 +1,3 @@
-from re import L
-import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -7,8 +5,8 @@ from django.contrib.sessions.models import Session
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import authenticate
 from admin_panel.forms import *
+from django.db.models import Q
 from .models import *
-
 
 
 
@@ -16,6 +14,32 @@ def home(request):
     print(request)
     product = Product.objects.all().order_by('-id')
     return render(request, 'User/index.html' ,{'product':product})
+
+
+def search(request):
+    if request.method == 'GET':
+        keyword = request.GET['keyword']
+        search_product = Product.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(category__category__icontains=keyword) | Q(brand__sub_category__icontains=keyword) | Q(selling_price__icontains=keyword) | Q(slug__icontains=keyword))
+        count = search_product.count()
+        print(str(search_product) + '====== search products =======')
+
+        product = Product.objects.all()
+        # print(str(product.ram) + '--ram ------------')
+
+        context = {
+            'search_product':search_product,
+            'count':count,
+            'product':product,
+        }
+
+        return render(request, 'User/search-product.html', context)
+    
+    return render(request, 'User/search-product.html')
+
+# Filter data
+def filter_data(request):
+    return JsonResponse({'data':'hello'})
+
 
 
 def product_detail(request, slug):
@@ -124,7 +148,10 @@ def remove_item(request, id):
     product = get_object_or_404(Product, id=id)
 
     if request.user.is_authenticated:
-        cart_item = CartItem.objects.get(product=product, user=request.user)
+        try:
+            cart_item = CartItem.objects.filter(product=product, user=request.user)
+        except CartItem.MultipleObjectsReturned:
+            pass
     else:
         cart = Cart.objects.get(cart_id=_cart_session_id(request))
         cart_item = CartItem.objects.get(product=product, cart=cart)
@@ -151,8 +178,9 @@ def check_out(request):
 
     if request.method == "POST":
         address = request.POST.get('address')
-        payment = request.POST.get('payment')
+        payment = request.POST.get('payment-option')
 
+        print(str(payment) + '--Payment method------')
         for item in cart_item:
             ord = Order()
             ord.user = current_user
@@ -171,6 +199,9 @@ def check_out(request):
             product = Product.objects.get(id=item.product.id)
             product.quantity -= item.quantity
             product.save()
+
+            if payment == "paypal":
+                return redirect('orders')
 
         item.cart.delete()
 

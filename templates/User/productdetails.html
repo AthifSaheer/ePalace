@@ -17,25 +17,23 @@
                         
                     {% for prd in product_detailed %}
 
-                    <div class="col-md-6">
-                        <img id="imgbig" src="{{ prd.image.url }}" class="myimage" width="1500px" height="1500px" alt="">
+                    <div class="col-md-6" id="img-container" style="width: 500px; height:480px;">
+                        <img id="imgbig" src="{{ prd.image.url }}" onclick="imgHoverFunc(this)" width="1500px" height="1500px" alt="">
                         <img id="img1-big" src="{{ prd.more_image_one.url }}" width="1500px" height="1500px" alt="">
                         <img id="img2-big" src="{{ prd.more_image_two.url }}" width="1500px" height="1500px" alt="">
                         <img id="img3-big" src="{{ prd.more_image_three.url }}" width="1500px" height="1500px" alt="">
                         
                         <!-- <hr> -->
                         
-                        <div class="row">
+                        <div class="row"> <!-- id='change' class='pure-button settings__button' onclick="changeImage('imageZoom')" -->
                             <div class="col-md-3"><img onclick="imfunc()" src="{{ prd.image.url }}" alt=""></div>
                             <div class="col-md-3"><img onclick="img1Func()" src="{{ prd.more_image_one.url }}" alt=""></div>
                             <div class="col-md-3"><img onclick="img2Func()" src="{{ prd.more_image_two.url }}" alt=""></div>
                             <div class="col-md-3"><img onclick="img3Func()" src="{{ prd.more_image_three.url }}" alt=""></div>
-                            <div id="myresult" class="img-zoom-result"></div>
+                            <button id='change' class='pure-button settings__button' onclick="changeImage('imageZoom')">Change</button>
                         </div>
                         
                     </div>
-
-                   
                     
                     <div class="col-md-6">
 
@@ -139,6 +137,23 @@
             </div>
         </main>
 
-       <script src="/assets/js/cart.js"></script>
-        <script src="/assets/js/imageZoom.js"></script>
+        <script src="/assets/js/cart.js"></script>
+        <script src="/assets/js/js-image-zoom.js"></script>
+
+        <script>
+
+        var options1 = {
+            width: 400,
+            zoomWidth: 500,
+            offset: {vertical: 0, horizontal: 10}
+        };
+
+        // If the width and height of the image are not known or to adjust the image to the container of it
+        var options2 = {
+            fillContainer: true,
+            offset: {vertical: 0, horizontal: 10}
+        };
+        new ImageZoom(document.getElementById("img-container"), options2);
+
+        </script>
 {% endblock %}

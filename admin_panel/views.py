@@ -5,22 +5,27 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from user_panel.models import *
 from .forms import *
-from accounts.views import admin_session
 import json
 
 
 # =========== Admin Dashboard =========================
 
 def admin_home(request):
-    admin_session(request)
-    return render(request, 'Admin/dashboard.html')
+    if request.session.has_key('admin'):
+        return render(request, 'Admin/dashboard.html')
+    else:
+        return render(request, 'Admin/admin_login.html')
 
 
 # =========== Product Management =========================
 
 def products(request):
-    products = Product.objects.all().order_by('id')
-    return render(request, 'Admin/product_management.html', {'products':products})
+    if request.session.has_key('admin'):
+        products = Product.objects.all().order_by('id')
+        return render(request, 'Admin/product_management.html', {'products':products})
+    else:
+        return render(request, 'Admin/admin_login.html')
+
 
 def delete_product(request, id):
     prd_id = id
@@ -79,9 +84,12 @@ def edit_product(request, id):
 # =========== User Management =========================
 
 def users(request):
-    user = User.objects.all().order_by('id')
-    # user.exclude(is_staff=1)
-    return render(request, 'Admin/user_management.html', {'user':user})
+    if request.session.has_key('admin'):
+        user = User.objects.all().order_by('id')
+        # user.exclude(is_staff=1)
+        return render(request, 'Admin/user_management.html', {'user':user})
+    else:
+        return render(request, 'Admin/admin_login.html')
 
 
 def block_user(request, username):
@@ -109,9 +117,12 @@ def delete_user(request, id):
 # =========== Category Management =========================
 
 def categories(request):
-    category = Category.objects.all().order_by('id')
-    sub_category = SubCategory.objects.all().order_by('id')
-    return render(request, 'Admin/category_management.html', {'category':category, 'sub_category':sub_category})
+    if request.session.has_key('admin'):
+        category = Category.objects.all().order_by('id')
+        sub_category = SubCategory.objects.all().order_by('id')
+        return render(request, 'Admin/category_management.html', {'category':category, 'sub_category':sub_category})
+    else:
+        return render(request, 'Admin/admin_login.html')
 
 
 def create_category(request):
@@ -189,16 +200,19 @@ def delete_sub_category(request, id):
 # =========== Order Management =========================
 
 def orders(request):
-    orders = Order.objects.all().order_by('-id')
-    total = 0
-    for x in orders:
-        total += x.product_price * x.product_quantity
+    if request.session.has_key('admin'):
+        orders = Order.objects.all().order_by('-id')
+        total = 0
+        for x in orders:
+            total += x.product_price * x.product_quantity
 
-    context = {
-        'orders':orders,
-        'total':total,
-    }
-    return render(request, 'Admin/order_management.html', context)
+        context = {
+            'orders':orders,
+            'total':total,
+        }
+        return render(request, 'Admin/order_management.html', context)
+    else:
+        return render(request, 'Admin/admin_login.html')
 
 def orders_status_change(request, id):
     orders = Order.objects.filter(id=id)
