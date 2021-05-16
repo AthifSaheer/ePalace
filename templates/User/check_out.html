@@ -41,7 +41,7 @@
                     <h4 id="title">Delivery Address</h4>
                 </div>
                 <div class="col-md-4">
-                    <a href="{% url 'add_address' user.id %}"><button class="btn btn-outline-warning btn-sm ml-3">Add new address</button></a>
+                    <a href="{% url 'add_address' user.id %}?next=/check_out/"><button class="btn btn-outline-warning btn-sm ml-3">Add new address</button></a>
                 </div>
 
                 {% if adrs_count <= 0 %}
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="col-md-2 ml-2">
-                        <a href="{% url 'edit_address' adrs.id %}">Edit</a>
+                        <a href="{% url 'edit_address' adrs.id %}?next=/check_out/">Edit</a>
                     </div>
 
                     <!-- <button class="btn btn-success btn-sm">Delivery here</button> -->
@@ -110,6 +110,13 @@
                         <br>
 
                         <label>
+                            <input type="radio" name="payment-option" value="razorpay">
+                            Pay with Razorpay
+                        </label>
+
+                        <br>
+
+                        <label>
                             <input type="radio" name="payment-option" value="cod">
                             Cash on Delivery
                         </label>
@@ -119,6 +126,10 @@
                         </div>
                         <div id="cod-button-container">
                             <button class="btn btn-warning btn-block" id="cnfrmOrdrBtn">Confirm Order</button>
+                        </div>
+                        <div id="rzp-button-container">
+                            <!-- <button  id="cnfrmOrdrBtn">Confirm Order</button> -->
+                            <button class="btn btn-warning btn-block" id="rzp-button1">Pay with Razorpay</button>
                         </div>
 
                     </div>
@@ -137,7 +148,7 @@
                     <tbody>
                         <tr>
                             <td>Price(2items)</td>
-                            <td>$4455</td>
+                            <td>&#8377;{{ total }}</td>
                         </tr>
 
                         <tr>
@@ -147,7 +158,7 @@
 
                         <tr>
                             <td>Total Amount</td>
-                            <td>$909009</td>
+                            <td>&#8377;{{ total }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -271,46 +282,10 @@ function decreaseValue() {
 
 </script>
 
-
-<!-- Add the PayPal JavaScript SDK with both buttons and marks components -->
-
-<script src="https://www.paypal.com/sdk/js?client-id=test&components=buttons,marks"></script>
-    
-<script>
-    // Render the PayPal marks
-    paypal.Marks().render('#paypal-marks-container');
-  
-    // Render the PayPal buttons
-    paypal.Buttons().render('#paypal-buttons-container');
-  
-    // Listen for changes to the radio buttons
-    document.querySelectorAll('input[name=payment-option]')
-      .forEach(function (el) {
-        el.addEventListener('change', function (event) {
-  
-          // If PayPal is selected, show the PayPal button
-          if (event.target.value === 'paypal') {
-            codBtn = document.body.querySelector('#cod-button-container')
-            codBtn.style.display = 'none';
-            codBtn.click()
-            document.body.querySelector('#paypal-buttons-container')
-              .style.display = 'block';
-          }
-  
-          // If cod funding is selected, show a different button
-          if (event.target.value === 'cod') {
-            document.body.querySelector('#cod-button-container')
-              .style.display = 'block';
-            document.body.querySelector('#paypal-buttons-container')
-              .style.display = 'none';
-          }
-        });
-      });
-  
-    // Hide non-PayPal button by default
-    document.body.querySelector('#cod-button-container')
-      .style.display = 'none';
-  </script>
+    <!-- Add the PayPal JavaScript SDK with both buttons and marks components -->
+    <script src="https://www.paypal.com/sdk/js?client-id=test&components=buttons,marks"></script>
+    <!-- Razorpay script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
     <!--========== SCROLL REVEAL ==========-->
@@ -324,5 +299,102 @@ function decreaseValue() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     
+    <!-- Razorpay and paypal payment script -->
+    <script>
+        // Paypal ================================
+
+        // Render the PayPal marks
+        paypal.Marks().render('#paypal-marks-container');
+        
+        // Render the PayPal buttons
+        paypal.Buttons().render('#paypal-buttons-container');
+        
+        // Listen for changes to the radio buttons
+        document.querySelectorAll('input[name=payment-option]')
+            .forEach(function (el) {
+            el.addEventListener('change', function (event) {
+        
+                // If PayPal is selected, show the PayPal button
+                if (event.target.value === 'paypal') {
+                codBtn = document.body.querySelector('#cod-button-container')
+                codBtn.style.display = 'none';
+                codBtn.click()
+                document.body.querySelector('#paypal-buttons-container')
+                    .style.display = 'block';
+                document.body.querySelector('#rzp-button-container')
+                    .style.display = 'none';
+                }
+        
+                // If Razorpay is selected
+                if (event.target.value === 'razorpay') {
+                document.body.querySelector('#rzp-button-container')
+                .style.display = 'block';
+                document.body.querySelector('#cod-button-container')
+                    .style.display = 'none';
+                document.body.querySelector('#paypal-buttons-container')
+                    .style.display = 'none';
+                }
+        
+                // If cod is selected
+                if (event.target.value === 'cod') {
+                document.body.querySelector('#cod-button-container')
+                    .style.display = 'block';
+                document.body.querySelector('#paypal-buttons-container')
+                    .style.display = 'none';
+                document.body.querySelector('#rzp-button-container')
+                    .style.display = 'none';
+                }
+            });
+            });
+        
+        // Hide non-PayPal button by default
+        document.body.querySelector('#cod-button-container')
+            .style.display = 'none';
+        document.body.querySelector('#rzp-button-container')
+            .style.display = 'none';
+        
+        
+        // Razorpay ================================
+        
+        var options = {
+            "key": "rzp_test_yzvwEM34odH915", // Enter the Key ID generated from the Dashboard
+            "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Acme Corp",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": "{{ payment.id }}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response){
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response){
+                alert(response.error.code);
+                alert(response.error.description);
+                alert(response.error.source);
+                alert(response.error.step);
+                alert(response.error.reason);
+                alert(response.error.metadata.order_id);
+                alert(response.error.metadata.payment_id);
+        });
+        document.getElementById('rzp-button1').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
 </body>
 </html>

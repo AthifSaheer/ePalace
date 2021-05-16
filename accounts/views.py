@@ -1,11 +1,12 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.db.models import query
 from user_panel.views import _cart_session_id
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from user_panel.models import *
 from .models import Admin
-
+import requests
 
 def login(request):
     user = request.user
@@ -51,7 +52,19 @@ def login(request):
                     pass
                 
                 auth_login(request, user)
-                return redirect('user_home') #?next={{request.path}}
+                url = request.META.get('HTTP_REFERER')
+                print(str(url) + '--- url variable -------')
+                try:
+                    query = requests.utils.urlparse(url).query
+                    print(str(query) + '---login query-------')
+                    params = dict(x.split('=') for x in query.split('&'))
+                    print(str(params) + '--- params-------')
+
+                    if 'next' in params:
+                        next_page = params['next']
+                        return redirect(next_page)
+                except:
+                    return redirect('user_home')
          
     return render(request, 'User/login.html')
 

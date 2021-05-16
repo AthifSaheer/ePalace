@@ -1,0 +1,60 @@
+{% extends 'User/base.html' %}
+{% load static %}
+
+{% block title %} Home | ePalace {% endblock title %}
+        
+{% block content %} 
+        
+
+<!--========== MENU ==========-->
+<section class="menu section bd-container" id="menu">
+    <h2 class="section-title mt-5">Laptops</h2>
+    <span class="section-subtitle">Apple | Hp | Dell</span>
+
+    <div class="menu__container bd-grid">
+        {% for prd in laptop_products %}
+        <div class="menu__content">
+            <a href="{% url 'prd_detail' prd.slug %}"><img src="{{ prd.image.url }}" width="1500px" height="1500px" alt="" class="menu__img"></a>
+            <a href="{% url 'prd_detail' prd.slug %}"><h3 class="menu__name">{{ prd.title }}</h3></a>
+            <span class="menu__detail">{{ prd.description|slice:':22' }}...</span>
+            <span class="menu__preci">₹{{ prd.selling_price }} <s>₹{{ prd.marked_price }}</s> </span>
+            
+            {% if prd.quantity <= 0 %}
+            <a href="{% url 'add_to_cart' prd.id %}" hidden class="button menu__button"><i class='bx bx-cart-alt'></i></a>
+            {% else %}
+            <a href="{% url 'add_to_cart' prd.id %}" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
+            {% endif %}
+            
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ====================== Mobiles ======================== -->
+
+    <h2 class="section-title mt-5">Mobiles</h2>
+    <span class="section-subtitle">Apple | Samsunf | Asus</span>
+
+    <div class="menu__container bd-grid">
+        {% for prd in mobile_products %}
+        <div class="menu__content">
+            <a href="{% url 'prd_detail' prd.slug %}"><img src="{{ prd.image.url }}" width="1500px" height="1500px" alt="" class="menu__img"></a>
+            <a href="{% url 'prd_detail' prd.slug %}"><h3 class="menu__name">{{ prd.title }}</h3></a>
+            <span class="menu__detail">{{ prd.description|slice:':22' }}...</span>
+            <span class="menu__preci">₹{{ prd.selling_price }} <s>₹{{ prd.marked_price }}</s> </span>
+            
+            {% if prd.quantity <= 0 %}
+            <a href="{% url 'add_to_cart' prd.id %}" hidden class="button menu__button"><i class='bx bx-cart-alt'></i></a>
+            {% else %}
+            <a href="{% url 'add_to_cart' prd.id %}" class="button menu__button"><i class='bx bx-cart-alt'></i></a>
+            {% endif %}
+            
+        </div>
+        {% endfor %}
+    </div>
+
+</section>
+
+
+        
+
+{% endblock content %}

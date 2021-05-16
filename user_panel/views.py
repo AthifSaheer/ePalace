@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 from admin_panel.forms import *
 from django.db.models import Q
 from .models import *
-
+import requests
 
 
 def home(request):
@@ -39,6 +39,18 @@ def search(request):
 # Filter data
 def filter_data(request):
     return JsonResponse({'data':'hello'})
+
+
+def category_wised_product(request):
+    laptop = Category.objects.get(category="Laptop")
+    mobile = Category.objects.get(category="Mobile")
+    laptop_products = Product.objects.filter(category=laptop)
+    mobile_products = Product.objects.filter(category=mobile)
+    context = {
+        'laptop_products':laptop_products,
+        'mobile_products':mobile_products,
+    }
+    return render(request, 'User/prd_catgry_wise.html', context)
 
 
 
@@ -172,6 +184,10 @@ def check_out(request):
     cart_item = CartItem.objects.filter(user=current_user)
     print(str(cart_item) + '-----cart item filter')
 
+    total = 0
+    for crt_itm in cart_item:
+        total += (crt_itm.price * crt_itm.quantity)
+
     count = CartItem.objects.all().count()
     if count <= 0:
         return redirect('cart')
@@ -203,11 +219,24 @@ def check_out(request):
             if payment == "paypal":
                 return redirect('orders')
 
+            order_amount = 50000
+            order_currency = 'INR'
+            client = razorpay.Client(auth=("rzp_test_yzvwEM34odH915", "v4EH5Yjc5ixPawJlbmPDFCsF"))
+            payment = client.order.create({'amount':amount, 'currency':'INR', payment_capture:'1'})
+            # order_receipt = 'order_rcptid_11'
+            # notes = {'Shipping address': 'Bommanahalli, Bangalore'}  
+            # OPTIONALclient.order.create(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=notes)
+
         item.cart.delete()
 
         return redirect('order_place_animation')
-
-    return render(request, 'User/check_out.html', {'display_address':display_address, 'adrs_count':adrs_count})
+        
+    context = {
+        'display_address':display_address,
+        'adrs_count':adrs_count,
+        'total':total
+    }
+    return render(request, 'User/check_out.html', context)
 
 
 def order_place_animation(request):
@@ -315,7 +344,20 @@ def add_address(request, id):
             adrs.landmark = form.cleaned_data.get('landmark')
             adrs.address_type = form.cleaned_data.get('address_type')
             adrs.save()
-            return redirect('profile', id)
+
+            url = request.META.get('HTTP_REFERER')
+            print(str(url) + '--- url variable -------')
+            try:
+                query = requests.utils.urlparse(url).query
+                print(str(query) + '---login query-------')
+                params = dict(x.split('=') for x in query.split('&'))
+                print(str(params) + '--- params-------')
+
+                if 'next' in params:
+                    next_page = params['next']
+                    return redirect(next_page)
+            except:
+                return redirect('profile', id)
 
     return render(request, 'User/add_address.html', {'form':form})
 
@@ -329,7 +371,19 @@ def edit_address(request, id):
         form = AddAddressForm(request.POST, request.FILES, instance=address)
         if form.is_valid():
             form.save()
-            return redirect('profile', user.id)
+            url = request.META.get('HTTP_REFERER')
+            print(str(url) + '--- url variable -------')
+            try:
+                query = requests.utils.urlparse(url).query
+                print(str(query) + '---login query-------')
+                params = dict(x.split('=') for x in query.split('&'))
+                print(str(params) + '--- params-------')
+
+                if 'next' in params:
+                    next_page = params['next']
+                    return redirect(next_page)
+            except:
+                return redirect('profile', user.id)
 
     return render(request, 'User/edit_address.html', {'form':form})
 
@@ -339,4 +393,7 @@ def delete_address(request, id):
     address = Address.objects.get(id=id)
     address.delete()
     return redirect('profile', user.id)
+
+
+
 
