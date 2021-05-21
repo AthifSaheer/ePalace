@@ -17,11 +17,11 @@
                         
                     {% for prd in product_detailed %}
 
-                    <div class="col-md-6" id="img-container" style="width: 500px; height:480px;">
-                        <img id="imgbig" src="{{ prd.image.url }}" onclick="imgHoverFunc(this)" width="1500px" height="1500px" alt="">
-                        <img id="img1-big" src="{{ prd.more_image_one.url }}" width="1500px" height="1500px" alt="">
-                        <img id="img2-big" src="{{ prd.more_image_two.url }}" width="1500px" height="1500px" alt="">
-                        <img id="img3-big" src="{{ prd.more_image_three.url }}" width="1500px" height="1500px" alt="">
+                    <div class="col-md-6" id="img-container" style="width: 500px; height:480px;" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
+                        <img id="imgbig" src="{{ prd.image.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
+                        <img id="img1-big" src="{{ prd.more_image_one.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
+                        <img id="img2-big" src="{{ prd.more_image_two.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
+                        <img id="img3-big" src="{{ prd.more_image_three.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
                         
                         <!-- <hr> -->
                         
@@ -30,12 +30,12 @@
                             <div class="col-md-3"><img onclick="img1Func()" src="{{ prd.more_image_one.url }}" alt=""></div>
                             <div class="col-md-3"><img onclick="img2Func()" src="{{ prd.more_image_two.url }}" alt=""></div>
                             <div class="col-md-3"><img onclick="img3Func()" src="{{ prd.more_image_three.url }}" alt=""></div>
-                            <button id='change' class='pure-button settings__button' onclick="changeImage('imageZoom')">Change</button>
+                            <!-- <button id='change' class='pure-button settings__button' onclick="changeImage('imageZoom')">Change</button> -->
                         </div>
                         
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-6" id="imgZoomHideDiv">
 
                         <h4 class="text-info" id="prd-txt">{{ prd.title }}</h4>
 
@@ -131,6 +131,15 @@
                         
                     </div>
 
+                    <script>
+                        function hideSideDiv() {
+                            document.getElementById('imgZoomHideDiv').style.display = "none"
+                        }
+                        function showSideDiv() {
+                            document.getElementById('imgZoomHideDiv').style.display = "block"
+                        }
+                    </script>
+
                     {% endfor %}
 
                 </div>
@@ -139,6 +148,7 @@
 
         <script src="/assets/js/cart.js"></script>
         <script src="/assets/js/js-image-zoom.js"></script>
+        <script src="/assets/js/moreImgChange.js"></script>
 
         <script>
 

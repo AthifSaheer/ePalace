@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Payment | ePalace</title>
+</head>
+<body>
+    <style>
+        .center-div {
+            background: rgb(255, 255, 255);
+            border: 1px solid rgb(204, 204, 204);
+            margin-top: 70px;
+            height: 160px;
+            padding: 20px;
+        }
+    </style>
+
+    {% if payment_method == "paypal" %}
+
+    <div class="row">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4 center-div">
+            <div id="paypal-button-container"></div>
+        </div>
+
+        <div class="col-md-4"></div>
+    </div>
+
+    <!-- Add the PayPal JavaScript SDK with both buttons and marks components -->
+    <!-- Epalace official store client id added -->
+    <script src="https://www.paypal.com/sdk/js?client-id=Aag8H93IJlWr6GnfLYHU2zrwQ3-z4Fo48DvPQ9stfAcWVFxo8QAgkQ90VHfrwd7ci58PSk9i1RqEAAZi&currency=USD"></script>
+    
+
+
+    <script>
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        var amount = "{{ total }}"
+        var url = "{% url 'paypal'  %}"
+        var paypal_method = 'paypal'
+        var csrftoken = getCookie('csrftoken')
+        var orderID = 'athif'
+        var redirect_url = "{% url 'order_place_animation' %}"
+        
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount,
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    console.log(details)
+                    sendData();
+                    function sendData(){
+                        fetch(url, {
+                            method : "POST",
+                            headers:{
+                                "Content-type":"application/json",
+                                "X-CSRFToken":csrftoken,
+                            },
+                            body: JSON.stringify({
+                                orderID: 'unknown',
+                                transID: details.id,
+                                payment_method: paypal_method,
+                                status: details.status,
+                                // total_amount:amount,
+                            }),
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                                window.location.href = redirect_url;
+                            });
+                        //  .then(response => response.json())
+                        // .then(data => console.log(data));
+                    }
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+    <a href="{% url 'user_home' %}"> Back to home page</a>
+
+
+    {% elif payment_method == "razorpay" %}
+    <!-- ======================== Razorpay ======================== -->
+    <!--  -->
+    <div class="row">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4 center-div">
+            <form action="{% url 'razorpay' %}" method="POST">
+                {% csrf_token %}
+                <script
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                data-key="rzp_test_DdZJYvM3465Ujr"
+                data-amount="{{ total }}00"
+                data-currency="INR"
+                data-buttontext="Pay with Razorpay"
+                data-name="Acme Corp"
+                data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+                data-image="https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fGF2YXRhcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                data-prefill.name="Gaurav Kumar"
+                data-prefill.email="gaurav.kumar@example.com"
+                data-theme.color="#F37254"
+                ></script>
+                <input type="hidden" custom="Hidden Element" name="hidden">
+            </form>
+        </div>
+
+        <div class="col-md-4"></div>
+    </div>
+
+    <!-- Razorpay script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+    {% endif %}
+
+</body>
+</html>

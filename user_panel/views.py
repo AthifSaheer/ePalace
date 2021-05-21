@@ -7,7 +7,10 @@ from django.contrib.auth import authenticate
 from admin_panel.forms import *
 from django.db.models import Q
 from .models import *
+import razorpay
 import requests
+import json
+
 
 
 def home(request):
@@ -18,21 +21,37 @@ def home(request):
 
 def search(request):
     if request.method == 'GET':
-        keyword = request.GET['keyword']
-        search_product = Product.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(category__category__icontains=keyword) | Q(brand__sub_category__icontains=keyword) | Q(selling_price__icontains=keyword) | Q(slug__icontains=keyword))
-        count = search_product.count()
-        print(str(search_product) + '====== search products =======')
+        keyword = request.GET.get('keyword')
+        filter_data = request.GET.get('filter-data')
 
-        product = Product.objects.all()
-        # print(str(product.ram) + '--ram ------------')
+        product = Product.objects.all() #filter(Q(title__icontains=keyword))
+        if filter_data:
+            for prd in product:
+                if prd.category == filter_data+"GB":
+                    search_product = Product.objects.filter(Q(category__category__contains=filter_data+"GB"))
+                    count = search_product.count()
+                elif prd.selling_price >= int(filter_data):
+                    search_product = Product.objects.filter(Q(selling_price__contains=filter_data))
+                    count = search_product.count()
+                    print(str(search_product) + " --- searched fby filtered---------")
+                    
+                    context = {
+                        'search_product':search_product,
+                        'count':count,
+                        'keyword':keyword,
+                    }
+                    return render(request, 'User/search-product.html', context)
+        else:
+            search_product = Product.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(category__category__icontains=keyword) | Q(brand__sub_category__icontains=keyword) | Q(selling_price__icontains=keyword) | Q(slug__icontains=keyword))
+            count = search_product.count()
 
-        context = {
-            'search_product':search_product,
-            'count':count,
-            'product':product,
-        }
+            context = {
+                'search_product':search_product,
+                'count':count,
+                'keyword':keyword,
+            }
 
-        return render(request, 'User/search-product.html', context)
+            return render(request, 'User/search-product.html', context)
     
     return render(request, 'User/search-product.html')
 
@@ -174,6 +193,15 @@ def remove_item(request, id):
 
 @login_required(login_url='login')
 def check_out(request):
+
+    # if request.method == 'POST':
+    #     amount = 50000
+    #     order_currency = 'INR'
+    #     client = razorpay.Client(auth=('rzp_test_DdZJYvM3465Ujr', 'MUKCKFyUw6XoAhNSOn4medW3'))
+    #     payment = client.order.create({'amount':amount, 'currency':'INR', 'payment_capture': '1'})
+        
+
+
     current_user = request.user
     display_address = Address.objects.filter(user=current_user)
     adrs_count = display_address.count()
@@ -194,9 +222,9 @@ def check_out(request):
 
     if request.method == "POST":
         address = request.POST.get('address')
-        payment = request.POST.get('payment-option')
+        payment_method = request.POST.get('payment-option')
 
-        print(str(payment) + '--Payment method------')
+        print(str(payment_method) + '--payment_method------')
         for item in cart_item:
             ord = Order()
             ord.user = current_user
@@ -204,32 +232,28 @@ def check_out(request):
             address_id = Address.objects.get(id=address)
             ord.shipping_address = address_id
 
-            ord.payment = payment
+            ord.payment = payment_method
             ord.product = item.product
 
-            ord.product_price = item.sub_total
+            ord.product_price = item.sub_total * item.quantity
             ord.product_quantity = item.quantity
+
+            import datetime
+            today = datetime.date.today()
+            ord.time_stamp = today
+
             print('checkout item quantity' + str(item.quantity) + '----------')
             ord.save()
 
             product = Product.objects.get(id=item.product.id)
             product.quantity -= item.quantity
             product.save()
-
-            if payment == "paypal":
-                return redirect('orders')
-
-            order_amount = 50000
-            order_currency = 'INR'
-            client = razorpay.Client(auth=("rzp_test_yzvwEM34odH915", "v4EH5Yjc5ixPawJlbmPDFCsF"))
-            payment = client.order.create({'amount':amount, 'currency':'INR', payment_capture:'1'})
-            # order_receipt = 'order_rcptid_11'
-            # notes = {'Shipping address': 'Bommanahalli, Bangalore'}  
-            # OPTIONALclient.order.create(amount=order_amount, currency=order_currency, receipt=order_receipt, notes=notes)
-
         item.cart.delete()
-
-        return redirect('order_place_animation')
+        
+        if payment_method == "paypal" or payment_method == "razorpay":
+            return render(request, 'User/payment.html', {'payment_method':payment_method, 'total':total})
+        else:
+            return redirect('order_place_animation')
         
     context = {
         'display_address':display_address,
@@ -237,6 +261,44 @@ def check_out(request):
         'total':total
     }
     return render(request, 'User/check_out.html', context)
+
+
+
+def razorpay(request):
+    if request.method == 'POST':
+        amount = 50000
+        order_currency = 'INR'
+        # client = razorpay.Client(auth=('rzp_test_xyIR1ZE87kJDTn', 'Xf3VouA8DPFoHfQTQ3zLUIn8'))
+        # payment = client.order.create({'amount':amount, 'currency':'INR', 'payment_capture': '1'})
+        # print(str(payment) + "-- razorpay payment ditails----------")
+        return redirect('order_place_animation')
+
+
+
+
+def paypal(request):
+    body = json.loads(request.body)
+    print(str(body) + ' --- body---------')
+
+    # Store transaction details inside Payment model
+    payment = Payment(
+        user = request.user,
+        payment_id = body['transID'],
+        payment_method = body['payment_method'],
+        amount_paid = 5000, #body['total_amount']
+        status = body['status'],
+    )
+    payment.save()
+    print("------------- paypal data saved-----------------")
+    # return render(request, 'User/order_place_animation.html')
+    # return redirect('order_place_animation')
+    # return JsonResponse('fine')
+    print("------------- order_place_animation func wrkd ----------------")
+    return super(order_place_animation(request))
+
+
+# def payment(request):
+#     return render(request, 'User/payment.html')
 
 
 def order_place_animation(request):
@@ -393,7 +455,6 @@ def delete_address(request, id):
     address = Address.objects.get(id=id)
     address.delete()
     return redirect('profile', user.id)
-
 
 
 

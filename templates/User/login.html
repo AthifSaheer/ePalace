@@ -17,7 +17,7 @@
     <!--========== bootstrap ==========-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Login | ePalace</title>
+    <title>{% block title %} Login | ePalace {% endblock %}</title>
 </head>
 <body>
 
@@ -26,11 +26,15 @@
         <a href="{% url 'user_home' %}" class="nav__logo">ePalace</a>
     </nav>
   </header>
+<!-- <div style="margin-top: 70px;"> -->
 
+  
+  
     <div class="container">
         <div class="row">
 
           <div id="login-div" class="col-md-4 col-11">
+            {% block login %}
             <h1 id="login-text">Login</h1>
             <span class="text-danger">{{ uname_error }}</span>
             <span class="text-danger">{{ block_error }}</span>
@@ -62,6 +66,8 @@
                    
                     <button class="btn btn-outline-info btn-block mb-3" type="submit">Login</button>
                   </form>
+                  <p><a href="{% url 'change_password_request_email' %}">Forgotten your password?</a></p>
+                  <p id="to-sin-up"><a href="{% url 'login_with_otp' %}">Login with mobile number</a></p>
                   <p id="to-sin-up"><a href="{% url 'signup' %}">Create account</a></p>
                   
                   <script>
@@ -101,6 +107,7 @@
                     )
                     })
                   </script> -->
+                  {% endblock %}
           </div>
 
             <div class="col-md-10" >
@@ -112,6 +119,7 @@
     </div>
     
 
+<!-- </div> -->
 
     <!--========== SCROLL REVEAL ==========-->
     <script src="https://unpkg.com/scrollreveal"></script>

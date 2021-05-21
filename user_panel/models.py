@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from colorfield.fields import ColorField
 from django.urls import reverse
 from django.db import models
-
+from django.conf import settings
 
 class Category(models.Model):
     category = models.CharField(max_length=30)
@@ -132,8 +132,9 @@ class Address(models.Model):
         return self.name +' | ' + self.user.username
     
 payment = [
-    ('Paypal','Paypal'),
-    ('COD','COD'),
+    ('paypal','paypal'),
+    ('razorpay','razorpay'),
+    ('cod','cod'),
 ]
 
 order_status = [
@@ -154,7 +155,20 @@ class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
     product_price = models.PositiveIntegerField()
     product_quantity = models.PositiveIntegerField()
+    time_stamp = models.DateField()
 
     def __str__(self):
         return 'ID: ' + str(self.id) + ' | User: ' + self.user.username + ' | Product: ' + str(self.product.title)
     
+
+
+class Payment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment_id = models.CharField(max_length=100)
+    payment_method = models.CharField(max_length=100)
+    amount_paid = models.CharField(max_length=100) # this is the total amount paid
+    status = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.payment_id

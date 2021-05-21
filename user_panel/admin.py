@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register([Category, SubCategory, Cart, ProfileImage, CartItem, Address, Order])
+admin.site.register([Category, SubCategory, Cart, ProfileImage, CartItem, Address, Order, Payment])
 
 
 from django.utils.safestring import mark_safe

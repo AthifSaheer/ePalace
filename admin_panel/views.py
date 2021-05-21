@@ -6,13 +6,161 @@ from django.contrib.auth.models import User
 from user_panel.models import *
 from .forms import *
 import json
+from json import dumps
+from django.utils import timezone
+from datetime import date
+from django.db.models import Sum
 
+from datetime import date, timedelta
+import datetime
 
 # =========== Admin Dashboard =========================
 
+def monthly_sales_report(request):
+    if request.method == 'POST':
+        from_ = request.POST['from_date']
+        to_ = request.POST['to_date']
+
+        x = from_ + "-01"
+        y = to_ + "-01"
+
+        month_order = Order.objects.filter(time_stamp__range=[x, y])
+
+        context = {
+            'month_order':month_order,
+        }
+        return render(request, 'Admin/monthly_sales_report.html', context)
+    else:
+        message = "*choose date"
+        context = {
+            'message':message,
+        }
+        return render(request, 'Admin/monthly_sales_report.html', context)
+
+def yearly_sales_report(request):
+    if request.method == 'POST':
+        from_ = request.POST['from_date']
+        to_ = request.POST['to_date']
+
+        year_order = Order.objects.filter(time_stamp__range=[from_, to_])
+
+        print(str(from_) + "----------- from date- --------------;;;;;")
+        print(str(to_) + "----------- to date- --------------;;;;;")
+        print(str(year_order) + "----------- month_order - --------------;;;;;")
+
+        context = {
+            'year_order':year_order,
+        }
+        return render(request, 'Admin/yearly_sales_report.html', context)
+    else:
+        message = "*choose date"
+        context = {
+            'message':message,
+        }
+        return render(request, 'Admin/yearly_sales_report.html', context)
+
+
 def admin_home(request):
     if request.session.has_key('admin'):
-        return render(request, 'Admin/dashboard.html')
+
+        today = datetime.date.today()
+        week = date.today()-timedelta(days=7)
+        month = date.today()-timedelta(days=30)
+
+        # Counts -----------------------
+        user_count = User.objects.all().count()
+        category_count = Category.objects.all().count()
+        product_count = Product.objects.all().count()
+        order_count = Order.objects.all().count()
+
+        # DAY SALES REPORT -------------------------------------
+        today_total_list = []
+        prd_list_from_ord = []
+        today_product_list = []
+        list_ = []
+
+        todays_order = Order.objects.values('product').annotate(Sum('product_price')).filter(time_stamp=today)
+
+        for i in todays_order:
+            for x in i.values():
+                list_.append(x)
+        
+        for q in range(len(list_)):
+            if q % 2 == 0:
+                prd_list_from_ord.append(list_[q])
+            else:
+                today_total_list.append(list_[q])
+
+        for prd in prd_list_from_ord:
+            product = Product.objects.get(id=prd)
+            prdls = product.title
+            today_product_list.append(prdls)
+
+        # Week SALES GRAPH -------------------------------------
+        week_total_list = []
+        week_prd_sample_list = []
+        week_product_list = []
+        list_01 = []
+        
+        week_order = Order.objects.values('product').annotate(Sum('product_price')).filter(time_stamp__range=[week, today]) #.order_by('time_stamp')
+        for i in week_order:
+            for x in i.values():
+                list_01.append(x)
+
+        for q in range(len(list_01)):
+            if q % 2 == 0:
+                week_prd_sample_list.append(list_01[q])
+            else:
+                week_total_list.append(list_01[q])
+
+        for prd in week_prd_sample_list:
+            product = Product.objects.get(id=prd)
+            prdls = product.title
+            week_product_list.append(prdls)
+
+
+        # MONTH SALES GRAPH -------------------------------------
+        month_total_list = []
+        month_prd_sample_list = []
+        month_product_list = []
+        list_00 = []
+
+        month_order = Order.objects.values('product').annotate(Sum('product_price')).filter(time_stamp__range=[month, today])
+        for i in month_order:
+            for x in i.values():
+                list_00.append(x)
+
+        for q in range(len(list_00)):
+            if q % 2 == 0:
+                month_prd_sample_list.append(list_00[q])
+            else:
+                month_total_list.append(list_00[q])
+
+        for prd in month_prd_sample_list:
+            product = Product.objects.get(id=prd)
+            prdls = product.title
+            month_product_list.append(prdls)
+
+
+
+        context = {
+            'user_count':user_count,
+            'product_count':product_count,
+            'order_count':order_count,
+            'category_count':category_count,
+
+            'today_total_list':today_total_list,
+            'today_product_list':today_product_list,
+
+            'week_total_list':week_total_list,
+            'week_product_list':week_product_list,
+            # 'year_revenue':year_total,
+
+            'month_total_list':month_total_list,
+            'month_product_list':month_product_list,
+            # 'month_revenue':month_total,
+        }
+        return render(request, 'Admin/dashboard.html', context)
     else:
         return render(request, 'Admin/admin_login.html')
 

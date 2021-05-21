@@ -17,7 +17,7 @@ urlpatterns = [
     path('remove_item/<int:id>', views.remove_item, name="remove_item"),
     
     path('check_out/', views.check_out, name="check_out"),
-    path('order_placed', views.order_place_animation, name="order_place_animation"),
+    path('order_placed/', views.order_place_animation, name="order_place_animation"),
 
     path('order', views.order, name="order"),
     path('order-detail/<int:id>', views.order_detail, name="order_detail"),
@@ -28,4 +28,9 @@ urlpatterns = [
     path('add_address/<int:id>', views.add_address, name="add_address"),
     path('edit_address/<int:id>', views.edit_address, name="edit_address"),
     path('delete_address/<int:id>', views.delete_address, name="delete_address"),
+    
+    # Payments ----
+    # path('payment/', views.payment, name="payment"),
+    path('paypal/', views.paypal, name="paypal"),
+    path('razorpay/', views.razorpay, name="razorpay"),
 ]

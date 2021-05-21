@@ -1,10 +1,12 @@
-#!/bin/sh
-'''exec' "/home/athif/Desktop/Projects/SPS/Week 8/ePalace/venv/bin/python" "$0" "$@"
-' '''
-# -*- coding: utf-8 -*-
+#!"/home/athif/Desktop/Projects/SPS/Week 8/ePalace/venv/bin/python"
+# EASY-INSTALL-ENTRY-SCRIPT: 'chardet==4.0.0','console_scripts','chardetect'
+__requires__ = 'chardet==4.0.0'
 import re
 import sys
-from chardet.cli.chardetect import main
+from pkg_resources import load_entry_point
+
 if __name__ == '__main__':
-    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    sys.exit(main())
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(
+        load_entry_point('chardet==4.0.0', 'console_scripts', 'chardetect')()
+    )

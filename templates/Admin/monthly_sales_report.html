@@ -1,0 +1,61 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %} Dashboard | Admin {% endblock title %}
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-5">
+            <h5>Monthly Sales Report</h5>
+        </div>
+        
+        <div class="col-md-7">
+            <form action="" method="POST" class="mr-2">
+                {% csrf_token %}
+                <label for="">From</label>
+                <input type="month" name="from_date">
+                <label for="">To</label>
+                <input type="month" name="to_date">
+                <button class="btn btn-info btn-sm">submit</button>    
+            </form>
+        </div>
+
+    </div>
+    <table class="table">
+      <thead id="myHeader">
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Date</th>
+          <th scope="col">OderID</th>
+          <th scope="col">User</th>
+          <th scope="col">Product</th>
+          <th scope="col">Payment Method</th>
+          <th scope="col">Status</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for mr in month_order %}
+        <tr id="tr">
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ mr.time_stamp }}</td>
+          <td>#EPLC9{{ mr.id }}</td>
+          <td>{{ mr.user.username }}</td>
+          <td>{{ mr.product.title }}</td>
+          <td>{{ mr.payment }}</td>
+          <td>{{ mr.order_status }}</td>
+          <td>&#8377;{{ mr.product_price }}/-</td>
+          
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3 class="text-info">{{ message }}</h3>
+    
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

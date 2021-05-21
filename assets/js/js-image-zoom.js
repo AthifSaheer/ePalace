@@ -305,17 +305,23 @@
                     backgroundPosition = '-' + backgroundTop + 'px ' + '-' + backgroundRight + 'px';
                     data.zoomedImg.element.style.backgroundPosition = backgroundPosition;
                     data.zoomLens.element.style.cssText += 'top:' + offsetY + 'px;' + 'left:' + offsetX + 'px;display: block;';
+                    // alert("02")
 
                 }
             },
             handleMouseEnter: function () {
                 data.zoomedImg.element.style.display = 'block';
                 data.zoomLens.element.style.display = 'block';
+                // document.getElementById('imgZoomHideDiv')
+                // .style.display = "none";
+                // alert("01")
 
             },
             handleMouseLeave: function () {
                 data.zoomedImg.element.style.display = 'none';
                 data.zoomLens.element.style.display = 'none';
+                // document.getElementById('imgZoomHideDiv')
+                // .style.display = "block";
             },
             handleScroll: function () {
                 offset = getOffset(data.sourceImg.element);

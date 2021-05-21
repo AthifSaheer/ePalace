@@ -3,118 +3,200 @@
 {% block title %} Dashboard | Admin {% endblock title %}
 {% block content %}
 
-    <div class="content-wrapper">
-        <div class="content">						 
-                <!-- Top Statistics -->
-                <div class="row">
-                  <div class="col-xl-3 col-sm-6">
-                    <div class="card card-mini mb-4">
-                      <div class="card-body">
-                        <h2 class="mb-1">71,503</h2>
-                        <p>Online Signups</p>
-                        <div class="chartjs-wrapper">
-                          <canvas id="barChart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-3 col-sm-6">
-                    <div class="card card-mini  mb-4">
-                      <div class="card-body">
-                        <h2 class="mb-1">9,503</h2>
-                        <p>New Visitors Today</p>
-                        <div class="chartjs-wrapper">
-                          <canvas id="dual-line"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-3 col-sm-6">
-                    <div class="card card-mini mb-4">
-                      <div class="card-body">
-                        <h2 class="mb-1">71,503</h2>
-                        <p>Monthly Total Order</p>
-                        <div class="chartjs-wrapper">
-                          <canvas id="area-chart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-3 col-sm-6">
-                    <div class="card card-mini mb-4">
-                      <div class="card-body">
-                        <h2 class="mb-1">9,503</h2>
-                        <p>Total Revenue This Year</p>
-                        <div class="chartjs-wrapper">
-                          <canvas id="line"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-    
-    
-                <!-- Sales Graph -->
-            <!-- <div class="row">
-                <div class="col-xl-8 col-md-12">
-                    <div class="card card-default" data-scroll-height="675">
-                      <div class="card-header">
-                        <h2>Sales Of The Year</h2>
-                      </div>
-                      <div class="card-body">
-                        <canvas id="linechart" class="chartjs"></canvas>
-                      </div>
-                      <div class="card-footer d-flex flex-wrap bg-white p-0">
-                        <div class="col-6 px-0">
-                          <div class="text-center p-4">
-                            <h4>$6,308</h4>
-                            <p class="mt-2">Total orders of this year</p>
-                          </div>
-                        </div>
-                        <div class="col-6 px-0">
-                          <div class="text-center p-4 border-left">
-                            <h4>$70,506</h4>
-                            <p class="mt-2">Total revenue of this year</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div> -->
+<div class="content-wrapper">
+  <div class="content">						 
+    <!-- Top Statistics -->
+    <div class="row">
 
-                <!-- Doughnut Chart -->
-                <!-- <div class="col-xl-4 col-md-12">
-                <div class="card card-default" data-scroll-height="675">
-                  <div class="card-header justify-content-center">
-                    <h2>Orders Overview</h2>
-                  </div>
-                  <div class="card-body" >
-                    <canvas id="doChart" ></canvas>
-                  </div>
-                  <a href="#" class="pb-5 d-block text-center text-muted"><i class="mdi mdi-download mr-2"></i> Download overall report</a>
-                  <div class="card-footer d-flex flex-wrap bg-white p-0">
-                    <div class="col-6">
-                      <div class="py-4 px-4">
-                        <ul class="d-flex flex-column justify-content-between">
-                          <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: #4c84ff"></i>Order Completed</li>
-                          <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: #80e1c1 "></i>Order Unpaid</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="col-6 border-left">
-                      <div class="py-4 px-4 ">
-                        <ul class="d-flex flex-column justify-content-between">
-                          <li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: #8061ef"></i>Order Pending</li>
-                          <li><i class="mdi mdi-checkbox-blank-circle-outline mr-2" style="color: #ffa128"></i>Order Canceled</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div class="col-xl-3 col-sm-6">
+        <div class="card card-mini mb-4">
+          <div class="card-body">
+            <h2 class="mb-1">0{{ user_count }}</h2>
+            <p>Total Users</p>
+            <div class="chartjs-wrapper">
+              <canvas id="barChart"></canvas>
             </div>
-                      </div> -->
-    
+          </div>
+        </div>
+      </div>
 
+      <div class="col-xl-3 col-sm-6">
+        <div class="card card-mini  mb-4">
+          <div class="card-body">
+            <h2 class="mb-1">0{{ category_count }}</h2>
+            <p>Total category</p>
+            <div class="chartjs-wrapper">
+              <canvas id="dual-line"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-sm-6">
+        <div class="card card-mini mb-4">
+          <div class="card-body">
+            <h2 class="mb-1">0{{ product_count }}</h2>
+            <p>Total products</p>
+            <div class="chartjs-wrapper">
+              <canvas id="area-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-sm-6">
+        <div class="card card-mini mb-3">
+          <div class="card-body">
+            <h2 class="mb-2">{{ order_count }}</h2>
+            <p>Total orders</p>
+            <div class="chartjs-wrapper">
+              <canvas id="line"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    
+<!-- ========================= myown ================================ -->
+
+ 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<div class="container">
+  <div class="row" style="width: 1000px; height: 530px;">
+  <canvas id="todayChart" ></canvas> <!--  style="width: 100px; height: 100px;" -->
+  <canvas id="weekChart" ></canvas> <!--  style="width: 100px; height: 100px;" -->
+  <canvas id="MonthChart" ></canvas> <!--  style="width: 100px; height: 100px;" -->
+  </div>
 </div>
+   
+<script>
+  
+// ------ TODAY SALES-------------------------
+var ctx = document.getElementById('todayChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        // labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: {{ today_product_list|safe }},
+        datasets: [{
+            label: 'Today sales',
+            data: {{ today_total_list|safe }},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+
+// ------ WEEK SALES-------------------------
+var ctx = document.getElementById('weekChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        // labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: {{ week_product_list|safe }},
+        datasets: [{
+            label: '# Week sales',
+            data: {{ week_total_list|safe }},
+            backgroundColor: [
+              'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(54, 162, 235, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+// ------ Month SALES-------------------------
+var ctx = document.getElementById('MonthChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ month_product_list|safe }},
+        datasets: [{
+            label: '# Monthly sales',
+            data: {{ month_total_list|safe }},
+            backgroundColor: [
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 206, 86, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+
+</script>
+
+
+
+  </div>
 </div>
+
 
 {% endblock content %}

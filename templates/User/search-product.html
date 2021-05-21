@@ -11,36 +11,63 @@
 
                     <div class="col-3" id="filter-div">
 
+                        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+                        <script>
+                          // $(document).ready(function () {
+                          //     $('.form-check-input').click(function () {
+                          //         document.getElementById('price').innerHTML = $(this).val();
+                          //     });
+
+                          // });
+
+                          function check(browser) {
+                            document.getElementById("answer").value=browser;
+                            document.getElementById("sb-btn").click();
+                          }
+                        </script>
+                        <form action="" method="GET">
+                          <!-- {% csrf_token %} -->
+                          <input type="text" hidden name="keyword" value="{{keyword}}" size="20">
+                          <input type="text" hidden id="answer" name="filter-data" size="20">
+                          <button hidden id="sb-btn">submit</button>
+                        </form>
+
                         <h5 class="mt-3">Price</h5>
                         
-                        {% for prd in product %}
                         <div class="form-check ml-2">
-                          <input class="form-check-input" type="checkbox" name="priceten" value="{{ prd.selling_price.id }}">
-                          <label class="form-check-label">
-                            {{ prd.selling_price }}
-                          </label>
+                          <input class="form-check-input" type="checkbox" name="priceten" onclick="check(this.value)" value="20000">
+                          <label class="form-check-label">> 20,000</label>
                         </div>
-                        {% endfor %}
+
+                        <div class="form-check ml-2">
+                          <input class="form-check-input" type="checkbox" name="pricetwenty" onclick="check(this.value)" value="50000">
+                          <label class="form-check-label">> 50,000</label>
+                        </div>
+
+                        <div class="form-check ml-2">
+                          <input class="form-check-input" type="checkbox" name="pricefifty" onclick="check(this.value)" value="100000">
+                          <label class="form-check-label">> 1,00,000</label>
+                        </div>
 
 
                         <h5 class="mt-3">Ram</h5>
 
                         <div class="form-check ml-2">
-                            <input class="form-check-input" data-filter="ram" type="checkbox" data-filter="ram" value="1" id="flexCheckDefault" name="one">
+                            <input class="form-check-input" data-filter="ram" type="checkbox" data-filter="ram" onclick="check(this.value)" value="4" id="flexCheckDefault" name="one">
                             <label class="form-check-label" for="flexCheckDefault">
                               4GB
                             </label>
                         </div>
 
                         <div class="form-check ml-2">
-                            <input class="form-check-input" data-filter="ram" type="checkbox" value="2" id="flexCheckDefault" name="one">
+                            <input class="form-check-input" data-filter="ram" type="checkbox" value="8" onclick="check(this.value)" id="flexCheckDefault" name="one">
                             <label class="form-check-label" for="flexCheckDefault">
                               8GB
                             </label>
                         </div>
 
                         <div class="form-check ml-2">
-                            <input class="form-check-input" data-filter="ram" type="checkbox" value="3" id="flexCheckDefault" name="one">
+                            <input class="form-check-input" data-filter="ram" type="checkbox" onclick="check(this.value)" value="16" id="flexCheckDefault" name="one">
                             <label class="form-check-label" for="flexCheckDefault">
                               16GB
                             </label>
@@ -49,21 +76,21 @@
                         <h5 class="mt-3">Storage</h5>
 
                         <div class="form-check ml-2">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <input class="form-check-input" type="checkbox" value="64" onclick="check(this.value)" id="flexCheckDefault" name="one">
                             <label class="form-check-label" for="flexCheckDefault">
                               64GB
                             </label>
                         </div>
 
                         <div class="form-check ml-2">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <input class="form-check-input" type="checkbox" value="128" onclick="check(this.value)" id="flexCheckDefault" name="one">
                             <label class="form-check-label" for="flexCheckDefault">
                               128GB
                             </label>
                         </div>
 
                         <div class="form-check ml-2">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="one">
+                            <input class="form-check-input" type="checkbox" value="512" onclick="check(this.value)" id="flexCheckDefault" name="one">
                             <label class="form-check-label" for="flexCheckDefault">
                               512GB
                             </label>
