@@ -28,32 +28,90 @@
                     {% if profile.image %}
                     <img src="{{ profile.image.url }}" class="image" width="200px" height="200px" alt="{{ error }}">
                     {% else %}
+                    
                     <img src="/assets/img/avatar.png" class="image" width="200px" height="200px" alt="">
                     {% endif %}
                     
-                    
                     <div class="middle">
                         <a href="{% url 'change_profile_image' user.id %}"><div class="text">Change Image</div></a>
-                      </div>
-                      
+                    </div>
+                    
                 </div>
 
                 <div class="col-md-3" id="between-div">
                     <h5 id="title">Username:</h5>
-                    <p id="sub-txt">Athif Saheer</p>
+                    <p id="sub-txt">{{ user.username }}</p>
                     <h5 id="title">Gender:</h5>
                     <p id="sub-txt">Male</p>
                 </div>
-
+                
                 <div class="col-md-3" id="between-div">
                     <h5 id="title">Email:</h5>
-                    <p id="sub-txt">jflkslk@gjlg.com</p>
+                    <p id="sub-txt">{{ user.email }}</p>
                     <h5 id="title">Phone no:</h5>
-                    <p id="sub-txt">+91 90 89893 898</p>
+                    <p id="sub-txt">+91 90 8989 3898</p>
+                </div>
+                
+            </div>
+            
+        </div>
+
+        <div class="col-md-12" id="top-div">
+            
+            <div class="row">
+
+                <div class="col-md-12 mb-3">
+                    <h4 id="title">Referal Details</h4>
                 </div>
 
-            </div>
+                <div class="col-md-5">
+                    <div class="referal-code-div">
+                        <span>Referal code:  </span>
+                        {% if referral_id %}
+                        {{ referral_id.code }}
+                        {% else %}
+                        Not Generated.
+                        {% endif %}
+                        <br><br>
+                        <span>Referal link:</span>
+                        {% if referral_id %}
+                        <a href="{% url 'signup_with_ref_code' referral_id.code %}">
+                            http://127.0.0.1:8000/ accounts/signup/ref/link/{{ referral_id.code }}
+                        </a>
+                        {% else %}
+                        Link not available.
+                        {% endif %}
+                    </div>
+                </div>
 
+                <div class="col-md-7">
+                    <h4 class="text-info">Under ME:</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Join date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if referral_id_itarable %}
+                        {% for rid in referral_id_itarable %}
+                          <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ rid.user }}</td>
+                            <td>{{ rid.created_at }}</td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                      {% else %}
+                        <p>No users under you.</p>
+                    {% endif %}
+                </div>
+                
+            </div>
+            
         </div>
 
         <div class="col-md-12" id="top-div">
@@ -160,12 +218,20 @@
 
     .text {
         margin-top: 180px;
-        background-color: #04AA6D;
-        color: white;
+        background-color: #f8f8f8;
+        color: rgb(87, 87, 87);
         /* width: 70%; */
         font-size: 16px;
         padding: 8px 16px;
     }
+
+    .referal-code-div, .referal-code-div a {
+        color: rgb(0, 109, 128);
+    }
+    .referal-code-div span{
+        color: rgb(58, 204, 204);
+    }
+
 
 </style>
 {% endblock content %}

@@ -1,3 +1,4 @@
+from accounts.models import RefLink
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -336,16 +337,23 @@ def cancel_order(request, id):
 
 def profile(request, id):
     user = User.objects.get(id=id)
+    referral_id = RefLink.objects.get(user=user)
+    referral_id_itarable = RefLink.objects.filter(recommended_by=user)
+    print(str(id) + "-----   referral_id_itarable ----------------")
+    print(str(referral_id_itarable) + "-----   referral_id_itarable ----------------")
+    
     try:
         address = Address.objects.filter(user=user)
         adrs_count = address.count()
-        print(adrs_count)
         profile = ProfileImage.objects.get(user=user)
 
         context = {
+            'user':user,
             'profile':profile,
             'address':address,
             'adrs_count':adrs_count,
+            'referral_id':referral_id,
+            'referral_id_itarable':referral_id_itarable,
         }
 
         return render(request, 'User/profile.html', context)
@@ -356,6 +364,8 @@ def profile(request, id):
         context = {
             'address':address,
             'error':error,
+            'referral_id':referral_id,
+            'referral_id_itarable':referral_id_itarable,
         }
 
         return render(request, 'User/profile.html', context)

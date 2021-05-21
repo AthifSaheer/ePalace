@@ -1,13 +1,14 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.core.checks import messages
 from django.db.models import query
+from django.db.models.expressions import Ref
 from django.views.generic.base import TemplateView, View
 from user_panel.views import _cart_session_id
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from user_panel.models import *
-from .models import Admin
+from .models import Admin, RefLink
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -206,7 +207,7 @@ def change_password(request, id):
 
     return render(request, 'change_password/change_password.html')
 
-from ePalace import settings
+# from ePalace import settings
 
 
 
@@ -240,6 +241,75 @@ def enter_otp(request, otp, username):
 
     return render(request, 'User/enter_otp.html')
 
+
+
+
+def ref_link(request, *args, **kwargs):
+    code = str(kwargs.get('ref_code'))
+    try:
+        ref_link_table = RefLink.objects.get(code=code)
+        request.session['ref_session'] = ref_link_table.id
+    except:
+        pass
+
+    print(request.session.get_expiry_age())
+    return render(request, 'User/signup.html', {})
+
+
+# signup
+def xxxxxx(request):
+    session_id = request.session.get('ref_session')
+    # sesssion nil ulla user eduthu
+    recommended_user = RefLink.objects.get(id=session_id)
+
+    # ippo register cheytha user eduthu
+    user = User.objects.get(id=signup_user)
+
+    # register cheytha user nte REflink table get cheythu
+    now_registered_user = RefLink.objects.get(id=user)
+    now_registered_user.recommended_by = recommended_user
+
+
+
+
+
+def signup_with_ref_code(request, ref_code):
+    user = request.user
+    if user.is_authenticated:
+        return redirect('user_home')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            confirm_password = request.POST.get('confirm-password')
+            if password == confirm_password:
+                user = User.objects.create_user(username=username, email=email, password=password)
+
+                if ref_code:
+                    # session_id = request.session.get('ref_session')
+                    # session_id = ref_code
+                    recommended_user = RefLink.objects.get(code=ref_code)
+                    user = User.objects.get(username=username)
+
+                    print(str(user) + "---------------------- user -------------;;")
+
+                    # register cheytha user nte REflink table get cheythu
+                    now_registered_user = RefLink.objects.get(user=user)
+                    print("-----------    ----------- Passed away-------------------    -------------;;")
+                    now_registered_user.recommended_by = recommended_user.user
+                    now_registered_user.save()
+                    print("--------------- recom-by keri------------------------")
+
+                auth_login(request, user)
+                print("user created")
+                return redirect('user_home')
+            else:
+                pword_error = "Password did not match ! !"
+                print(pword_error)
+                return render(request, 'User/signup.html', {'pword_error':pword_error})
+
+    return render(request, 'User/signup.html')
 
 
 
