@@ -155,11 +155,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "liteboook@gmail.com"
-EMAIL_HOST_PASSWORD = "Easdfghjkl29"
+EMAIL_HOST_PASSWORD = "**************"
 
 
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
-
-
-# account_sid = 'AC18c664854e0518c87a3bd6e0d2e1c5a5'
-# auth_token = '573907788e304ac17f1e5616438f4ffc'
