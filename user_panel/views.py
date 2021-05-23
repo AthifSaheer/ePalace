@@ -13,28 +13,26 @@ from .models import *
 import razorpay
 import requests
 import json
+from datetime import datetime, timedelta
 
 
 
-def product_offer(slug):
+def delete_product_offer(slug):
     product = Product.objects.get(slug=slug)
     try:
         prd_offer = ProductOffer.objects.get(product=product)
-        today = timezone.now()
+        today = datetime.now() #('2018-11-10 10:55:31', '%Y-%m-%d %H:%M:%S')
 
-        if prd_offer.time_period < today:
+        offer_period = str(prd_offer.date_period) +" "+ str(prd_offer.time_period)
+        y = str(today)
+
+        if offer_period < str(today):
             prd_offer.delete()
             product.offer_price = 0
             product.save()
             return redirect('prd_detail')
-        else:
-            percentage_price = (product.selling_price / 100) * prd_offer.offer_percentage
-            offer_price = product.selling_price - percentage_price
-            product.offer_price = offer_price
-            product.save()
-            return offer_price
     except:
-        print("------------ Exception worked ----------------")
+        print("------------ Exception_01 worked ----------------")
 
 
 def category_offer(category):
@@ -42,23 +40,34 @@ def category_offer(category):
     try:
         ctgry_offer = CategoryOffer.objects.get(category=category)
         products = Product.objects.filter(category=category)
-        print(str(products) + "----- all caategory products ------------------")
         today = timezone.now()
 
         for prd in products:
-            if ctgry_offer.time_period < today():
-                ctgry_offer.delete()
-                prd.offer_price = 0
-                print("--------------------- category offer table deleted----------------")
-            else:
-                p = (prd.selling_price / 100) * category_offer.offer_percentage
-                offer_price = prd.offer_price - p
-                prd.save()
-                print("--------------- category offer table time kazhinjittillaa -----------")
+            try:
+                product_offer_table = ProductOffer.objects.get(product=prd)
+            except:
+                pass
 
-            return offer_price
+            if ctgry_offer.time_period < today:
+                ctgry_offer.delete()
+                if prd in product_offer_table:
+                    continue
+                else:
+                    prd.offer_price = 0
+                    print("--------------------- category offer table deleted----------------")
+            else:
+                if prd in product_offer_table:
+                    continue
+                else:
+                    offer = (prd.selling_price / 100) * ctgry_offer.offer_percentage
+                    offer_price = prd.selling_price - offer
+                    prd.offer_price = offer_price
+                    prd.save()
+                    print("--------------- category offer table time kazhinjittillaa -----------")
+
+                return offer_price
     except:
-        print("------------ Exception worked ----------------")
+        print("------------ Exception_02 worked ----------------")
 
 
 def cupon_referral_code(request):
@@ -78,8 +87,8 @@ def home(request):
 def category_wised_product(request):
     laptop = Category.objects.get(category="Laptop")
     mobile = Category.objects.get(category="Mobile")
-    laptop_products = Product.objects.filter(category=laptop)
-    mobile_products = Product.objects.filter(category=mobile)
+    laptop_products = Product.objects.filter(category=laptop).order_by('-id')
+    mobile_products = Product.objects.filter(category=mobile).order_by('-id')
 
     category_offer(laptop) # category offer function called
 
@@ -93,17 +102,20 @@ def product_detail(request, slug):
     url_slug = slug
     product_detailed = Product.objects.get(slug=url_slug)
 
-    product_offer(url_slug) # product offer function called
+    delete_product_offer(url_slug) # product offer function called
 
     try:
         product_offer_table = ProductOffer.objects.get(product=product_detailed)
+        # category_offer_table = CategoryOffer.objects.get(category=product_detailed.category)
         context = {
             'product_detailed':product_detailed,
             'product_offer_table':product_offer_table,
+            # 'category_offer_table':category_offer_table,
         }
+        print("---------- ingott varndo -----------------")
         return render(request, 'User/productdetails.html', context)
     except:
-        pass
+        print("---------- Exception_02 worked -----------------")
     return render(request, 'User/productdetails.html', {'product_detailed':product_detailed,})
 
 

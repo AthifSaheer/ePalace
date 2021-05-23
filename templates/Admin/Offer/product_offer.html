@@ -1,0 +1,77 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %} Category Management | Admin panel {% endblock title %}
+{% block content %}
+
+<!----========================-->
+
+<style>
+    #table-div{
+        background: rgb(255, 255, 255);
+        padding: 10px;
+        border: 1px solid rgb(207, 207, 207);
+        margin-left: 15px;
+    }
+</style>
+
+
+
+<div class="row">
+
+    <div class="col-md-12">
+        <h2 class="mr-3 text-info text-center">Offer management</h2>
+        <h4 class="mr-3 mt-2 text-secondary text-center">Product Offer</h4>
+    </div>
+
+    <div class="col-md-11 mt-3" id="table-div">
+
+        <a class="btn btn-outline-secondary btn-sm float-right mb-3" href="{% url 'create_product_offer' %}">
+            <span class="d-none d-md-inline-block mr-2">Create new product offer</span>
+        </a>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Product</th>
+                <th scope="col">Offer for</th>
+                <th scope="col">Percentage</th>
+                <th scope="col">Create at</th>
+                <th scope="col">Time period</th>
+            </tr>
+            </thead>
+
+            <tbody>
+              {% for prd_ofr in product_offer %}
+                <tr>
+                <th scope="row">{{ forloop.counter }}1</th>
+                <td>{{ prd_ofr.product.title }}</td>
+                <td>{{ prd_ofr.offer_for}}</td>
+                <td>{{ prd_ofr.offer_percentage}}%</td>
+                <td>{{ prd_ofr.create_at }}</td>
+                <td>{{ prd_ofr.date_period }}, {{ prd_ofr.time_period }}</td>
+                <td class="text-right">
+                    <div class="dropdown show d-inline-block widget-dropdown">
+                      <a class="dropdown-toggle icon-burger-mini" href="" role="button" id="dropdown-recent-order1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static"></a>
+                      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-recent-order1">
+                        <li class="dropdown-item">
+                          <a href="{% url 'disable_product_offer' %}">Disable Offer</a>
+                        </li>
+                        <li class="dropdown-item">
+                          <a href="{% url 'edit_product_offer' prd_ofr.id %}">Edit Offer</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+  </div>
+
+
+{% endblock content %}
+
+

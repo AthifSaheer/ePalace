@@ -1,3 +1,4 @@
+from admin_panel.models import ProductOffer
 import re
 from django.contrib.auth.models import Permission
 from django.contrib.auth import get_user_model
@@ -430,3 +431,98 @@ def orders_status_change(request, id):
         'form':form,
     }
     return render(request, 'Admin/orders_status_change.html', context)
+
+
+# =========== Offer Management =========================
+def product_offer(request):
+    product_offer = ProductOffer.objects.all()
+    context = {
+        'product_offer':product_offer,
+    }
+    return render(request, 'Admin/Offer/product_offer.html', context)
+
+def create_product_offer(request):
+    form = CreateProductOfferForm(request.POST)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            product = form.cleaned_data.get('product')
+            offer_for = form.cleaned_data.get('offer_for')
+            offer_percentage = form.cleaned_data.get('offer_percentage')
+            date = form.cleaned_data.get('date')
+            time = form.cleaned_data.get('time')
+
+            ProductOffer(product, offer_for, offer_percentage, date, time)
+            form.save()
+
+            # ...................................................
+            product = Product.objects.get(title=product)
+            prd_offer = ProductOffer.objects.get(product=product)
+            percentage_price = (product.selling_price / 100) * prd_offer.offer_percentage
+            offer_price = product.selling_price - percentage_price
+            product.offer_price = offer_price
+            product.save()
+
+            # try:
+            # except:
+            #     print("------------ Exception_01 worked ----------------")
+
+            return redirect('product_offer')
+    context = {
+        'form':form,
+    }
+    return render(request, 'Admin/Offer/create_product_offer.html', context)
+    
+
+def edit_product_offer(request, id):
+    product_offer = ProductOffer.objects.get(id=id)
+    form = CreateProductOfferForm(instance=product_offer)
+
+    if request.method == 'POST':
+        form = CreateProductOfferForm(request.POST, request.FILES, instance=product_offer)
+        if form.is_valid():
+            form.save()
+
+            prd_offer = ProductOffer.objects.get(id=id)
+            product = Product.objects.get(title=prd_offer.product)
+            percentage_price = (product.selling_price / 100) * prd_offer.offer_percentage
+            offer_price = product.selling_price - percentage_price
+            product.offer_price = offer_price
+            product.save()
+
+            return redirect('product_offer')
+    return render(request, 'Admin/Offer/edit_product_offer.html', {'form':form})
+    
+
+def disable_product_offer(request):
+    pass
+    # return render(request, 'Admin/Offer/product_offer.html')
+    
+
+# .......................................................................
+
+def category_offer(request):
+    return render(request, 'Admin/Offer/category_offer.html')
+
+def create_category_offer(request):
+    pass
+
+def edit_category_offer(request):
+    pass
+
+def disable_category_offer(request):
+    pass
+
+# .......................................................................
+
+def cupon_ref_offer(request):
+    return render(request, 'Admin/Offer/cupon_ref_offer.html')
+
+def create_cupon_ref_offer(request):
+    pass
+
+def edit_cupon_ref_offer(request):
+    pass
+
+def disable_cupon_ref_offer(request):
+    pass

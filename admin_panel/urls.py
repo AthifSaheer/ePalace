@@ -36,4 +36,20 @@ urlpatterns = [
     path('orders', views.orders, name='orders'),
     path('orders/change/status/<int:id>', views.orders_status_change, name='orders_status_change'),
 
+    # Offer management
+    path('product/offer/', views.product_offer, name='product_offer'),
+    path('create/product/offer/', views.create_product_offer, name='create_product_offer'),
+    path('edit/product/offer/<int:id>/', views.edit_product_offer, name='edit_product_offer'),
+    path('disable/product/offer/', views.disable_product_offer, name='disable_product_offer'),
+    
+    path('category/offer/', views.category_offer, name='category_offer'),
+    path('create/category/offer/', views.create_category_offer, name='create_category_offer'),
+    path('edit/category/offer/', views.edit_category_offer, name='edit_category_offer'),
+    path('disable/category/offer/', views.disable_category_offer, name='disable_category_offer'),
+    
+
+    path('cupon+ref/offer/', views.cupon_ref_offer, name='cupon_ref_offer'),
+    path('create/cupon+ref/offer/', views.create_cupon_ref_offer, name='create_cupon_ref_offer'),
+    path('edit/cupon+ref/offer/', views.edit_cupon_ref_offer, name='edit_cupon_ref_offer'),
+    path('disable/cupon+ref/offer/', views.disable_cupon_ref_offer, name='disable_cupon_ref_offer'),
 ]
