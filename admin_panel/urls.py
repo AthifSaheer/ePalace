@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.admin_home, name='admin_home'),
     path('monthly/sales-report', views.monthly_sales_report, name='monthly_sales_report'),
     path('yearly/sales-report', views.yearly_sales_report, name='yearly_sales_report'),
+    path('convert/to/pdf', views.convert_to_pdf, name='convert_to_pdf'),
 
     # Product management
     path('products', views.products, name='products'),

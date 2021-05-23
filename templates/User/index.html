@@ -54,7 +54,11 @@
                         <a href="{% url 'prd_detail' prd.slug %}"><img src="{{ prd.image.url }}" width="1500px" height="1500px" alt="" class="menu__img"></a>
                         <a href="{% url 'prd_detail' prd.slug %}"><h3 class="menu__name">{{ prd.title }}</h3></a>
                         <span class="menu__detail">{{ prd.description|slice:':22' }}...</span>
-                        <span class="menu__preci">₹{{ prd.selling_price }} <s>₹{{ prd.marked_price }}</s> </span>
+                        
+                        {% if prd.offer_price > 0 %}
+                        <small class="badge badge-light text-success">New offer available</small>
+                        {% endif %}
+                        <span class="menu__preci">&#8377;{{ prd.selling_price }} <s>&#8377;{{ prd.marked_price }}</s> </span>
                         
                         {% if prd.quantity <= 0 %}
                         <a href="{% url 'add_to_cart' prd.id %}" hidden class="button menu__button"><i class='bx bx-cart-alt'></i></a>

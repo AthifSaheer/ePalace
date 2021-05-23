@@ -1,10 +1,12 @@
-from accounts.models import RefLink
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sessions.models import Session
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import authenticate
+from accounts.models import RefLink
+from django.utils import timezone
+from admin_panel.models import ProductOffer, CategoryOffer, CuponOrReferralOffer
 from admin_panel.forms import *
 from django.db.models import Q
 from .models import *
@@ -14,10 +16,96 @@ import json
 
 
 
+def product_offer(slug):
+    product = Product.objects.get(slug=slug)
+    try:
+        prd_offer = ProductOffer.objects.get(product=product)
+        today = timezone.now()
+
+        if prd_offer.time_period < today:
+            prd_offer.delete()
+            product.offer_price = 0
+            product.save()
+            return redirect('prd_detail')
+        else:
+            percentage_price = (product.selling_price / 100) * prd_offer.offer_percentage
+            offer_price = product.selling_price - percentage_price
+            product.offer_price = offer_price
+            product.save()
+            return offer_price
+    except:
+        print("------------ Exception worked ----------------")
+
+
+def category_offer(category):
+    
+    try:
+        ctgry_offer = CategoryOffer.objects.get(category=category)
+        products = Product.objects.filter(category=category)
+        print(str(products) + "----- all caategory products ------------------")
+        today = timezone.now()
+
+        for prd in products:
+            if ctgry_offer.time_period < today():
+                ctgry_offer.delete()
+                prd.offer_price = 0
+                print("--------------------- category offer table deleted----------------")
+            else:
+                p = (prd.selling_price / 100) * category_offer.offer_percentage
+                offer_price = prd.offer_price - p
+                prd.save()
+                print("--------------- category offer table time kazhinjittillaa -----------")
+
+            return offer_price
+    except:
+        print("------------ Exception worked ----------------")
+
+
+def cupon_referral_code(request):
+    return render(request, 'User/cupon_ref_code.html')
+
+
 def home(request):
     print(request)
     product = Product.objects.all().order_by('-id')
-    return render(request, 'User/index.html' ,{'product':product})
+    context = {
+        'product':product,
+        # 'offer_price':offer_price,
+    }
+    return render(request, 'User/index.html' ,context)
+
+
+def category_wised_product(request):
+    laptop = Category.objects.get(category="Laptop")
+    mobile = Category.objects.get(category="Mobile")
+    laptop_products = Product.objects.filter(category=laptop)
+    mobile_products = Product.objects.filter(category=mobile)
+
+    category_offer(laptop) # category offer function called
+
+    context = {
+        'laptop_products':laptop_products,
+        'mobile_products':mobile_products,
+    }
+    return render(request, 'User/prd_catgry_wise.html', context)
+
+def product_detail(request, slug):
+    url_slug = slug
+    product_detailed = Product.objects.get(slug=url_slug)
+
+    product_offer(url_slug) # product offer function called
+
+    try:
+        product_offer_table = ProductOffer.objects.get(product=product_detailed)
+        context = {
+            'product_detailed':product_detailed,
+            'product_offer_table':product_offer_table,
+        }
+        return render(request, 'User/productdetails.html', context)
+    except:
+        pass
+    return render(request, 'User/productdetails.html', {'product_detailed':product_detailed,})
+
 
 
 def search(request):
@@ -61,25 +149,6 @@ def filter_data(request):
     return JsonResponse({'data':'hello'})
 
 
-def category_wised_product(request):
-    laptop = Category.objects.get(category="Laptop")
-    mobile = Category.objects.get(category="Mobile")
-    laptop_products = Product.objects.filter(category=laptop)
-    mobile_products = Product.objects.filter(category=mobile)
-    context = {
-        'laptop_products':laptop_products,
-        'mobile_products':mobile_products,
-    }
-    return render(request, 'User/prd_catgry_wise.html', context)
-
-
-
-def product_detail(request, slug):
-    url_slug = slug
-    product_detailed = Product.objects.filter(slug=url_slug)
-    return render(request, 'User/productdetails.html' ,{'product_detailed':product_detailed})
-
-
 def _cart_session_id(request):
     cart = request.session.session_key
     print(cart)
@@ -102,7 +171,10 @@ def cart(request):
         total = 0
 
         for crt_itm in cart_item:
-            total += (crt_itm.price * crt_itm.quantity)
+            if crt_itm.product.offer_price:
+                total += (crt_itm.product.offer_price * crt_itm.quantity)
+            else:
+                total += (crt_itm.price * crt_itm.quantity)
         
         CartItem(sub_total=total)
 
@@ -119,7 +191,6 @@ def cart(request):
         
     return render(request, 'User/cart.html')
         
-
 
 
 def add_to_cart(request, id):
@@ -144,11 +215,19 @@ def add_to_cart(request, id):
 
     except CartItem.DoesNotExist:
         if request.user.is_authenticated:
-            cart_item = CartItem.objects.create(user=request.user, product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
-            cart_item.save()
+            if product.offer_price > 0:
+                cart_item = CartItem.objects.create(user=request.user, product=product, cart=cart, quantity=1, price=product.offer_price, sub_total=product.offer_price)
+                cart_item.save()
+            else:
+                cart_item = CartItem.objects.create(user=request.user, product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
+                cart_item.save()
         else:
-            cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
-            cart_item.save()
+            if product.offer_price > 0:
+                cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.offer_price, sub_total=product.offer_price)
+                cart_item.save()
+            else:
+                cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
+                cart_item.save()
 
     return redirect('cart')
 
@@ -298,12 +377,10 @@ def paypal(request):
     return super(order_place_animation(request))
 
 
-# def payment(request):
-#     return render(request, 'User/payment.html')
-
 
 def order_place_animation(request):
     return render(request, 'User/order_place_animation.html')
+
 
 def order(request):
     orders = Order.objects.filter(user=request.user).order_by('-id')

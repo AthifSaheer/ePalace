@@ -11,16 +11,23 @@
         </div>
         
         <div class="col-md-7">
-            <form action="" method="POST" class="mr-2">
-                {% csrf_token %}
+            <form action="" method="GET" class="mr-2">
                 <label for="">From</label>
-                <input type="date" name="from_date">
+                <input type="date" name="from_date" min="2021-01-01" max="2021-12-31" onblur="func()">
                 <label for="">To</label>
-                <input type="date" name="to_date">
+                <input type="date" name="to_date" min="" max="2021-12-31">
                 <button class="btn btn-info btn-sm">submit</button>    
             </form>
         </div>
     </div>
+
+    <script>
+      function func() {
+        var from = document.getElementsByName('from_date')[0].value
+        var to = document.getElementsByName('to_date')[0]
+        to.min = from
+      }
+    </script>
 
     <table class="table">
       <thead id="myHeader">

@@ -14,45 +14,75 @@ from django.db.models import Sum
 from datetime import date, timedelta
 import datetime
 
+from django.core.files.storage import FileSystemStorage
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from django.http import HttpResponse
+
+from django.utils import timezone
+from .render import Render
+
+
+
 # =========== Admin Dashboard =========================
-
 def monthly_sales_report(request):
-    if request.method == 'POST':
-        from_ = request.POST['from_date']
-        to_ = request.POST['to_date']
+    try:
+        from_ = request.GET['from_date']
+        to_ = request.GET['to_date']
+    
+        if from_ or to_:
+            x = str(from_) + "-01"
+            y = str(to_) + "-01"
+            
+            month_order = Order.objects.filter(time_stamp__range=[x, y])
 
-        x = from_ + "-01"
-        y = to_ + "-01"
+            # print(str(month_order) + "******************************************************** month order **********")
 
-        month_order = Order.objects.filter(time_stamp__range=[x, y])
+            dowload_pdf = "Dowload PDF"
 
-        context = {
-            'month_order':month_order,
-        }
-        return render(request, 'Admin/monthly_sales_report.html', context)
-    else:
+            # def convert_to_pdf_01():
+            #     html_string = render_to_string('Admin/monthly_report_pdf.html', {'month_order': month_order})
+            #     print("----------- this way passed 01 -------------------------")
+
+            #     html = HTML(string=html_string)
+            #     html.write_pdf(target='/tmp/mypdf.pdf');
+            #     print("----------- this way passed 02 -------------------------")
+
+            #     fs = FileSystemStorage('/tmp')
+            #     with fs.open('mypdf.pdf') as pdf:
+            #         response = HttpResponse(pdf, content_type='application/pdf')
+            #         response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+            
+            # convert_to_pdf_01()
+            # print(str(convert_to_pdf_01) + "----------- convert_to_pdf_01 this way passed 03 -------------------------")
+
+            context = {
+                'month_order':month_order,
+                'dowload_pdf':dowload_pdf,
+            }
+            return render(request, 'Admin/monthly_sales_report.html', context)
+    except:
         message = "*choose date"
         context = {
             'message':message,
         }
         return render(request, 'Admin/monthly_sales_report.html', context)
+ 
+
 
 def yearly_sales_report(request):
-    if request.method == 'POST':
-        from_ = request.POST['from_date']
-        to_ = request.POST['to_date']
+    try:
+        from_ = request.GET['from_date']
+        to_ = request.GET['to_date']
+        if from_ or to_:
+            year_order = Order.objects.filter(time_stamp__range=[from_, to_])
 
-        year_order = Order.objects.filter(time_stamp__range=[from_, to_])
+            context = {
+                'year_order':year_order,
+            }
+            return render(request, 'Admin/yearly_sales_report.html', context)
 
-        print(str(from_) + "----------- from date- --------------;;;;;")
-        print(str(to_) + "----------- to date- --------------;;;;;")
-        print(str(year_order) + "----------- month_order - --------------;;;;;")
-
-        context = {
-            'year_order':year_order,
-        }
-        return render(request, 'Admin/yearly_sales_report.html', context)
-    else:
+    except:
         message = "*choose date"
         context = {
             'message':message,
@@ -165,6 +195,19 @@ def admin_home(request):
         return render(request, 'Admin/admin_login.html')
 
 
+def convert_to_pdf(request):
+    today = timezone.now()
+    params = {
+        'today': today,
+        'month_order': "jk",
+        'request': request
+    }
+    return Render.render('Admin/monthly_report_pdf.html', params)
+
+    
+
+
+
 # =========== Product Management =========================
 
 def products(request):
@@ -181,6 +224,7 @@ def delete_product(request, id):
     product.delete()
     return redirect('products')
     # return render()
+
 
 def create_products(request):
     form = CreateProductForm(request.POST, request.FILES)
@@ -230,7 +274,6 @@ def edit_product(request, id):
 
 
 # =========== User Management =========================
-
 def users(request):
     if request.session.has_key('admin'):
         user = User.objects.all().order_by('id')
@@ -248,11 +291,13 @@ def block_user(request, username):
 
     return redirect('users')
 
+
 def un_block_user(request, id):
     user = User.objects.get(id=id)
     user.is_active = True
     user.save()
     return redirect('users')
+
 
 def delete_user(request, id):
     user = User.objects.get(id=id)
@@ -263,7 +308,6 @@ def delete_user(request, id):
 
 
 # =========== Category Management =========================
-
 def categories(request):
     if request.session.has_key('admin'):
         category = Category.objects.all().order_by('id')
@@ -289,6 +333,7 @@ def create_category(request):
             return redirect('categories')
 
     return render(request, 'Admin/create_category.html', {'form':form})
+
 
 def edit_category(request, id):
     cat = Category.objects.get(id=id)
@@ -346,7 +391,6 @@ def delete_sub_category(request, id):
 
 
 # =========== Order Management =========================
-
 def orders(request):
     if request.session.has_key('admin'):
         orders = Order.objects.all().order_by('-id')
@@ -361,6 +405,7 @@ def orders(request):
         return render(request, 'Admin/order_management.html', context)
     else:
         return render(request, 'Admin/admin_login.html')
+
 
 def orders_status_change(request, id):
     orders = Order.objects.filter(id=id)

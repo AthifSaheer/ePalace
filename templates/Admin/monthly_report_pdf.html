@@ -1,0 +1,47 @@
+<html>
+<head>
+  <title>ePalace</title>
+  <style>
+    body {
+      background-color: #f7f7f7;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Monthly order</h1>
+  <h3>Issue date: {{today}}</h3>
+
+  <table class="table">
+    <thead id="myHeader">
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Date</th>
+        <th scope="col">OderID</th>
+        <th scope="col">User</th>
+        <th scope="col">Product</th>
+        <th scope="col">Payment Method</th>
+        <th scope="col">Status</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mr in month_order %}
+      <tr id="tr">
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ mr.time_stamp }}</td>
+        <td>#EPLC9{{ mr.id }}</td>
+        <td>{{ mr.user.username }}</td>
+        <td>{{ mr.product.title }}</td>
+        <td>{{ mr.payment }}</td>
+        <td>{{ mr.order_status }}</td>
+        <td>&#8377;{{ mr.product_price }}/-</td>
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  
+</body>
+</html>

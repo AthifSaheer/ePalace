@@ -30,7 +30,12 @@
 
                 <div class="col-md-4" id="between-div">
                     <h6 class="text-info">{{ crt.product.title }}</h6>
+
+                    {% if crt.product.offer_price > 0 %}
+                    <p class="text-secondary">&#8377;{{ crt.su_btotal }} <span>(offer price)</span> </p>
+                    {% else %}
                     <p class="text-secondary">&#8377;{{ crt.su_btotal }}</p>
+                    {% endif %}
                 </div>
 
                 <div class="col-md-5" id="between-div">

@@ -51,6 +51,8 @@ class Product(models.Model):
 
     marked_price = models.PositiveIntegerField()
     selling_price = models.PositiveIntegerField()
+    offer_price = models.PositiveIntegerField(blank=True, null=True, default=0)
+
     quantity = models.PositiveIntegerField()
     guarandeed = models.BooleanField()
     description = models.TextField()

@@ -69,7 +69,7 @@
                     <!-- <hr>
 
                     <div class="col-md-12">
-                        <h4 id="title">Order Summary</h4>
+                        <h5 id="title">Add Cupon code or Referral code</h5>
                     </div>
                     {% for prd in products %}
                     <div class="col-md-12">
@@ -191,9 +191,17 @@
         </div>
 
         <div class="col-md-4" id="right-div">
+            
+            <!-- <div class="col-md5">Price details</div>
+            <div class="col-md-">Add </div> -->
+
+            <span>Price details
+                <a href="{% url 'cupon_referral_code' %}">
+                    <small class="text-primary ml-2" style="font-size: 18px;">Add cupon or referral code</small>
+                </a>
+            </span>
 
             <div class="col-md-12">
-                Price details
                 <table class="table">
                     <tbody>
                         <tr>
