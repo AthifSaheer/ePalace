@@ -13,10 +13,15 @@ class Admin(models.Model):
     def __str__(self):
         return self.username
     
-# class UserMobileNumber(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     mobile_no = models.PositiveIntegerField(max_length=10)
-#     otp = models.PositiveIntegerField(max_length=6)
+class UserMobileNumber(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    mobile_no = models.CharField(max_length=13)
+    otp = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "User: " + str(self.user.username) + " - MobileNo: " + str(self.mobile_no)
+    
 
 
 class RefLink(models.Model):

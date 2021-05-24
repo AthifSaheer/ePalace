@@ -12,7 +12,7 @@ urlpatterns = [
     path('send_mail/', views.send_mail ,name='send_mail'),
 
     path('change_password/request/email/', views.change_password_request_email ,name='change_password_request_email'),
-    path('change_password/<int:id>/', views.change_password ,name='change_password'),
+    path('change_password/<int:id>/<uid>/<token>/', views.change_password ,name='change_password'),
     
     path('login/with_otp', views.login_with_otp, name='login_with_otp'),
     path('login/with_otp/enter_otp/<int:otp>/<str:username>/', views.enter_otp, name='enter_otp'),

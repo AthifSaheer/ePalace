@@ -1,3 +1,4 @@
+from django.core.files.base import ContentFile
 from admin_panel.models import ProductOffer
 import re
 from django.contrib.auth.models import Permission
@@ -22,6 +23,7 @@ from django.http import HttpResponse
 
 from django.utils import timezone
 from .render import Render
+import base64
 
 
 
@@ -229,6 +231,8 @@ def delete_product(request, id):
 
 def create_products(request):
     form = CreateProductForm(request.POST, request.FILES)
+    category_choice_field = Category.objects.all()
+    sub_category_choice_field = SubCategory.objects.all()
     if request.method == 'POST':
 
         if form.is_valid():
@@ -237,7 +241,11 @@ def create_products(request):
             slug = form.cleaned_data.get('slug')
             category = form.cleaned_data.get('category')
             sub_category = form.cleaned_data.get('sub_category')
+
             image = form.cleaned_data.get('image')
+            image1 = form.cleaned_data.get('image1')
+            image2 = form.cleaned_data.get('image2')
+            image3 = form.cleaned_data.get('image3')
 
             marked_price = form.cleaned_data['marked_price']
             selling_price = form.cleaned_data['selling_price']
@@ -254,11 +262,32 @@ def create_products(request):
             ram = form.cleaned_data.get('ram')
             size = form.cleaned_data.get('size')
 
+            # format, img1 = image.split(';base64,')
+            # ext = format.split('/')[-1]
+            # img_data1 = ContentFile(base64.b64decode(img1), name= title + '1.' + ext)
+
+            # format, img2 = image1.split(';base64,')
+            # ext = format.split('/')[-1]
+            # img_data2 = ContentFile(base64.b64decode(img1), name= title + '2.' + ext)
+
+            # format, img3 = image2.split(';base64,')
+            # ext = format.split('/')[-1]
+            # img_data3 = ContentFile(base64.b64decode(img1), name= title + '3.' + ext)
+
+            # format, img4 = image3.split(';base64,')
+            # ext = format.split('/')[-1]
+            # img_data4 = ContentFile(base64.b64decode(img1), name= title + '4.' + ext)
+
             # product = Product.objects.create(title=title, slug=slug, category=category, sub_category=sub_category, image=image, marked_price=marked_price, selling_price=selling_price, quantity=quantity, description=description, model_number=model_number, model_name=model_name, color=color, battery_backup=battery_backup, processor_brand=processor_brand, processor_name=processor_name, storage=storage, ram=ram, size=size)
-            product = Product(title, slug, category, sub_category, image, marked_price, selling_price, quantity, description, model_number, model_name, color, battery_backup, processor_brand, processor_name, storage, ram, size)
+            product = Product(title, slug, category, sub_category, image, image1, image2, image3, marked_price, selling_price, quantity, description, model_number, model_name, color, battery_backup, processor_brand, processor_name, storage, ram, size)
             form.save()
             return redirect('products')
-    return render(request, 'Admin/create_product.html', {'create_prd_form':form})
+    context = {
+        'create_prd_form':form,
+        'category_choice_field':category_choice_field,
+        'sub_category_choice_field':sub_category_choice_field,
+    }
+    return render(request, 'Admin/create_product.html', context)
 
 
 def edit_product(request, id):

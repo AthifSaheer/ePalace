@@ -123,25 +123,73 @@ def product_detail(request, slug):
 def search(request):
     if request.method == 'GET':
         keyword = request.GET.get('keyword')
-        filter_data = request.GET.get('filter-data')
+        filter_price01 = request.GET.get('price01')
+        filter_price02 = request.GET.get('price02')
+        filter_price03 = request.GET.get('price03')
 
-        product = Product.objects.all() #filter(Q(title__icontains=keyword))
-        if filter_data:
-            for prd in product:
-                if prd.category == filter_data+"GB":
-                    search_product = Product.objects.filter(Q(category__category__contains=filter_data+"GB"))
-                    count = search_product.count()
-                elif prd.selling_price >= int(filter_data):
-                    search_product = Product.objects.filter(Q(selling_price__contains=filter_data))
-                    count = search_product.count()
-                    print(str(search_product) + " --- searched fby filtered---------")
+        print(str(filter_price02) + "---------- filter price o2-----")
+        
+        search_product = Product.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(category__category__icontains=keyword) | Q(brand__sub_category__icontains=keyword) | Q(selling_price__icontains=keyword) | Q(slug__icontains=keyword))
+        
+        # ---------------------- Filter price 01 ----------------------
+        if filter_price01:
+            for sr_prd in search_product:
+                if str(sr_prd.selling_price) < str(filter_price01):
+                    filtered_product = search_product.filter(selling_price__lt=filter_price01)
+                    count = filtered_product.count()
                     
                     context = {
-                        'search_product':search_product,
+                        'search_product':filtered_product,
                         'count':count,
                         'keyword':keyword,
+                        'checked01':"checked",
                     }
                     return render(request, 'User/search-product.html', context)
+        
+        # ---------------------- Filter price 02 ----------------------
+        # elif filter_price02:
+        #     for sr_prd in search_product:
+        #         if str(sr_prd.selling_price) < str(filter_price02):
+        #             filtered_product = search_product.filter(selling_price__lt=filter_price02)
+        #             count = filtered_product.count()
+                    
+        #             context = {
+        #                 'search_product':filtered_product,
+        #                 'count':count,
+        #                 'keyword':keyword,
+        #                 'checked02':"checked",
+        #             }
+        #             return render(request, 'User/search-product.html', context)
+        elif filter_price02:
+            for sr_prd in search_product:
+                if str(sr_prd.selling_price) < str(filter_price02):
+                    filtered_product = search_product.filter(selling_price__lt=filter_price02)
+                    count = filtered_product.count()
+                    
+                    context = {
+                        'search_product':filtered_product,
+                        'count':count,
+                        'keyword':keyword,
+                        'checked02':"checked",
+                    }
+                    return render(request, 'User/search-product.html', context)
+
+        # ---------------------- Filter price 03 ----------------------
+        elif filter_price03:
+            for sr_prd in search_product:
+                if str(sr_prd.selling_price) < str(filter_price03):
+                    filtered_product = search_product.filter(selling_price__lt=filter_price03)
+                    count = filtered_product.count()
+                    
+                    context = {
+                        'search_product':filtered_product,
+                        'count':count,
+                        'keyword':keyword,
+                        'checked03':"checked",
+                    }
+                    return render(request, 'User/search-product.html', context)
+
+
         else:
             search_product = Product.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(category__category__icontains=keyword) | Q(brand__sub_category__icontains=keyword) | Q(selling_price__icontains=keyword) | Q(slug__icontains=keyword))
             count = search_product.count()
@@ -151,13 +199,19 @@ def search(request):
                 'count':count,
                 'keyword':keyword,
             }
-
             return render(request, 'User/search-product.html', context)
-    
+
     return render(request, 'User/search-product.html')
 
 # Filter data
 def filter_data(request):
+    print("--------------- Filter data ------------------------")
+
+    if request.method == "GET":
+        filter_ajax_data = request.body.get('filter')
+        print("--------------------------------------------------")
+        print(filter_ajax_data)
+        print("--------------------------------------------------")
     return JsonResponse({'data':'hello'})
 
 

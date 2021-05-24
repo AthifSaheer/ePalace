@@ -1,8 +1,9 @@
-
 {% extends 'Admin/base.html' %}
-{% load static%}
-{% block contend %}
 {% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Edit Product | Admin ePalece  {% endblock %}
+
+{% block content %}
 
 
 
@@ -12,49 +13,23 @@
 
     <!-- ============================ COMPONENT REGISTER   ================================= -->
     <link rel="stylesheet" href="{% static '/css/cropper.min.css' %}">
-        <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+        <div class="card mx-auto" style="max-width:870px; margin-top:40px;">
           <article class="card-body">
-            <header class="mb-4"><h4 class="card-title">Add Product</h4></header>
+            <header class="mb-4 text-center text-info"><h4 class="card-title">Add Product</h4></header>
             <form method="POST" action="" enctype="multipart/form-data">
                    {% csrf_token %}
                    {{ create_prd_form|crispy }}
                     {{ form.docfile }}
-                        <div class="form-group">
-                            <label>Product name</label>
-                            {{form.product_name}}
-                        </div>
-                        <div class="form-group">
-                            <label>Model Name</label>
-                            {{form.model_name}}
-                        </div>
-
-                        <div class="form-group">
-                            <label>slug</label> 
-                            {{form.slug}}                                               
-                        </div>                        
-                    
-                        <div class="form-group">
-                            <label>Price</label> 
-                            {{form.price}}                                               
-                        </div>
-                    
-                        <div class="form-group">
-                            <label>Photo</label>
-                           <!-- <input type="file" name="image1" accept="image/*" class="form-control" onchange="readURL(this);" required="" id="id_image4">                                -->
-                            {{form.image1}}              
-                            {{form.image2}}              
-                            {{form.image3}}              
-                            {{form.image4}}
-
+                        
                             
-                            <textarea name="pro_img1" id="pro_img1" style="display: none;"></textarea>
-                            <img src="" id="imageview1" style="height: auto;width: 100px;">
-                            <textarea name="pro_img2" id="pro_img2" style="display: none;"></textarea>
-                            <img src="" id="imageview2" style="height: auto;width: 100px;">
-                            <textarea name="pro_img3" id="pro_img3" style="display: none;"></textarea>
-                            <img src="" id="imageview3" style="height: auto;width: 100px;">
-                            <textarea name="pro_img4" id="pro_img4" style="display: none;"></textarea>
-                            <img src="" id="imageview4" style="height: auto;width: 100px;">
+                    <textarea name="pro_img1" id="pro_img1" style="display: none;"></textarea>
+                    <img src="" id="imageview1" style="height: auto;width: 100px;">
+                    <textarea name="pro_img2" id="pro_img2" style="display: none;"></textarea>
+                    <img src="" id="imageview2" style="height: auto;width: 100px;">
+                    <textarea name="pro_img3" id="pro_img3" style="display: none;"></textarea>
+                    <img src="" id="imageview3" style="height: auto;width: 100px;">
+                    <textarea name="pro_img4" id="pro_img4" style="display: none;"></textarea>
+                    <img src="" id="imageview4" style="height: auto;width: 100px;">
                     
                            
                         </div> 
@@ -158,71 +133,10 @@
            </div>
        </div>
    </div>
-                 
-                        
-
-                        <div class="form-group">
-                            <label>Description</label>
-                            {{form.description}}
-                        </div> 
-
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="inputState" class="form-control" name="category" value="">
-                                <option> Choose...</option>
-                                {% for cat in categ%}                                            
-                                <option id="category" selected="" value="{{cat.id}}" > <label for="category">{{cat.category_name}}</label></option>                                
-                                {% endfor %}
-                            </select>                            
-                        </div> 
-
-                        <div class="form-group">
-                            <label>Brand</label>
-                            {{form.brand}}
-                        </div>
-                        <div class="form-group">
-                            <label>strap color</label>
-                            {{form.strap_colour}}
-                        </div>
-                       
-                        <div class="form-group">
-                            <label>Gender</label>
-                            {{form.gender}}
-                        </div>
-                       
-                        
-                       
-                        
-                        <div class="form-group">
-                            <label>Water Resistance </label>
-                            {{form.water_resistance}}
-                        </div>
-                        <div class="form-group">
-                            <label>Analogue/Digital</label>
-                            {{form.analogue_or_digital}}
-                        </div>
-                        <div class="form-group">
-                            <label>Glass</label>
-                            {{form.glass}}
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>strap Type</label>
-                            {{form.strap_type}}
-                        </div>
-                        
 
 
-                        <div class="form-group">
-                            <label>Available Stock</label>
-                            {{form.stock}}
-                        </div> <!-- form-group end.// --> 
-                      
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-info" value="add product">
-                        </div> <!-- form-group// -->
-
-                       
+                       <button class="btn btn-outline-info btn-block">Add Product</button>
+                       <a href="" class="btn btn-outline-primary btn-block mb-5">Cancel</a>
                         
             </form>
 
@@ -241,11 +155,11 @@
     let result1 = document.querySelector('.result1'),
         save1 = document.querySelector('.save1'),
         cropped1 = document.querySelector('.imageview1'),
-        upload1 = document.querySelector('#id_image1'),
+        upload1 = document.querySelector('#id_image'),
         cropper1 = '';
 
     upload1.addEventListener('change', (e) => {
-            var fileName = document.getElementById("id_image1").value;
+            var fileName = document.getElementById("id_image").value;
             var idxDot = fileName.lastIndexOf(".") + 1;
             var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
             if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
@@ -299,11 +213,11 @@
     let result2 = document.querySelector('.result2'),
         save2 = document.querySelector('.save2'),
         cropped2 = document.querySelector('.imageview2'),
-        upload2 = document.querySelector('#id_image2'),
+        upload2 = document.querySelector('#id_more_image_one'),
         cropper2 = '';
 
     upload2.addEventListener('change', (e) => {
-            var fileName = document.getElementById("id_image2").value;
+            var fileName = document.getElementById("id_more_image_one").value;
             var idxDot = fileName.lastIndexOf(".") + 1;
             var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
             if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
@@ -357,11 +271,11 @@
   let result3 = document.querySelector('.result3'),
       save3 = document.querySelector('.save3'),
       cropped3 = document.querySelector('.imageview3'),
-      upload3 = document.querySelector('#id_image3'),
+      upload3 = document.querySelector('#id_more_image_two'),
       cropper3 = '';
 
   upload3.addEventListener('change', (e) => {
-      var fileName = document.getElementById("id_image3").value;
+      var fileName = document.getElementById("id_more_image_two").value;
       var idxDot = fileName.lastIndexOf(".") + 1;
       var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
       if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
@@ -414,11 +328,11 @@
 let result4 = document.querySelector('.result4'),
     save4 = document.querySelector('.save4'),
     cropped4 = document.querySelector('.imageview4'),
-    upload4 = document.querySelector('#id_image4'),
+    upload4 = document.querySelector('#id_more_image_three'),
     cropper4 = '';
 
 upload4.addEventListener('change', (e) => {
-    var fileName = document.getElementById("id_image4").value;
+    var fileName = document.getElementById("id_more_image_three").value;
     var idxDot = fileName.lastIndexOf(".") + 1;
     var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
     if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
@@ -470,4 +384,5 @@ save4.addEventListener('click', (e) => {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% endblock %}

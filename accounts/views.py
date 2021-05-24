@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from user_panel.models import *
-from .models import Admin, RefLink
+from .models import Admin, RefLink, UserMobileNumber
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -169,7 +169,7 @@ def change_password_request_email(request):
             whoisuser = user_email.id
             token = default_token_generator.make_token(user_email)
 
-            change_password_url = "http://127.0.0.1:8000/accounts/change_password/{}" .format(whoisuser) #{}{}".format(token)
+            change_password_url = "http://127.0.0.1:8000/accounts/change_password/{}{}{}" .format(whoisuser,uid,token) #{}{}".format(token)
             print(str(change_password_url) + '--change_password_url------------')
 
             send_mail(
@@ -183,7 +183,7 @@ def change_password_request_email(request):
     return render(request, 'change_password/change_password_request_email.html')
 
 
-def change_password(request, id):
+def change_password(request, id, uid, token):
     if request.method == 'POST':
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')
@@ -213,16 +213,29 @@ def change_password(request, id):
 
 def login_with_otp(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
         mobile_no = request.POST.get('mobile-number')
-        print(str(username) + str(mobile_no) + "--- username and mobile number given from html-----")
-        
-        otp = gen_otp()
-        message = "Hi, I hope you are going well. OTP: {}" .format(otp)
-        send_sms(message, mobile_no)
-        print(str(message) + "--- this is sended message -----")
+        # mobile_no_with_country_code = "+91" + mobile_no
+        # print(str(mobile_no_with_country_code) + "-----------mobile_no_with_country_code")
 
-        return redirect('enter_otp', otp, username)
+        # try:
+        mobile_no_table = UserMobileNumber.objects.get(mobile_no=mobile_no)
+        print(str(mobile_no_table) + " 000000000000000000000000000000")
+
+        username = mobile_no_table.user.username
+        
+        if mobile_no_table:
+            print('------- mobile_no_table true--- -----')
+            otp = gen_otp()
+            message = "Hi, I hope you are going well. OTP: {}" .format(otp)
+            send_sms(message, mobile_no)
+            print(str(message) + "--- this is sended message -----")
+            return redirect('enter_otp', otp, username)
+            # else:
+                
+        # except:
+        #     print("------exeption worked----------------------------")
+        #     error_message = "Invalid number !"
+        #     return render(request, 'User/logn_with_otp.html', {'error_message':error_message})
 
     return render(request, 'User/logn_with_otp.html')
 

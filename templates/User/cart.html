@@ -4,6 +4,36 @@
 {% block title %} Cart | ePalace {% endblock title %}
         
 {% block content %} 
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+                
+
+<script>
+    $(document).ready(function(){
+        $("#myname").on('click', function() {
+            // var x = $(this).attr("data-monu");
+            alert("clicked: ")
+            $.ajax({
+                url : "/filter_data",
+                type : "GET",
+                data : {filter : "product filter working.....!"},
+                success : function(){
+                    alert("ajax worked")
+                },
+                error : function() {
+                    alert("ajax not worked")
+                }
+            })
+            alert("ajax section finished")
+        })
+    })
+</script>
+
+
+
+
 
 
 <div class="container">
@@ -14,6 +44,7 @@
             <div class="row">
 
                 <div class="col-md-12">
+                    <p id="myname">Athif Saheer</p>
                     <h4 id="title">My cart({{ count }})</h4>
                 </div>
                 
@@ -43,10 +74,13 @@
                         {% if crt.quantity == 1 %}
                         <a class="plus-min-btn">-</a>
                         {% else %}
-                        <a href="{% url 'item_decrement' crt.product.id %}" class="plus-min-btn">-</a>
+                        <!-- <a href="{% url 'item_decrement' crt.product.id %}" class="plus-min-btn" onclick="minuseClick()">-</a> -->
                         {% endif %}
-                        <input type="text" id="input" value="{{ crt.quantity }}" disabled>
-                        <a href="{% url 'add_to_cart' crt.product.id %}" class="plus-min-btn">+</a>
+                        <p class="plus-min-btn" onclick="minuseClick()">-</p>
+                        <p class="plus-min-btn" onclick="plusClick()">+</p>
+                        <input type="text" disabled id="displayQuantity" value="{{ crt.quantity }}">
+                        <!-- <input type="text" id="input" value="{{ crt.quantity }}" disabled id="displayQuantity" data-monu="1"> -->
+                        <!-- <a href="{% url 'add_to_cart' crt.product.id %}" class="plus-min-btn" onclick="plusClick()">+</a> -->
                         <a href="{% url 'remove_item' crt.product.id %}" class="text-secondary">Remove</a>
                     </form>
                 </div>
@@ -55,6 +89,26 @@
                 {% endfor %}
 
             </div>
+
+
+            <script>
+                                
+                // minuseButton = document.getElementById("minuseBtn")
+                // plusButton = document.getElementById("plusBtn")
+                displayQuantity = document.getElementById("displayQuantity")
+
+                function minuseClick(){
+                    var value = 4
+                    value = isNaN(value) ? 0 : value;
+                    value++;
+                    displayQuantity.value = value
+                    alert('----------')
+                }
+                function plusClick(){
+                    alert('----------')
+                    displayQuantity.value = 33
+                }
+            </script>
 
         </div>
 
@@ -171,7 +225,7 @@
     }
 
     #input {
-        width: 30px;
+        width: 34px;
         padding-left: 8px;
         border: 2px solid rgb(238, 238, 238);
         background: rgb(216, 216, 216);

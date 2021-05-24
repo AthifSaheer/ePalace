@@ -41,26 +41,15 @@
             <h1 id="login-text">Login with OTP</h1>
             <!-- <span class="text-danger">{{ uname_error }}</span>
             <span class="text-danger">{{ block_error }}</span> -->
-
+                <span class="text-danger">{{ error_message }}</span>
                 <form class="needs-validation form_login" id="login-form" novalidate method="POST">
                   {% csrf_token %}
-                    <div class="form-row">
-
-                      <div class="col-md-12 mb-3">
-                        <label for="validationCustomUsername">Username</label>
-                        <div class="input-group">
-                          <input type="text" class="form-control" name="username" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
-                          <div class="invalid-feedback">
-                            Please choose a username.
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
                     <div class="form-row">
                       <div class="col-md-12 mb-3">
                         <label for="validationCustom03">Mobile Number</label>
-                        <input type="text" class="form-control" name="mobile-number" id="validationCustom03" placeholder="Mobile Number" required>
+                        <small class="text-secondary">with country code</small>
+                        <input type="text" class="form-control" name="mobile-number" id="validationCustom03" placeholder="Mobile Number" pattern="[0-9]|+|{13}" required>
                         <div class="invalid-feedback">
                           Please enter a valid mobile number.
                         </div>
