@@ -4,13 +4,13 @@
 {% block content %}
 
 <style>
-  #myInput{
-    border: 3px solid rgb(175, 175, 175);
+  #search_input{
+    border: 1px solid rgb(175, 175, 175);
     margin-right: 300px;
-    border-radius: 100px;
+    /* border-radius: 100px; */
     padding: 5px;
     background: rgb(255, 255, 255);
-    width: 300px;
+    width: 440px;
   }
 </style>
 
@@ -20,7 +20,7 @@
         <h2>Product Details</h2>
         
         <div class="">
-          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search products...">
+          <input type="text" id="search_input" placeholder="Search products...">
         </div>
         
         <a class="btn btn-outline-secondary btn-sm" href="{% url 'create_products' %}">
@@ -31,7 +31,7 @@
         <table id="myTable" class="table card-table table-responsive table-responsive-large" style="width:100%">
           <thead>
             <tr>
-              <th>No</th>
+              <!-- <th>No</th> -->
               <th>ID</th>
               <th class="d-none d-md-table-cell">Item Name</th>
               <th class="d-none d-md-table-cell">Image</th>
@@ -42,10 +42,10 @@
               <th></th>
             </tr>
           </thead>
-          <tbody >
+          <tbody id="box">
             {% for prd in products %}
             <tr>
-              <td>{{ forloop.counter }}</td>
+              <!-- <td>{{ forloop.counter }}</td> -->
               <td >{{ prd.id }}</td>
               <td >
                 <a class="text-dark" href="">{{ prd.title }}</a>
@@ -79,6 +79,43 @@
       </div>
   </div>
 
+  <!-- ------------------- SEARCH IN PRODUCT MANAGEMENT SCRIPT ------------------- -->
+  <script>
+    // var rowcount = 0
+    const data = '{{ products_js_data }}'
+    console.log(data)
+
+    const redata = JSON.parse(data. replace(/&quot;/g, '"'))
+    console.log(redata)
+    
+    var searchInput = document.getElementById("search_input")
+    console.log(searchInput)
+
+    let filteredArr = []
+    searchInput.addEventListener('keyup', (e)=>{
+      box.innerHTML = ""
+      filteredArr = redata.filter(product=> product['title'].includes(e.target.value))
+      console.log(filteredArr)
+      if (filteredArr.length > 0){
+        filteredArr.map(product=> {
+          // for (i=0; i<filteredArr.length; i++){
+          //   var count = i
+          // }
+          box.innerHTML += `
+          <td>${product['id']}</td>
+          <td>${product['title']}</td>
+          <td><img src="${product['image']}" /></td>
+          <td>${product['marked_price']}</td>
+          <td>${product['selling_price']}</td>
+          <td>${product['quantity']}</td>`
+        })
+      } else {
+        box.innerHTML += `<td>No result found...</td>`
+      }
+    })
+  </script>
+  
+  <!-- // - ------------------- DELETE PRODUCT SCRIPT ------------------- --> -->
   <script>
     function deletePrd() {
       var x = confirm("Do you want delete this item?")
@@ -97,24 +134,24 @@
 
   <!--======= Search Item =======-->
   <script>
-    function myFunction() {
-      var input, filter, table, tr, td, i, txtValue;
-      input = document.getElementById("myInput");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("myTable");
-      tr = table.getElementsByTagName("tr");
-      for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
-        if (td) {
-          txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        }       
-      }
-    }
+    // function myFunction() {
+    //   var input, filter, table, tr, td, i, txtValue;
+    //   input = document.getElementById("myInput");
+    //   filter = input.value.toUpperCase();
+    //   table = document.getElementById("myTable");
+    //   tr = table.getElementsByTagName("tr");
+    //   for (i = 0; i < tr.length; i++) {
+    //     td = tr[i].getElementsByTagName("td")[0];
+    //     if (td) {
+    //       txtValue = td.textContent || td.innerText;
+    //       if (txtValue.toUpperCase().indexOf(filter) > -1) {
+    //         tr[i].style.display = "";
+    //       } else {
+    //         tr[i].style.display = "none";
+    //       }
+    //     }       
+    //   }
+    // }
     </script> 
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 

@@ -59,7 +59,7 @@ class Product(models.Model):
     
     model_number = models.CharField(max_length=10, null=True, blank=True)
     model_name = models.CharField(max_length=10, null=True, blank=True)
-    color = models.CharField(max_length=20 ,choices=color_choice)
+    color = models.CharField(max_length=20, null=True, blank=True ,choices=color_choice)
     battery_backup = models.CharField(max_length=15, null=True, blank=True, default='Upto 3 hours')
     processor_brand = models.CharField(max_length=15, null=True, blank=True)
     processor_name = models.CharField(max_length=15, null=True, blank=True)

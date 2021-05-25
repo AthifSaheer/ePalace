@@ -216,7 +216,12 @@ def convert_to_pdf(request):
 def products(request):
     if request.session.has_key('admin'):
         products = Product.objects.all().order_by('id')
-        return render(request, 'Admin/product_management.html', {'products':products})
+        products_js_data = json.dumps(list(Product.objects.values()))
+        context = {
+            'products':products,
+            'products_js_data':products_js_data,
+        }
+        return render(request, 'Admin/product_management.html', context)
     else:
         return render(request, 'Admin/admin_login.html')
 

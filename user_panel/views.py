@@ -14,7 +14,7 @@ import razorpay
 import requests
 import json
 from datetime import datetime, timedelta
-
+from .forms import FilterForm
 
 
 def delete_product_offer(slug):
@@ -121,74 +121,67 @@ def product_detail(request, slug):
 
 
 def search(request):
+    form = FilterForm(request.POST or None)
+
     if request.method == 'GET':
         keyword = request.GET.get('keyword')
-        filter_price01 = request.GET.get('price01')
-        filter_price02 = request.GET.get('price02')
-        filter_price03 = request.GET.get('price03')
-
-        print(str(filter_price02) + "---------- filter price o2-----")
-        
+        ram = request.GET.get('ram')
+        storage = request.GET.get('storage')
+        color = request.GET.get('color')       
         search_product = Product.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(category__category__icontains=keyword) | Q(brand__sub_category__icontains=keyword) | Q(selling_price__icontains=keyword) | Q(slug__icontains=keyword))
-        
-        # ---------------------- Filter price 01 ----------------------
-        if filter_price01:
-            for sr_prd in search_product:
-                if str(sr_prd.selling_price) < str(filter_price01):
-                    filtered_product = search_product.filter(selling_price__lt=filter_price01)
-                    count = filtered_product.count()
-                    
-                    context = {
-                        'search_product':filtered_product,
-                        'count':count,
-                        'keyword':keyword,
-                        'checked01':"checked",
-                    }
-                    return render(request, 'User/search-product.html', context)
-        
-        # ---------------------- Filter price 02 ----------------------
-        # elif filter_price02:
-        #     for sr_prd in search_product:
-        #         if str(sr_prd.selling_price) < str(filter_price02):
-        #             filtered_product = search_product.filter(selling_price__lt=filter_price02)
-        #             count = filtered_product.count()
-                    
-        #             context = {
-        #                 'search_product':filtered_product,
-        #                 'count':count,
-        #                 'keyword':keyword,
-        #                 'checked02':"checked",
-        #             }
-        #             return render(request, 'User/search-product.html', context)
-        elif filter_price02:
-            for sr_prd in search_product:
-                if str(sr_prd.selling_price) < str(filter_price02):
-                    filtered_product = search_product.filter(selling_price__lt=filter_price02)
-                    count = filtered_product.count()
-                    
-                    context = {
-                        'search_product':filtered_product,
-                        'count':count,
-                        'keyword':keyword,
-                        'checked02':"checked",
-                    }
-                    return render(request, 'User/search-product.html', context)
 
-        # ---------------------- Filter price 03 ----------------------
-        elif filter_price03:
-            for sr_prd in search_product:
-                if str(sr_prd.selling_price) < str(filter_price03):
-                    filtered_product = search_product.filter(selling_price__lt=filter_price03)
-                    count = filtered_product.count()
+        if ram and storage and color:
+            filtered_product_by_all = search_product.filter(ram=ram, storage=storage, color=color)
+            count = filtered_product_by_all.count()
+            list = [ram, storage, color,]
                     
-                    context = {
-                        'search_product':filtered_product,
-                        'count':count,
-                        'keyword':keyword,
-                        'checked03':"checked",
-                    }
-                    return render(request, 'User/search-product.html', context)
+            context = {
+                'search_product':filtered_product_by_all,
+                'count':count,
+                'keyword':keyword,
+                'form':form,
+                'filter_item': list,
+            }
+            return render(request, 'User/search-product.html', context)
 
+        elif ram:
+            filtered_product_by_ram = search_product.filter(ram=ram)
+            count = filtered_product_by_ram.count()
+                    
+            context = {
+                'search_product':filtered_product_by_ram,
+                'count':count,
+                'keyword':keyword,
+                'form':form,
+                'filter_item':ram,
+            }
+            return render(request, 'User/search-product.html', context)
+        
+        elif storage:
+            filtered_product_by_storage = search_product.filter(storage=storage)
+            count = filtered_product_by_storage.count()
+                    
+            context = {
+                'search_product':filtered_product_by_storage,
+                'count':count,
+                'keyword':keyword,
+                'form':form,
+                'filter_item':storage,
+            }
+            return render(request, 'User/search-product.html', context)
+
+        elif color:
+            filtered_product_by_color = search_product.filter(color=color)
+            count = filtered_product_by_color.count()
+                    
+            context = {
+                'search_product':filtered_product_by_color,
+                'count':count,
+                'keyword':keyword,
+                'form':form,
+                'filter_item':color,
+            }
+            return render(request, 'User/search-product.html', context)
 
         else:
             search_product = Product.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(category__category__icontains=keyword) | Q(brand__sub_category__icontains=keyword) | Q(selling_price__icontains=keyword) | Q(slug__icontains=keyword))
@@ -198,10 +191,13 @@ def search(request):
                 'search_product':search_product,
                 'count':count,
                 'keyword':keyword,
+                'form':form,
             }
             return render(request, 'User/search-product.html', context)
 
     return render(request, 'User/search-product.html')
+
+
 
 # Filter data
 def filter_data(request):
