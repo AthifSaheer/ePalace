@@ -1,3 +1,4 @@
+from re import X
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -6,7 +7,7 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import authenticate
 from accounts.models import RefLink
 from django.utils import timezone
-from admin_panel.models import ProductOffer, CategoryOffer, CuponOrReferralOffer
+from admin_panel.models import *
 from admin_panel.forms import *
 from django.db.models import Q
 from .models import *
@@ -70,8 +71,30 @@ def category_offer(category):
         print("------------ Exception_02 worked ----------------")
 
 
-def cupon_referral_code(request):
-    return render(request, 'User/cupon_ref_code.html')
+def cupon_code(request):
+    if request.method == 'POST':
+        cupon_code = request.POST.get('cupon_code')
+        print(str(cupon_code) + "--- cupon code-----")
+        try:
+            cupon_code_is_exists = CuponOffer.objects.get(cupon_code=cupon_code)
+            print("--- Try block worked cuponcode 01--------------------")
+
+            request.session['cupon_code'] = cupon_code
+            print("---- session-----" + str(request.session['cupon_code']))
+
+            del request.session['cupon_code']
+            print("---- after delete session-----" + str(request.session['cupon_code']))
+            
+            return redirect('check_out')
+        except:
+            print("--- Exception worked cuponcode 01--------------------")
+            error = "Invalid cupon code !"
+            return render(request, 'User/cupon_code.html', {'error':error})
+
+        # if cupon_code_is_exists:
+        # else:
+
+    return render(request, 'User/cupon_code.html')
 
 
 def home(request):
@@ -341,7 +364,13 @@ def check_out(request):
     #     order_currency = 'INR'
     #     client = razorpay.Client(auth=('rzp_test_DdZJYvM3465Ujr', 'MUKCKFyUw6XoAhNSOn4medW3'))
     #     payment = client.order.create({'amount':amount, 'currency':'INR', 'payment_capture': '1'})
-        
+
+    if request.session.has_key('cupon_code'):
+        pass
+    # cupon_code_is_exists = cupon_code(request)
+    # if cupon_code_is_exists:
+    #     cpn = CuponOffer.objects.get(cupon_code=cupon_code_is_exists)
+    #     cupon_offer_price = cpn.offer_percentage
 
 
     current_user = request.user
@@ -377,6 +406,11 @@ def check_out(request):
             ord.payment = payment_method
             ord.product = item.product
 
+            # if cupon_offer_price:
+            #     total_after_add_cupon = (item.sub_total * item.quantity) - cupon_offer_price
+            #     ord.product_price = total_after_add_cupon
+            # else:
+
             ord.product_price = item.sub_total * item.quantity
             ord.product_quantity = item.quantity
 
@@ -400,7 +434,8 @@ def check_out(request):
     context = {
         'display_address':display_address,
         'adrs_count':adrs_count,
-        'total':total
+        'total':total,
+        # 'total_after_add_cupon':total_after_add_cupon,
     }
     return render(request, 'User/check_out.html', context)
 
@@ -476,12 +511,11 @@ def cancel_order(request, id):
 
 def profile(request, id):
     user = User.objects.get(id=id)
+    
     referral_id = RefLink.objects.get(user=user)
     referral_id_itarable = RefLink.objects.filter(recommended_by=user)
-    print(str(id) + "-----   referral_id_itarable ----------------")
-    print(str(referral_id_itarable) + "-----   referral_id_itarable ----------------")
-    
     try:
+
         address = Address.objects.filter(user=user)
         adrs_count = address.count()
         profile = ProfileImage.objects.get(user=user)
@@ -496,7 +530,8 @@ def profile(request, id):
         }
 
         return render(request, 'User/profile.html', context)
-    except ProfileImage.DoesNotExist:
+    except:
+        print("------- Exception worker profile_010 -----------------")
         address = Address.objects.filter(user=user)
         error = 'Image does not exist'
 

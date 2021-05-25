@@ -48,8 +48,8 @@ urlpatterns = [
     path('disable/category/offer/', views.disable_category_offer, name='disable_category_offer'),
     
 
-    path('cupon+ref/offer/', views.cupon_ref_offer, name='cupon_ref_offer'),
-    path('create/cupon+ref/offer/', views.create_cupon_ref_offer, name='create_cupon_ref_offer'),
-    path('edit/cupon+ref/offer/', views.edit_cupon_ref_offer, name='edit_cupon_ref_offer'),
-    path('disable/cupon+ref/offer/', views.disable_cupon_ref_offer, name='disable_cupon_ref_offer'),
+    path('cupon/offer/', views.cupon_offer, name='cupon_offer'),
+    path('create/cupon/offer/', views.create_cupon_offer, name='create_cupon_offer'),
+    path('edit/cupon/offer/<int:id>/', views.edit_cupon_offer, name='edit_cupon_offer'),
+    path('disable/cupon/offer/', views.disable_cupon_offer, name='disable_cupon_offer'),
 ]

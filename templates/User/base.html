@@ -39,7 +39,7 @@
         <header class="l-header" id="header">
             <nav class="nav bd-container">
                 <a href="{% url 'user_home' %}" class="nav__logo">ePalace</a>
-                <a href="{% url 'category_wised_product' %}" class="nav__link">Category</a>
+                <a href="{% url 'category_wised_product' %}" class="nav__link">All Categories</a>
 
                 <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'search' %}">
                     <input class="form-control form-control-sm mr-sm-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
@@ -49,10 +49,18 @@
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav__list">
                         {% if user.is_authenticated %}
-                        <li class="nav__item"></li><a href="" class="nav__link active-link">{{ user.username }}</a></li>
-                        <li class="nav__item"><a href="{% url 'order' %}" class="nav__link">Order</a></li>
-                        <li class="nav__item"><a href="{% url 'profile' user.id %}" class="nav__link">Profile</a></li>
-                        <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link">Logout</a></li>
+                        <li class="nav__item"><a href="" class="nav__link active-link"> {{ user.username }}</a></li>
+                        <!-- <li class="nav__item"></li> -->
+                        <li class="nav__item dropdown">
+                            <a class="nav__link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >More</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a href="{% url 'order' %}" class="dropdown-item nav__link">Orders</a>
+                                <a href="{% url 'profile' user.id %}" class="dropdown-item nav__link">Profile</a>
+                                <a href="{% url 'logout' %}" class="dropdown-item nav__link">Logout</a>
+                            </div>
+                        </li>
+                        
+                        <!-- <li class="nav__item"></li> -->
                         <li class="nav__item"><a href="{% url 'cart' %}" class="nav__link"><i class="fas fa-shopping-cart"></i><span class="badge badge-danger">{{ cart_count }}</span></a></li>
                         {% else %}
                         <li class="nav__item"><a href="{% url 'login' %}?next={{request.path}}" class="nav__link">Login</a></li>

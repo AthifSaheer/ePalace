@@ -1,0 +1,10 @@
+{% autoescape off %}
+
+Hi {{user.username}},
+
+As requested, please click below link to reset your password.
+http://{{site}}{% url 'change_password' user uid token %}
+
+If you think it's not you, please ignore this email.
+
+{% endautoescape %}

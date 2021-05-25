@@ -549,14 +549,67 @@ def disable_category_offer(request):
 
 # .......................................................................
 
-def cupon_ref_offer(request):
-    return render(request, 'Admin/Offer/cupon_ref_offer.html')
+def cupon_offer(request):
+    cupon_offer = CuponOffer.objects.all()
+    context = {
+        'cupon_offer':cupon_offer,
+    }
+    return render(request, 'Admin/Offer/cupon_offer.html', context)
 
-def create_cupon_ref_offer(request):
-    pass
+def create_cupon_offer(request):
+    form = CuponOfferForm(request.POST)
 
-def edit_cupon_ref_offer(request):
-    pass
+    if request.method == 'POST':
+        if form.is_valid():
+            cupon_code = form.cleaned_data.get('cupon_code')
+            offer_for = form.cleaned_data.get('offer_for')
+            offer_percentage = form.cleaned_data.get('offer_percentage')
+            date = form.cleaned_data.get('date')
+            time = form.cleaned_data.get('time')
 
-def disable_cupon_ref_offer(request):
+            ProductOffer(cupon_code, offer_for, offer_percentage, date, time)
+            form.save()
+
+            # ...................................................
+            # product = Product.objects.get(title=product)
+            # prd_offer = ProductOffer.objects.get(product=product)
+            # percentage_price = (product.selling_price / 100) * prd_offer.offer_percentage
+            # offer_price = product.selling_price - percentage_price
+            # product.offer_price = offer_price
+            # product.save()
+
+            # try:
+            # except:
+            #     print("------------ Exception_01 worked ----------------")
+
+            return redirect('cupon_offer')
+    context = {
+        'form':form,
+    }
+    return render(request, 'Admin/Offer/create_cupon_offer.html', context)
+
+def edit_cupon_offer(request, id):
+    cupon_offer = CuponOffer.objects.get(id=id)
+    form = CuponOfferForm(instance=cupon_offer)
+
+    if request.method == 'POST':
+        form = CuponOfferForm(request.POST, request.FILES, instance=cupon_offer)
+        if form.is_valid():
+            form.save()
+
+            # cpn_offer = CuponOffer.objects.get(id=id)
+            # product = Product.objects.get(title=prd_offer.product)
+            # percentage_price = (product.selling_price / 100) * prd_offer.offer_percentage
+            # offer_price = product.selling_price - percentage_price
+            # product.offer_price = offer_price
+            # product.save()
+
+            return redirect('cupon_offer')
+    context = {
+    'form':form,
+    }
+    return render(request, 'Admin/Offer/edit_cupon_offer.html', context)
+
+
+def disable_cupon_offer(request):
     pass

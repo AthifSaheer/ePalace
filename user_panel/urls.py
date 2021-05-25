@@ -39,5 +39,5 @@ urlpatterns = [
     path('razorpay/', views.razorpay, name="razorpay"),
 
     # OFFER ------------------------------------------
-    path('cupon+referral/code/', views.cupon_referral_code, name="cupon_referral_code"),
+    path('cupon/code/', views.cupon_code, name="cupon_code"),
 ]

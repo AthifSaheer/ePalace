@@ -1,7 +1,7 @@
 {% extends 'Admin/base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %} Create Cupon Offer | Admin ePalece  {% endblock %}
+{% block title %} Edit Cupon Offer | Admin ePalece  {% endblock %}
 
 {% block content %}
 
@@ -9,15 +9,15 @@
 
 <div class="container" id="create-prd-main-div">
     <div class="row">
-        <h3 class="text-center text-info mt-3">Create Cupon Offer</h3>
+        <h3 class="text-center text-info mt-3">Edit Cupon Offer</h3>
         <div class="col-md-10 ml-5">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ create_prd_form|crispy }}
+                {{ form|crispy }}
                 {{ form.docfile }}
                 <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
             </form>
-            <a href="{% url 'cupon_ref_offer' %}"><button class="btn btn-outline-success btn-block mt-2 mb-5">Cancel</button></a>
+            <a href="{% url 'cupon_offer' %}"><button class="btn btn-outline-success btn-block mt-2 mb-5">Cancel</button></a>
         </div>
     </div>
     
@@ -27,5 +27,4 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
     
-    
-    {% endblock %}
+    {% endblock %} 

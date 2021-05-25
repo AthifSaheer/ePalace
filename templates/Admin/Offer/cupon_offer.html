@@ -25,7 +25,7 @@
 
     <div class="col-md-11 mt-3" id="table-div">
 
-        <a class="btn btn-outline-secondary btn-sm float-right mb-3" href="{% url 'create_category' %}">
+        <a class="btn btn-outline-secondary btn-sm float-right mb-3" href="{% url 'create_cupon_offer' %}">
             <span class="d-none d-md-inline-block mr-2">Create new cupon offer</span>
         </a>
 
@@ -33,20 +33,21 @@
             <thead>
             <tr>
                 <th scope="col">No</th>
-                <th scope="col">Product</th>
+                <th scope="col">Cupon Code</th>
                 <th scope="col">Offer for</th>
-                <th scope="col">Create at</th>
-                <th scope="col">Time period</th>
+                <th scope="col">Created at</th>
+                <th scope="col">Expiry Date</th>
             </tr>
             </thead>
 
             <tbody>
+              {% for offer in cupon_offer %}
                 <tr>
                 <th scope="row">{{ forloop.counter }}1</th>
-                <td>iphone</td>
-                <td>Tody spevial offer</td>
-                <td>2021-12-22, 12:12:00 am</td>
-                <td>2021-12-22, 12:12:00 am</td>
+                <td>{{ offer.cupon_code }}</td>
+                <td>{{ offer.offer_for }}</td>
+                <td>{{ offer.create_at }}</td>
+                <td>{{ offer.date_period }}, {{ offer.time_period }}</td>
                 <td class="text-right">
                     <div class="dropdown show d-inline-block widget-dropdown">
                       <a class="dropdown-toggle icon-burger-mini" href="" role="button" id="dropdown-recent-order1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static"></a>
@@ -55,12 +56,13 @@
                           <a href="">Disable Offer</a>
                         </li>
                         <li class="dropdown-item">
-                          <a href="">Edit Offer</a>
+                          <a href="{% url 'edit_cupon_offer' offer.id %}">Edit Offer</a>
                         </li>
                       </ul>
                     </div>
                   </td>
                 </tr>
+              {% endfor %}
             </tbody>
         </table>
     </div>

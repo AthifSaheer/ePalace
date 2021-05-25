@@ -9,28 +9,27 @@ from django.core.exceptions import ValidationError
 
 
 
-class CuponOrReferralOffer(models.Model):
+class CuponOffer(models.Model):
     offer_for = models.CharField(max_length=20, default="Today special offer")
     cupon_code = models.CharField(max_length=15)
+    # offer_price = models.PositiveIntegerField()
     offer_percentage = models.PositiveIntegerField()
-    time_period = models.DateTimeField()
+    date_period = models.DateField()
+    time_period = models.TimeField()
     create_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "Cupon code: " + str(self.cupon_code)
-
-    def clean(self):
-        # statements
-        if self.product.quantity == 0:
-            raise ValidationError('*Product quantity zero')
 
 
 
 class CategoryOffer(models.Model):
     category = models.OneToOneField(Category, on_delete=models.CASCADE)
     offer_for = models.CharField(max_length=20, default="Today special offer")
-    offer_percentage = models.PositiveIntegerField()
-    time_period = models.DateTimeField()
+    offer_price = models.PositiveIntegerField()
+    # offer_percentage = models.PositiveIntegerField()
+    date_period = models.DateField()
+    time_period = models.TimeField()
     create_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

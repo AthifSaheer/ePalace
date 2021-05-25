@@ -38,9 +38,9 @@
 
           <div id="login-div" class="col-md-4 col-11">
             {% block login %}
-            <h3 class="mt-3" id="login-text">Enter Cupon or Referral Code</h3>
-            <!-- <span class="text-danger">{{ uname_error }}</span>
-            <span class="text-danger">{{ block_error }}</span> -->
+            <h3 class="mt-3" id="login-text">Enter Cupon Code</h3>
+            <!-- <span class="text-danger">{{ uname_error }}</span> -->
+            <span class="text-danger">{{ error }}</span>
 
                 <form class="needs-validation form_login" id="login-form" novalidate method="POST">
                   {% csrf_token %}
@@ -48,9 +48,9 @@
                     <div class="form-row">
                       <div class="col-md-12 mb-3">
                         <label for="validationCustom03">Enter Code</label>
-                        <input type="text   " class="form-control" name="otp" id="validationCustom03" placeholder="SUNDAY2021" required>
+                        <input type="text" class="form-control" name="cupon_code" id="validationCustom03" placeholder="SUNDAY2021" required>
                         <div class="invalid-feedback">
-                          Please valid cupon or referral code.
+                          Please enter valid cupon code.
                         </div>
                       </div>
                     </div>

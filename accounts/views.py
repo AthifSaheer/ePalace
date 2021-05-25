@@ -20,10 +20,11 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
-
+from django.contrib.sessions.models import Session
+from django.contrib.sites.shortcuts import get_current_site
 
 
 
@@ -165,25 +166,31 @@ def change_password_request_email(request):
             return render(request, 'change_password/change_password_request_email.html',{'error':'Email does not exists'})
 
         if user_email:
+            current_site = get_current_site(request)
             uid = urlsafe_base64_encode(force_bytes(user_email.pk))
             whoisuser = user_email.id
             token = default_token_generator.make_token(user_email)
 
-            change_password_url = "http://127.0.0.1:8000/accounts/change_password/{}{}{}" .format(whoisuser,uid,token) #{}{}".format(token)
-            print(str(change_password_url) + '--change_password_url------------')
+            message = render_to_string('change_password/email_view.html', {
+                'user': whoisuser,
+                'site': current_site,
+                'uid': uid,
+                'token': token,
+            })
 
             send_mail(
-                'Change password',
-                "Below link allow to change your password: {}" .format(change_password_url),
-                'liteboook@gmail.com',
-                [email],
+                'Change password', #subject
+                message, #messge
+                'liteboook@gmail.com', #from
+                [email], #to
                 fail_silently=False,
             )
             return render(request, 'change_password/email_send_done.html')
     return render(request, 'change_password/change_password_request_email.html')
 
 
-def change_password(request, id, uid, token):
+def change_password(request, id, uidb64, token):
+    decode_uid = urlsafe_base64_decode(uidb64).decode()
     if request.method == 'POST':
         current_password = request.POST.get('current_password')
         new_password = request.POST.get('new_password')

@@ -68,19 +68,19 @@
                     <div class="referal-code-div">
                         <span>Referal code:  </span>
                         {% if referral_id %}
-                        {{ referral_id.code }}
+                            {{ referral_id.code }}
                         {% else %}
-                        Not Generated.
+                            Not Generated.
                         {% endif %}
                         <br><br>
-                        <span>Referal link:</span>
+                        <!-- <span>Referal link:</span>
                         {% if referral_id %}
                         <a href="{% url 'signup_with_ref_code' referral_id.code %}">
-                            http://127.0.0.1:8000/ accounts/signup/ref/link/{{ referral_id.code }}
+                            http://127.0.0.1:8000/accounts/signup/ref/link/{{ referral_id.code }}
                         </a>
                         {% else %}
                         Link not available.
-                        {% endif %}
+                        {% endif %} -->
                     </div>
                 </div>
 
@@ -167,14 +167,6 @@
         color: seagreen;
         font-weight: bold;
     }
-
-    /* #prf-btn-1 {
-        width: 160px;
-    }
-    #prf-btn-2 {
-        margin-top: 140px;
-        width: 160px;
-    } */
 
     a {
         text-decoration: none;

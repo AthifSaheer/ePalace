@@ -25,6 +25,7 @@ color_choice = [
     ('Silver',"Silver"),
     ('Gold',"Gold"),
     ('Black',"Black"),
+    ('Red',"Red"),
 ]
 ram_choice = [
     ('4GB',"4GB"),
@@ -35,6 +36,7 @@ ram_choice = [
 storage_choice = [
     ("64GB","64GB"),
     ('128GB',"128GB"),
+    ('512GB',"512GB"),
 ]
 
 
@@ -69,6 +71,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.offer_price == "":
+            self.offer_price = 0
+        super().save(*args, **kwargs)
 
 
 class Cart(models.Model):

@@ -7,11 +7,11 @@ from .models import *
 class CreateProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        # fields = ['title', 'slug', 'category', 'sub_category', 'image', 'marked_price']
-        fields = ('__all__')
-        widgets = {
-            # 'color': forms.ClorField(attrs={'type': 'color'}),
-        }
+        fields = ['title', 'slug', 'category', 'brand', 'image', 'more_image_one', 'more_image_two', 'more_image_three', 'marked_price', 'selling_price', 'quantity', 'guarandeed', 'description', 'model_number', 'model_name', 'color', 'battery_backup', 'processor_brand', 'processor_name', 'storage', 'ram', 'size']
+        # fields = ('__all__')
+        # widgets = {
+        #     # 'color': forms.ClorField(attrs={'type': 'color'}),
+        # }
 
 class CreateCategory(forms.ModelForm):
     class Meta:
@@ -61,10 +61,24 @@ class CreateProductOfferForm(forms.ModelForm):
 
     class Meta:
         model = ProductOffer
-        fields = ('product', 'offer_for', 'offer_percentage','date_period', 'time_period')
+        fields = ['product', 'offer_for', 'offer_percentage','date_period', 'time_period']
 
 
-# class EditProductOfferForm(forms.ModelForm):
-#     class Meta:
-#         model = ProductOffer
-#         fields = ('__all__')
+class CuponOfferForm(forms.ModelForm):
+    date_period = forms.DateField(
+        # input_formats = ['%Y-%m-%d'],
+        widget=forms.TextInput(     
+            attrs={'type': 'date'} 
+        )
+    )
+    time_period = forms.TimeField(
+        widget = forms.TextInput(
+            attrs={'type': 'time'},
+        )
+    )
+
+    class Meta:
+        model = CuponOffer
+        fields = ['cupon_code', 'offer_for', 'offer_percentage','date_period', 'time_period']
+
+
