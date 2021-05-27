@@ -32,7 +32,7 @@ def monthly_sales_report(request):
     try:
         from_ = request.GET['from_date']
         to_ = request.GET['to_date']
-        conver_to_pdf = request.GET['conver_to_pdf']
+        # conver_to_pdf = request.GET['conver_to_pdf']
     
         if from_ or to_:
             x = str(from_) + "-01"

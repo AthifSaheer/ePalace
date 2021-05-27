@@ -354,6 +354,7 @@ def add_to_cart_ajax(request):
         final_qnty = int(Disquantity) + 1
         cart_item.quantity = final_qnty
         cart_item.save()
+        print("---- quantity increment working -----------")
 
         if product.category_offer_price:
             product_total = final_qnty * product.category_offer_price
@@ -381,7 +382,55 @@ def add_to_cart_ajax(request):
 
 
 def decrement_cart_quantity_ajax(request):
-    pass
+    print("------------- decrement_cart_quantity_ajax working  ---------------")
+    Disquantity = request.POST.get('Disquantity')
+    cartID = request.POST.get('cartID')
+    current_gnd_totl = request.POST.get('current_gnd_totl')
+    cart_of_cart_item = request.POST.get('cartOfCartItem')
+
+    # print("quantiy: " + str(Disquantity) + " cartID: "+str(cartID)+" each_tl_price: "+str(each_ttl_price)+" grand_total: "+str(all_ttl_price)+"----------------")
+
+    cart_item = CartItem.objects.get(id=cartID)
+    cart_item_itarable = CartItem.objects.filter(cart=cart_of_cart_item)
+    product = Product.objects.get(title=cart_item.product)
+    print("cart item: "+ str(cart_item) + " | product: " + str(product))
+
+    if Disquantity == 1:
+        max_error = "Product quantity reached min level."
+        print(max_error)
+        data = {
+            'max_error':max_error,
+        }
+        return JsonResponse(data)
+    else:
+        final_qnty = int(Disquantity) - 1
+        cart_item.quantity = final_qnty
+        cart_item.save()
+        print("--------- final quantity saved --------------------")
+
+        if product.category_offer_price:
+            product_total = final_qnty * product.category_offer_price
+        elif product.product_offer_price:
+            product_total = final_qnty * product.product_offer_price
+        else:
+            product_total = final_qnty * product.selling_price
+            
+        # cart_item.price = product_total
+        cart_item.sub_total = product_total
+        cart_item.save()
+
+        total_ = 0
+        for crt in cart_item_itarable:
+            total_ += crt.sub_total
+        # grand_total = int(current_gnd_totl) + total_
+
+    data = {
+        'success_quantity' : final_qnty,
+        'total_price' : product_total,
+        'grand_total' : total_,
+    }
+    print("------------- decrement_cart_quantity_ajax finished ---------------")
+    return JsonResponse(data)
 
 
 

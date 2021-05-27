@@ -69,9 +69,9 @@
 
                 <div class="col-md-5" id="between-div">
                     {% if crt.quantity == 1 %}
-                    <a class="plus-min-btn">-</a>
+                    <button class="plus-min-btn">-</button>
                     {% else %}
-                    <a onclick="decrementQuantity()" class="plus-min-btn">-</a>
+                    <button class="plus-min-btn" onclick="decrementQuantity('{{crt.id}}')">-</button>
                     {% endif %}
                     
 
@@ -226,7 +226,7 @@
 <script>
     console.log("--- 023 working-----")
     function IncrementQuantity(id) {
-        console.log("----- func working ----------------")
+        console.log("----- IncrementQuantity func working ----------------")
         var Disquantity = $("#displayQuantity_"+id).val()
         var cartID = $("#cartID").val()
         var current_gnd_totl = $("#all_ttl_price").html()
@@ -256,19 +256,18 @@
                 }
                 $("#each_ttl_price_"+id).text("₹"+data.total_price)
                 $("#all_ttl_price").html(data.grand_total)
-                console.log("-------finished-----------")
+                console.log("------- IncrementQuantity func finished-----------")
             },
         })
     }
 
     // decrement_cart_quantity_ajax ----------------------------
     function decrementQuantity(id) {
-        console.log("----- func working ----------------")
+        console.log("----- decrementQuantity func working ----------------")
         var Disquantity = $("#displayQuantity_"+id).val()
         var cartID = $("#cartID").val()
         var current_gnd_totl = $("#all_ttl_price").html()
         var cartOfCartItem = $("#cartOfCartItem").val()
-        console.log('Disquantity: ' + Disquantity + ' cartID:' + cartID)
         
         $.ajax({
             url : "{% url 'decrement_cart_quantity_ajax' %}",
@@ -279,10 +278,6 @@
                 cartID:cartID,
                 current_gnd_totl:current_gnd_totl,
                 cartOfCartItem : cartOfCartItem,
-                // 'each_ttl_price': each_ttl_price,
-                // 'all_ttl_price': all_ttl_price,
-                // plus_button = "1",
-                // minuse_button = "-1",
             },
             dataType: "json",
             success : function(data){
@@ -293,7 +288,7 @@
                 }
                 $("#each_ttl_price_"+id).text("₹"+data.total_price)
                 $("#all_ttl_price").html(data.grand_total)
-                console.log("-------finished-----------")
+                console.log("------- decrementQuantity func finished-----------")
             },
         })
     }

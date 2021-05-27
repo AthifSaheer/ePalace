@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import base
 from .utils import generate_ref_code
+from admin_panel.models import CuponOffer
+from datetime import datetime, timedelta
 
 
 class Admin(models.Model):
@@ -41,6 +43,10 @@ class RefLink(models.Model):
         if self.code == "":
             code = generate_ref_code()
             self.code = code
+
+        # tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+        # datetime.ti
+        # CuponOffer.objects.create(offer_for, cupon_code=code, offer_price=750, date_period, time_period)
         super().save(*args, **kwargs)
     
 

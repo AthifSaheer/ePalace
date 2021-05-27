@@ -6,32 +6,32 @@
 <div class="content-wrapper">
     <div class="row mb-3">
         <div class="col-md-5">
-            <h5>Monthly Sales Report</h5>
+            <h5 onclick="print_specific_div_content()">Monthly Sales Report</h5>
           </div>
           
           <div class="col-md-7">
-            <form action="" method="GET" class="mr-2">
+            <form action="" method="GET">
               <label for="">From</label>
-              <input type="month" name="from_date" min="2021-01" max="2022-12" id="from_date">
+              <input type="month" name="from_date" min="2021-01" max="2022-12" id="from_date" onblur="func()">
               <label for="">To</label>
               <input type="month" name="to_date" max="2022-12" id="to_date">
               <button class="btn btn-outline-primary btn-sm">submit</button>    
+              <i class="fas fa-file-pdf fa-lg ml-3 text-info" onclick="window.print()"></i>
             </form>
             {% if dowload_pdf %}
-            <form action="{% url 'convert_to_pdf' %}" method="GET" class="mr-2">
+            <!-- <form action="{% url 'convert_to_pdf' %}" method="GET" class="mr-2">
               <input type="month" hidden name="from_date" min="2021-01" max="2022-12" id="from_date_pdf">
               <input type="month" hidden name="to_date" max="2022-12" id="to_date_pdf">
-                
-              <button class="btn btn-outline-info btn-sm">{{ dowload_pdf }}</button>
-            </form>
-            <script>
-              from = document.getElementById('from_date').value;
-              document.getElementById('from_date_pdf').innerHTML = from;
-              
-              to = document.getElementById('to_date').value;
-              document.getElementById('to_date_pdf').innerHTML = from;
-            </script>
+            </form> -->
+              <!-- <button class="btn btn-outline-info btn-sm">{{ dowload_pdf }}</button> -->
             {% endif %}
+            <script>
+              function func(){
+                var from = document.getElementsByName('from_date')[0].value
+                var to = document.getElementsByName('to_date')[0]
+                to.min = from
+              }
+            </script>
         </div>
     </div>
 
