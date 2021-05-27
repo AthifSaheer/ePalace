@@ -3,32 +3,27 @@
 
 {% block title %} Cart | ePalace {% endblock title %}
         
-{% block content %} 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-                
+{% block content %}
 
 <script>
-    $(document).ready(function(){
-        $("#myname").on('click', function() {
-            // var x = $(this).attr("data-monu");
-            alert("clicked: ")
-            $.ajax({
-                url : "/filter_data",
-                type : "GET",
-                data : {filter : "product filter working.....!"},
-                success : function(){
-                    alert("ajax worked")
-                },
-                error : function() {
-                    alert("ajax not worked")
-                }
-            })
-            alert("ajax section finished")
-        })
-    })
+    // $(document).ready(function(){
+    //     $("#myname").on('click', function() {
+    //         // var x = $(this).attr("data-monu");
+    //         alert("clicked: ")
+    //         $.ajax({
+    //             url : "/filter_data",
+    //             type : "GET",
+    //             data : {filter : "product filter working.....!"},
+    //             success : function(){
+    //                 alert("ajax worked")
+    //             },
+    //             error : function() {
+    //                 alert("ajax not worked")
+    //             }
+    //         })
+    //         alert("ajax section finished")
+    //     })
+    // })
 </script>
 
 
@@ -44,7 +39,6 @@
             <div class="row">
 
                 <div class="col-md-12">
-                    <p id="myname">Athif Saheer</p>
                     <h4 id="title">My cart({{ count }})</h4>
                 </div>
                 
@@ -55,6 +49,7 @@
                 
                 {% for crt in cart_item %}
 
+                <input type="text" hidden id="cartOfCartItem" value="{{crt.cart.id}}">
                 <div class="col-md-3">
                     <a href="{% url 'prd_detail' crt.product.slug %}"><img src="{{ crt.product.image.url}}" class="image" width="200px" height="200px" alt=""></a>
                 </div>
@@ -63,52 +58,38 @@
                     <h6 class="text-info">{{ crt.product.title }}</h6>
 
                     {% if crt.product.offer_price > 0 %}
-                    <p class="text-secondary">&#8377;{{ crt.su_btotal }} <span>(offer price)</span> </p>
+                    <p class="text-secondary" id="each_ttl_price_{{crt.id}}" >&#8377;{{ crt.su_btotal }} <span>(offer price)</span> </p>
+                    <!-- <input type="text" hidden id="each_ttl_price" value="{{ crt.su_btotal }}"> -->
                     {% else %}
-                    <p class="text-secondary">&#8377;{{ crt.su_btotal }}</p>
+                    <p class="text-secondary" id="each_ttl_price_{{crt.id}}">&#8377;{{ crt.su_btotal }}</p>
+                    <!-- <input type="text" hidden id="each_ttl_price" value="{{ crt.su_btotal }}"> -->
                     {% endif %}
+
                 </div>
 
                 <div class="col-md-5" id="between-div">
-                    <form>
-                        {% if crt.quantity == 1 %}
-                        <a class="plus-min-btn">-</a>
-                        {% else %}
-                        <!-- <a href="{% url 'item_decrement' crt.product.id %}" class="plus-min-btn" onclick="minuseClick()">-</a> -->
-                        {% endif %}
-                        <p class="plus-min-btn" onclick="minuseClick()">-</p>
-                        <p class="plus-min-btn" onclick="plusClick()">+</p>
-                        <input type="text" disabled id="displayQuantity" value="{{ crt.quantity }}">
-                        <!-- <input type="text" id="input" value="{{ crt.quantity }}" disabled id="displayQuantity" data-monu="1"> -->
-                        <!-- <a href="{% url 'add_to_cart' crt.product.id %}" class="plus-min-btn" onclick="plusClick()">+</a> -->
-                        <a href="{% url 'remove_item' crt.product.id %}" class="text-secondary">Remove</a>
-                    </form>
+                    {% if crt.quantity == 1 %}
+                    <a class="plus-min-btn">-</a>
+                    {% else %}
+                    <a onclick="decrementQuantity()" class="plus-min-btn">-</a>
+                    {% endif %}
+                    
+
+                    <input type="text" hidden id="cartID" value="{{ crt.id }}">
+                    <input type="text" value="{{ crt.quantity }}" class="dispaly_qnty" disabled id="displayQuantity_{{ crt.id }}">
+                    <button class="plus-min-btn" onclick="IncrementQuantity('{{crt.id}}')">+</button>
+                    <a href="{% url 'remove_item' crt.product.id %}">
+                        <i onclick="return confirm('Are you sure you want to delete  ?')" class="fa fa-trash text-secondary ml-2"></i>
+                    </a>
                 </div>
+
+                
 
                 <hr>
                 {% endfor %}
 
             </div>
 
-
-            <script>
-                                
-                // minuseButton = document.getElementById("minuseBtn")
-                // plusButton = document.getElementById("plusBtn")
-                displayQuantity = document.getElementById("displayQuantity")
-
-                function minuseClick(){
-                    var value = 4
-                    value = isNaN(value) ? 0 : value;
-                    value++;
-                    displayQuantity.value = value
-                    alert('----------')
-                }
-                function plusClick(){
-                    alert('----------')
-                    displayQuantity.value = 33
-                }
-            </script>
 
         </div>
 
@@ -120,7 +101,7 @@
                     <tbody>
                         <tr>
                             <td>Price({{ count }}items)</td>
-                            <td>&#8377;{{ total }}</td>
+                            <td id="all_ttl_price">&#8377;{{ total }}</td>
                         </tr>
 
                         <tr>
@@ -130,7 +111,7 @@
 
                         <tr>
                             <td>Total Amount</td>
-                            <td>&#8377;{{ total }}</td>
+                            <td id="all_ttl_price">&#8377;{{ total }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -224,7 +205,7 @@
         padding: 8px 16px;
     }
 
-    #input {
+    .dispaly_qnty {
         width: 34px;
         padding-left: 8px;
         border: 2px solid rgb(238, 238, 238);
@@ -241,7 +222,85 @@
 
 </style>
 
+
 <script>
+    console.log("--- 023 working-----")
+    function IncrementQuantity(id) {
+        console.log("----- func working ----------------")
+        var Disquantity = $("#displayQuantity_"+id).val()
+        var cartID = $("#cartID").val()
+        var current_gnd_totl = $("#all_ttl_price").html()
+        var cartOfCartItem = $("#cartOfCartItem").val()
+        console.log('Disquantity: ' + Disquantity + ' cartID:' + cartID)
+        
+        $.ajax({
+            url : "{% url 'add_to_cart_ajax' %}",
+            method : 'POST',
+            data : {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                Disquantity:Disquantity,
+                cartID:cartID,
+                current_gnd_totl:current_gnd_totl,
+                cartOfCartItem : cartOfCartItem,
+                // 'each_ttl_price': each_ttl_price,
+                // 'all_ttl_price': all_ttl_price,
+                // plus_button = "1",
+                // minuse_button = "-1",
+            },
+            dataType: "json",
+            success : function(data){
+                alert("---quantity: " + data.success_quantity)
+                $("#displayQuantity_"+id).val(data.success_quantity)
+                if (data.max_error){
+                    alert(data.max_error)
+                }
+                $("#each_ttl_price_"+id).text("₹"+data.total_price)
+                $("#all_ttl_price").html(data.grand_total)
+                console.log("-------finished-----------")
+            },
+        })
+    }
+
+    // decrement_cart_quantity_ajax ----------------------------
+    function decrementQuantity(id) {
+        console.log("----- func working ----------------")
+        var Disquantity = $("#displayQuantity_"+id).val()
+        var cartID = $("#cartID").val()
+        var current_gnd_totl = $("#all_ttl_price").html()
+        var cartOfCartItem = $("#cartOfCartItem").val()
+        console.log('Disquantity: ' + Disquantity + ' cartID:' + cartID)
+        
+        $.ajax({
+            url : "{% url 'decrement_cart_quantity_ajax' %}",
+            method : 'POST',
+            data : {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                Disquantity:Disquantity,
+                cartID:cartID,
+                current_gnd_totl:current_gnd_totl,
+                cartOfCartItem : cartOfCartItem,
+                // 'each_ttl_price': each_ttl_price,
+                // 'all_ttl_price': all_ttl_price,
+                // plus_button = "1",
+                // minuse_button = "-1",
+            },
+            dataType: "json",
+            success : function(data){
+                alert("---quantity: " + data.success_quantity)
+                $("#displayQuantity_"+id).val(data.success_quantity)
+                if (data.max_error){
+                    alert(data.max_error)
+                }
+                $("#each_ttl_price_"+id).text("₹"+data.total_price)
+                $("#all_ttl_price").html(data.grand_total)
+                console.log("-------finished-----------")
+            },
+        })
+    }
+</script>
+
+
+<!-- <script>
 
 function increaseValue() {
   var value = document.getElementById('input').value;
@@ -257,7 +316,6 @@ function decreaseValue() {
   document.getElementById('number').value = value;
 }
 
-</script>
+</script> -->
     
-
 {% endblock content %}

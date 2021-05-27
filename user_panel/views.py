@@ -2,6 +2,7 @@ from re import X
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+# from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import authenticate
@@ -25,50 +26,34 @@ def delete_product_offer(slug):
         today = datetime.now() #('2018-11-10 10:55:31', '%Y-%m-%d %H:%M:%S')
 
         offer_period = str(prd_offer.date_period) +" "+ str(prd_offer.time_period)
-        y = str(today)
+        # y = str(today)
 
         if offer_period < str(today):
             prd_offer.delete()
-            product.offer_price = 0
+            product.product_offer_price = 0
             product.save()
             return redirect('prd_detail')
     except:
         print("------------ Exception_01 worked ----------------")
 
-
-def category_offer(category):
-    
+def delete_category_offer(category):
+    product = Product.objects.filter(category=category)
     try:
-        ctgry_offer = CategoryOffer.objects.get(category=category)
-        products = Product.objects.filter(category=category)
-        today = timezone.now()
+        ctg_ofr = CategoryOffer.objects.get(category=category)
+        today = datetime.now() #('2018-11-10 10:55:31', '%Y-%m-%d %H:%M:%S')
 
-        for prd in products:
-            try:
-                product_offer_table = ProductOffer.objects.get(product=prd)
-            except:
-                pass
+        offer_period = str(ctg_ofr.date_period) +" "+ str(ctg_ofr.time_period)
+        # y = str(today)
 
-            if ctgry_offer.time_period < today:
-                ctgry_offer.delete()
-                if prd in product_offer_table:
-                    continue
-                else:
-                    prd.offer_price = 0
-                    print("--------------------- category offer table deleted----------------")
-            else:
-                if prd in product_offer_table:
-                    continue
-                else:
-                    offer = (prd.selling_price / 100) * ctgry_offer.offer_percentage
-                    offer_price = prd.selling_price - offer
-                    prd.offer_price = offer_price
-                    prd.save()
-                    print("--------------- category offer table time kazhinjittillaa -----------")
-
-                return offer_price
+        if offer_period < str(today):
+            ctg_ofr.delete()
+            for prd in product:
+                prd.category_offer_price = 0
+                prd.save()
+            return redirect('prd_detail')
     except:
-        print("------------ Exception_02 worked ----------------")
+        print("------------ Exception_01 worked ----------------")
+
 
 
 def cupon_code(request):
@@ -80,10 +65,9 @@ def cupon_code(request):
             print("--- Try block worked cuponcode 01--------------------")
 
             request.session['cupon_code'] = cupon_code
-            print("---- session-----" + str(request.session['cupon_code']))
+            print("---- session created -----" + str(request.session['cupon_code']))
 
-            del request.session['cupon_code']
-            print("---- after delete session-----" + str(request.session['cupon_code']))
+            
             
             return redirect('check_out')
         except:
@@ -95,6 +79,12 @@ def cupon_code(request):
         # else:
 
     return render(request, 'User/cupon_code.html')
+
+
+# def delete_cupon_code(request):
+#     print("---- session deleted -----" + str(request.session['cupon_code']))
+#     del request.session['cupon_code']
+#     return redirect('check_out')
 
 
 def home(request):
@@ -113,7 +103,8 @@ def category_wised_product(request):
     laptop_products = Product.objects.filter(category=laptop).order_by('-id')
     mobile_products = Product.objects.filter(category=mobile).order_by('-id')
 
-    category_offer(laptop) # category offer function called
+    delete_category_offer(laptop.id) # Category offer delete function called
+    delete_category_offer(mobile.id) # Category offer delete function called
 
     context = {
         'laptop_products':laptop_products,
@@ -121,24 +112,36 @@ def category_wised_product(request):
     }
     return render(request, 'User/prd_catgry_wise.html', context)
 
+
+
 def product_detail(request, slug):
     url_slug = slug
     product_detailed = Product.objects.get(slug=url_slug)
+    print(product_detailed.category)
 
-    delete_product_offer(url_slug) # product offer function called
+    delete_product_offer(url_slug) # product offer delete function called
+    delete_category_offer(product_detailed.category) # Category offer delete function called
 
     try:
         product_offer_table = ProductOffer.objects.get(product=product_detailed)
-        # category_offer_table = CategoryOffer.objects.get(category=product_detailed.category)
         context = {
             'product_detailed':product_detailed,
             'product_offer_table':product_offer_table,
-            # 'category_offer_table':category_offer_table,
         }
-        print("---------- ingott varndo -----------------")
+        return render(request, 'User/productdetails.html', context)
+    except:
+        print("---------- Exception_01 worked -----------------")
+
+    try:
+        category_offer_table = CategoryOffer.objects.get(category=product_detailed.category)
+        context = {
+            'product_detailed':product_detailed,
+            'category_offer_table':category_offer_table,
+        }
         return render(request, 'User/productdetails.html', context)
     except:
         print("---------- Exception_02 worked -----------------")
+
     return render(request, 'User/productdetails.html', {'product_detailed':product_detailed,})
 
 
@@ -256,10 +259,10 @@ def cart(request):
         total = 0
 
         for crt_itm in cart_item:
-            if crt_itm.product.offer_price:
-                total += (crt_itm.product.offer_price * crt_itm.quantity)
-            else:
-                total += (crt_itm.price * crt_itm.quantity)
+            total += (crt_itm.price * crt_itm.quantity)
+            # if crt_itm.product.offer_price:
+            #     total += (crt_itm.product.offer_price * crt_itm.quantity)
+            # else:
         
         CartItem(sub_total=total)
 
@@ -269,6 +272,7 @@ def cart(request):
             'total':total,
         }
 
+        # return JsonResponse(context)
         return render(request, 'User/cart.html', context)
 
     except ObjectDoesNotExist:
@@ -297,24 +301,87 @@ def add_to_cart(request, id):
         else:
             cart_item.quantity += 1
             cart_item.save()
+            cart_item.sub_total = cart_item.quantity * cart_item.price
+            cart_item.save()
 
     except CartItem.DoesNotExist:
         if request.user.is_authenticated:
-            if product.offer_price > 0:
-                cart_item = CartItem.objects.create(user=request.user, product=product, cart=cart, quantity=1, price=product.offer_price, sub_total=product.offer_price)
+            if product.category_offer_price > 0:
+                cart_item = CartItem.objects.create(user=request.user, product=product, cart=cart, quantity=1, price=product.category_offer_price, sub_total=product.category_offer_price)
+                cart_item.save()
+            elif product.product_offer_price > 0:
+                cart_item = CartItem.objects.create(user=request.user, product=product, cart=cart, quantity=1, price=product.product_offer_price, sub_total=product.product_offer_price)
                 cart_item.save()
             else:
                 cart_item = CartItem.objects.create(user=request.user, product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
                 cart_item.save()
         else:
-            if product.offer_price > 0:
-                cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.offer_price, sub_total=product.offer_price)
+            if product.category_offer_price > 0:
+                cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.category_offer_price, sub_total=product.category_offer_price)
+                cart_item.save()
+            elif product.product_offer_price > 0:
+                cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.product_offer_price, sub_total=product.product_offer_price)
                 cart_item.save()
             else:
                 cart_item = CartItem.objects.create(product=product, cart=cart, quantity=1, price=product.selling_price, sub_total=product.selling_price)
                 cart_item.save()
 
     return redirect('cart')
+
+
+def add_to_cart_ajax(request):
+    print("------------- still working  ---------------")
+    Disquantity = request.POST.get('Disquantity')
+    cartID = request.POST.get('cartID')
+    current_gnd_totl = request.POST.get('current_gnd_totl')
+    cart_of_cart_item = request.POST.get('cartOfCartItem')
+
+    # print("quantiy: " + str(Disquantity) + " cartID: "+str(cartID)+" each_tl_price: "+str(each_ttl_price)+" grand_total: "+str(all_ttl_price)+"----------------")
+
+    cart_item = CartItem.objects.get(id=cartID)
+    cart_item_itarable = CartItem.objects.filter(cart=cart_of_cart_item)
+    product = Product.objects.get(title=cart_item.product)
+    print("cart item: "+ str(cart_item) + " | product: " + str(product))
+
+    if Disquantity == product.quantity:
+        max_error = "Product quantity reached max level."
+        print(max_error)
+        data = {
+            'max_error':max_error,
+        }
+        return JsonResponse(data)
+    else:
+        final_qnty = int(Disquantity) + 1
+        cart_item.quantity = final_qnty
+        cart_item.save()
+
+        if product.category_offer_price:
+            product_total = final_qnty * product.category_offer_price
+        elif product.product_offer_price:
+            product_total = final_qnty * product.product_offer_price
+        else:
+            product_total = final_qnty * product.selling_price
+            
+        # cart_item.price = product_total
+        cart_item.sub_total = product_total
+        cart_item.save()
+
+        total_ = 0
+        for crt in cart_item_itarable:
+            total_ += crt.sub_total
+        # grand_total = int(current_gnd_totl) + total_
+
+    data = {
+        'success_quantity' : final_qnty,
+        'total_price' : product_total,
+        'grand_total' : total_,
+    }
+    print("------------- working add cart 02 ---------------")
+    return JsonResponse(data)
+
+
+def decrement_cart_quantity_ajax(request):
+    pass
 
 
 
@@ -359,20 +426,6 @@ def remove_item(request, id):
 @login_required(login_url='login')
 def check_out(request):
 
-    # if request.method == 'POST':
-    #     amount = 50000
-    #     order_currency = 'INR'
-    #     client = razorpay.Client(auth=('rzp_test_DdZJYvM3465Ujr', 'MUKCKFyUw6XoAhNSOn4medW3'))
-    #     payment = client.order.create({'amount':amount, 'currency':'INR', 'payment_capture': '1'})
-
-    if request.session.has_key('cupon_code'):
-        pass
-    # cupon_code_is_exists = cupon_code(request)
-    # if cupon_code_is_exists:
-    #     cpn = CuponOffer.objects.get(cupon_code=cupon_code_is_exists)
-    #     cupon_offer_price = cpn.offer_percentage
-
-
     current_user = request.user
     display_address = Address.objects.filter(user=current_user)
     adrs_count = display_address.count()
@@ -387,7 +440,16 @@ def check_out(request):
     for crt_itm in cart_item:
         total += (crt_itm.price * crt_itm.quantity)
 
-    count = CartItem.objects.all().count()
+    # ----- CUPON OFFER --------------------------------------------
+    if request.session.has_key('cupon_code'):
+        session = request.session['cupon_code']
+        cupon_code_is_exists = CuponOffer.objects.get(cupon_code=session)
+        cupon_offer_total = total - cupon_code_is_exists.offer_price
+        print("--Check out part clear aaan -- total: "+str(total)+" ---cuopon code from database: "+str(cupon_code_is_exists)+" ----- offer price: "+str(cupon_code_is_exists.offer_price))
+    else:
+        cupon_offer_total = None
+
+    count = cart_item.count()
     if count <= 0:
         return redirect('cart')
 
@@ -406,12 +468,11 @@ def check_out(request):
             ord.payment = payment_method
             ord.product = item.product
 
-            # if cupon_offer_price:
-            #     total_after_add_cupon = (item.sub_total * item.quantity) - cupon_offer_price
-            #     ord.product_price = total_after_add_cupon
-            # else:
+            if cupon_offer_total:
+                ord.product_price = cupon_offer_total
+            else:
+                ord.product_price = item.sub_total * item.quantity
 
-            ord.product_price = item.sub_total * item.quantity
             ord.product_quantity = item.quantity
 
             import datetime
@@ -426,6 +487,9 @@ def check_out(request):
             product.save()
         item.cart.delete()
         
+        if cupon_offer_total:
+            del request.session['cupon_code']
+        
         if payment_method == "paypal" or payment_method == "razorpay":
             return render(request, 'User/payment.html', {'payment_method':payment_method, 'total':total})
         else:
@@ -435,7 +499,8 @@ def check_out(request):
         'display_address':display_address,
         'adrs_count':adrs_count,
         'total':total,
-        # 'total_after_add_cupon':total_after_add_cupon,
+        'count':count,
+        'cupon_offer_total':cupon_offer_total,
     }
     return render(request, 'User/check_out.html', context)
 

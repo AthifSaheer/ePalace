@@ -40,16 +40,16 @@ urlpatterns = [
     path('product/offer/', views.product_offer, name='product_offer'),
     path('create/product/offer/', views.create_product_offer, name='create_product_offer'),
     path('edit/product/offer/<int:id>/', views.edit_product_offer, name='edit_product_offer'),
-    path('disable/product/offer/', views.disable_product_offer, name='disable_product_offer'),
+    path('delete/product/offer/<int:id>/', views.delete_product_offer, name='delete_product_offer'),
     
     path('category/offer/', views.category_offer, name='category_offer'),
     path('create/category/offer/', views.create_category_offer, name='create_category_offer'),
-    path('edit/category/offer/', views.edit_category_offer, name='edit_category_offer'),
-    path('disable/category/offer/', views.disable_category_offer, name='disable_category_offer'),
+    path('edit/category/offer/<int:id>/', views.edit_category_offer, name='edit_category_offer'),
+    path('delete/category/offer/<int:id>/', views.delete_category_offer, name='delete_category_offer'),
     
 
     path('cupon/offer/', views.cupon_offer, name='cupon_offer'),
     path('create/cupon/offer/', views.create_cupon_offer, name='create_cupon_offer'),
     path('edit/cupon/offer/<int:id>/', views.edit_cupon_offer, name='edit_cupon_offer'),
-    path('disable/cupon/offer/', views.disable_cupon_offer, name='disable_cupon_offer'),
+    path('delete/cupon/offer/<int:id>/', views.delete_cupon_offer, name='delete_cupon_offer'),
 ]

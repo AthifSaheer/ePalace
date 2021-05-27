@@ -53,7 +53,8 @@ class Product(models.Model):
 
     marked_price = models.PositiveIntegerField()
     selling_price = models.PositiveIntegerField()
-    offer_price = models.PositiveIntegerField(blank=True, null=True, default=0)
+    product_offer_price = models.PositiveIntegerField(blank=True, null=True, default=0)
+    category_offer_price = models.PositiveIntegerField(blank=True, null=True, default=0)
 
     quantity = models.PositiveIntegerField()
     guarandeed = models.BooleanField()
@@ -73,8 +74,11 @@ class Product(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if self.offer_price == "":
-            self.offer_price = 0
+        if self.product_offer_price == "":
+            self.product_offer_price = 0
+        if self.category_offer_price == "":
+            self.category_offer_price = 0
+
         super().save(*args, **kwargs)
 
 

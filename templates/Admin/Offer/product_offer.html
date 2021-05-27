@@ -55,7 +55,7 @@
                       <a class="dropdown-toggle icon-burger-mini" href="" role="button" id="dropdown-recent-order1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static"></a>
                       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-recent-order1">
                         <li class="dropdown-item">
-                          <a href="{% url 'disable_product_offer' %}">Disable Offer</a>
+                          <a href="{% url 'delete_product_offer' prd_ofr.id %}">Delete Offer</a>
                         </li>
                         <li class="dropdown-item">
                           <a href="{% url 'edit_product_offer' prd_ofr.id %}">Edit Offer</a>

@@ -14,7 +14,10 @@ urlpatterns = [
     path('filter_data/', views.filter_data, name="filter_data"),
 
     # CART AND CHECKOUT ------------------------------------------
-    path('add-to-cart/<int:id>/', views.add_to_cart, name="add_to_cart"),
+    path('add/to/cart/<int:id>/', views.add_to_cart, name="add_to_cart"),
+    path('add/to/cart/ajax', views.add_to_cart_ajax, name="add_to_cart_ajax"),
+    path('decrement/cart/quantity/ajax', views.decrement_cart_quantity_ajax, name="decrement_cart_quantity_ajax"),
+
     path('cart', views.cart, name="cart"),
     path('item_decrement/<int:id>', views.item_decrement, name="item_decrement"),
     path('remove_item/<int:id>', views.remove_item, name="remove_item"),
@@ -40,4 +43,5 @@ urlpatterns = [
 
     # OFFER ------------------------------------------
     path('cupon/code/', views.cupon_code, name="cupon_code"),
+    # path('delete/cupon/code/', views.delete_cupon_code, name="delete_cupon_code"),
 ]

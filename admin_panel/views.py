@@ -32,6 +32,7 @@ def monthly_sales_report(request):
     try:
         from_ = request.GET['from_date']
         to_ = request.GET['to_date']
+        conver_to_pdf = request.GET['conver_to_pdf']
     
         if from_ or to_:
             x = str(from_) + "-01"
@@ -199,13 +200,22 @@ def admin_home(request):
 
 
 def convert_to_pdf(request):
-    today = timezone.now()
-    params = {
-        'today': today,
-        'month_order': "jk",
-        'request': request
-    }
-    return Render.render('Admin/monthly_report_pdf.html', params)
+    from_ = request.GET['from_date']
+    to_ = request.GET['to_date']
+
+    if from_ or to_:
+        x = str(from_) + "-01"
+        y = str(to_) + "-01"
+        
+        month_order = Order.objects.filter(time_stamp__range=[x, y])
+
+        today = timezone.now()
+        params = {
+            'today': today,
+            'month_order': month_order,
+        }
+        return Render.render('Admin/monthly_report_pdf.html', params)
+    return render(request, 'Admin/monthly_report_pdf.html')
 
     
 
@@ -489,12 +499,12 @@ def create_product_offer(request):
             ProductOffer(product, offer_for, offer_percentage, date, time)
             form.save()
 
-            # ...................................................
+            # ........................ price manage ...........................
             product = Product.objects.get(title=product)
-            prd_offer = ProductOffer.objects.get(product=product)
-            percentage_price = (product.selling_price / 100) * prd_offer.offer_percentage
+            
+            percentage_price = (product.selling_price / 100) * offer_percentage
             offer_price = product.selling_price - percentage_price
-            product.offer_price = offer_price
+            product.product_offer_price = offer_price
             product.save()
 
             # try:
@@ -521,31 +531,84 @@ def edit_product_offer(request, id):
             product = Product.objects.get(title=prd_offer.product)
             percentage_price = (product.selling_price / 100) * prd_offer.offer_percentage
             offer_price = product.selling_price - percentage_price
-            product.offer_price = offer_price
+            product.product_offer_price = offer_price
             product.save()
 
             return redirect('product_offer')
     return render(request, 'Admin/Offer/edit_product_offer.html', {'form':form})
     
 
-def disable_product_offer(request):
-    pass
-    # return render(request, 'Admin/Offer/product_offer.html')
+def delete_product_offer(request, id):
+    prd_ofr_del = ProductOffer.objects.get(id=id)
+    prd_ofr_del.delete()
+    return redirect('product_offer')
     
 
 # .......................................................................
 
 def category_offer(request):
-    return render(request, 'Admin/Offer/category_offer.html')
+    ctg_offer = CategoryOffer.objects.all()
+    return render(request, 'Admin/Offer/category_offer.html', {'ctg_offer':ctg_offer})
 
 def create_category_offer(request):
-    pass
+    form = CategoryOfferForm(request.POST)
 
-def edit_category_offer(request):
-    pass
+    if request.method == 'POST':
+        if form.is_valid():
+            category = form.cleaned_data.get('category')
+            offer_for = form.cleaned_data.get('offer_for')
+            offer_percentage = form.cleaned_data.get('offer_percentage')
+            date = form.cleaned_data.get('date')
+            time = form.cleaned_data.get('time')
 
-def disable_category_offer(request):
-    pass
+            ProductOffer(category, offer_for, offer_percentage, date, time)
+            form.save()
+
+            # # .....................  price manage  ..............................
+            all_prd_by_ctg = Product.objects.filter(category=category)
+
+            for product in all_prd_by_ctg:
+                percentage_price = (product.selling_price / 100) * offer_percentage
+                offer_price = product.selling_price - percentage_price
+                product.category_offer_price = offer_price
+                product.save()
+
+            return redirect('category_offer')
+    context = {
+        'form':form,
+    }
+    return render(request, 'Admin/Offer/create_category_offer.html', context)
+    
+
+def edit_category_offer(request, id):
+    ctg_ofr = CategoryOffer.objects.get(id=id)
+    form = CategoryOfferForm(instance=ctg_ofr)
+
+    if request.method == 'POST':
+        form = CategoryOfferForm(request.POST, request.FILES, instance=ctg_ofr)
+        if form.is_valid():
+            form.save()
+
+            # -------------------- price manage ----------------------------------
+            all_prd_by_ctg = Product.objects.filter(category=ctg_ofr.category)
+
+            for product in all_prd_by_ctg:
+                percentage_price = (product.selling_price / 100) * ctg_ofr.offer_percentage
+                offer_price = product.selling_price - percentage_price
+                product.category_offer_price = offer_price
+                product.save()
+
+            return redirect('category_offer')
+    return render(request, 'Admin/Offer/edit_category_offer.html', {'form':form})
+
+def delete_category_offer(request, id):
+    del_ctg_ofr = CategoryOffer.objects.get(id=id)
+    product = Product.objects.filter(category=del_ctg_ofr.category)
+    for prd in product:
+        prd.category_offer_price = 0
+        prd.save()
+    del_ctg_ofr.delete()
+    return redirect('category_offer')
 
 # .......................................................................
 
@@ -563,11 +626,11 @@ def create_cupon_offer(request):
         if form.is_valid():
             cupon_code = form.cleaned_data.get('cupon_code')
             offer_for = form.cleaned_data.get('offer_for')
-            offer_percentage = form.cleaned_data.get('offer_percentage')
+            offer_price = form.cleaned_data.get('offer_price')
             date = form.cleaned_data.get('date')
             time = form.cleaned_data.get('time')
 
-            ProductOffer(cupon_code, offer_for, offer_percentage, date, time)
+            ProductOffer(cupon_code, offer_for, offer_price, date, time)
             form.save()
 
             # ...................................................
@@ -611,5 +674,8 @@ def edit_cupon_offer(request, id):
     return render(request, 'Admin/Offer/edit_cupon_offer.html', context)
 
 
-def disable_cupon_offer(request):
-    pass
+def delete_cupon_offer(request, id):
+    cpn_ofr_del = CuponOffer.objects.get(id=id)
+    cpn_ofr_del.delete()
+    return redirect('cupon_offer')
+

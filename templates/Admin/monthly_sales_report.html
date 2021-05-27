@@ -12,24 +12,28 @@
           <div class="col-md-7">
             <form action="" method="GET" class="mr-2">
               <label for="">From</label>
-              <input type="month" name="from_date" min="2021-01" max="2022-12" onblur="func()">
+              <input type="month" name="from_date" min="2021-01" max="2022-12" id="from_date">
               <label for="">To</label>
-              <input type="month" name="to_date" max="2022-12">
+              <input type="month" name="to_date" max="2022-12" id="to_date">
               <button class="btn btn-outline-primary btn-sm">submit</button>    
-              {% if dowload_pdf %}
-              <a href="{% url 'convert_to_pdf' %}" class="btn btn-outline-info btn-sm">{{ dowload_pdf }}</a>
-              {% endif %}
             </form>
+            {% if dowload_pdf %}
+            <form action="{% url 'convert_to_pdf' %}" method="GET" class="mr-2">
+              <input type="month" hidden name="from_date" min="2021-01" max="2022-12" id="from_date_pdf">
+              <input type="month" hidden name="to_date" max="2022-12" id="to_date_pdf">
+                
+              <button class="btn btn-outline-info btn-sm">{{ dowload_pdf }}</button>
+            </form>
+            <script>
+              from = document.getElementById('from_date').value;
+              document.getElementById('from_date_pdf').innerHTML = from;
+              
+              to = document.getElementById('to_date').value;
+              document.getElementById('to_date_pdf').innerHTML = from;
+            </script>
+            {% endif %}
         </div>
     </div>
-
-    <script>
-      function func() {
-        var from = document.getElementsByName('from_date')[0].value
-        var to = document.getElementsByName('to_date')[0]
-        to.min = from
-      }
-    </script>
 
     <table class="table">
       <thead id="myHeader">

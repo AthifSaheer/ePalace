@@ -277,7 +277,7 @@ def ref_link(request, *args, **kwargs):
 
 
 # signup
-def xxxxxx(request):
+def ABCD(request):
     session_id = request.session.get('ref_session')
     # sesssion nil ulla user eduthu
     recommended_user = RefLink.objects.get(id=session_id)

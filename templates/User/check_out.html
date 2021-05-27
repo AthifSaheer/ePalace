@@ -196,17 +196,25 @@
             <div class="col-md-">Add </div> -->
 
             <span>Price details
-                <a href="{% url 'cupon_code' %}">
-                    <small class="text-primary ml-2" style="font-size: 18px;">Add cupon or referral code</small>
-                </a>
+                {% if cupon_offer_total %}
+                    <!-- <a href=""><small class="text-primary ml-2" style="font-size: 18px;">Delete cupon code</small></a> -->
+                {% else %}
+                <a href="{% url 'cupon_code' %}"><small class="text-primary ml-2" style="font-size: 18px;">Add cupon code</small></a>
+                {% endif %}
             </span>
 
             <div class="col-md-12">
                 <table class="table">
                     <tbody>
                         <tr>
-                            <td>Price(*items)</td>
+                            <td>Price({{count}}items)</td>
+                            {% if cupon_offer_total %}
+                            <td>&#8377;{{cupon_offer_total}}<s class="small text-muted">&#8377;{{ total }}</s>
+                                <small class="text-success">Cupon code added</small>
+                            </td>
+                            {% else %}
                             <td>&#8377;{{ total }}</td>
+                            {% endif %}
                         </tr>
 
                         <tr>
@@ -216,7 +224,11 @@
 
                         <tr>
                             <td>Total Amount</td>
+                            {% if cupon_offer_total %}
+                            <td>&#8377;{{ cupon_offer_total }}</td>
+                            {% else %}
                             <td>&#8377;{{ total }}</td>
+                            {% endif %}
                         </tr>
                     </tbody>
                 </table>

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'colorfield',
+    # 'django.contrib.sessions',
 ]
 
 MIDDLEWARE = [

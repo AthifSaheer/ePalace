@@ -79,6 +79,25 @@ class CuponOfferForm(forms.ModelForm):
 
     class Meta:
         model = CuponOffer
-        fields = ['cupon_code', 'offer_for', 'offer_percentage','date_period', 'time_period']
+        fields = ['cupon_code', 'offer_for', 'offer_price','date_period', 'time_period']
+
+
+
+class CategoryOfferForm(forms.ModelForm):
+    date_period = forms.DateField(
+        # input_formats = ['%Y-%m-%d'],
+        widget=forms.TextInput(     
+            attrs={'type': 'date'} 
+        )
+    )
+    time_period = forms.TimeField(
+        widget = forms.TextInput(
+            attrs={'type': 'time'},
+        )
+    )
+
+    class Meta:
+        model = CategoryOffer
+        fields = ['category', 'offer_for', 'offer_percentage','date_period', 'time_period']
 
 

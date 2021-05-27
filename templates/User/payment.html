@@ -127,12 +127,10 @@
             <form action="{% url 'razorpay' %}" method="POST">
                 {% csrf_token %}
                 <script
-                src="https://checkout.razorpay.com/v1/checkout.js"
-                src="https://cdn.razorpay.com/static/widget/subscription-button.js"
+                src="https://checkout.razorpay.com/v1/payment-button.js"
                 data-key="rzp_test_DdZJYvM3465Ujr"
-                data-subscription_button_id="pl_HF5aLL1F4aEVR5"
+                data-payment_button_id="pl_HFRW3E993b9ijp"
                 data-button_theme="brand-color"
-                async
                 data-amount="{{ total }}00"
                 data-currency="INR"
                 data-buttontext="Pay with Razorpay"
@@ -142,9 +140,18 @@
                 data-prefill.name="Gaurav Kumar"
                 data-prefill.email="gaurav.kumar@example.com"
                 data-theme.color="#F37254"
+                async
                 ></script>
                 <input type="hidden" custom="Hidden Element" name="hidden">
             </form>
+            <!-- <form>
+                <script
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                data-subscription_button_id="pl_HF5aLL1F4aEVR5"
+                data-payment_button_id="pl_HFRW3E993b9ijp"
+                  async>
+                </script> 
+            </form> -->
         </div>
 
         <div class="col-md-4"></div>

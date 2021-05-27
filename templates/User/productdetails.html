@@ -50,15 +50,22 @@
                         <!-- <br> -->
                         <!-- <br> -->
                         <div id="price">
-                            {% if product_detailed.offer_price > 0 %}
+                            {% if product_detailed.category_offer_price > 0 %}
                             <img src="/assets/img/offer-tag.jpg" width="100px" height="100px" alt="">
                             <span>
-                                <!-- <br>  -->
-                                <h4 class="text-danger">&#8377;{{ product_detailed.offer_price }} <span class="text-secondary"><small>{{ product_offer_table.offer_percentage }}% off</small></span></h4>
+                                <h4 class="text-danger">&#8377;{{ product_detailed.category_offer_price }} <span class="text-secondary"><small>{{ category_offer_table.offer_percentage }}% off</small></span></h4>
                                 <s class="text-secondary"><small>&#8377;{{ product_detailed.selling_price }}</small></s>
                             </span>
                             <br>
-                            <!-- <span class="mt-3 text-danger">&#8377;{{ product_detailed.selling_price }}</span> <s class="text-secondary"><small>&#8377;{{ product_detailed.marked_price }}</small></s> -->
+
+                            {% elif product_detailed.product_offer_price > 0 %}
+                            <img src="/assets/img/offer-tag.jpg" width="100px" height="100px" alt="">
+                            <span>
+                                <h4 class="text-danger">&#8377;{{ product_detailed.product_offer_price }} <span class="text-secondary"><small>{{ product_offer_table.offer_percentage }}% off</small></span></h4>
+                                <s class="text-secondary"><small>&#8377;{{ product_detailed.selling_price }}</small></s>
+                            </span>
+                            <br>
+
                             {% else %}
                             <span class="mt-4 text-danger">&#8377;{{ product_detailed.selling_price }}</span> <s class="text-secondary"><small>&#8377;{{ product_detailed.marked_price }}</small></s>
                             {% endif %}

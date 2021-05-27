@@ -12,8 +12,8 @@ from django.core.exceptions import ValidationError
 class CuponOffer(models.Model):
     offer_for = models.CharField(max_length=20, default="Today special offer")
     cupon_code = models.CharField(max_length=15)
-    # offer_price = models.PositiveIntegerField()
-    offer_percentage = models.PositiveIntegerField()
+    offer_price = models.PositiveIntegerField()
+    # offer_percentage = models.PositiveIntegerField()
     date_period = models.DateField()
     time_period = models.TimeField()
     create_at = models.DateTimeField(auto_now_add=True)
@@ -26,8 +26,8 @@ class CuponOffer(models.Model):
 class CategoryOffer(models.Model):
     category = models.OneToOneField(Category, on_delete=models.CASCADE)
     offer_for = models.CharField(max_length=20, default="Today special offer")
-    offer_price = models.PositiveIntegerField()
-    # offer_percentage = models.PositiveIntegerField()
+    # offer_price = models.PositiveIntegerField()
+    offer_percentage = models.PositiveIntegerField()
     date_period = models.DateField()
     time_period = models.TimeField()
     create_at = models.DateTimeField(auto_now_add=True)
