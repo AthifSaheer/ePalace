@@ -1,4 +1,5 @@
 from re import X
+from django.db.models.expressions import Ref
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,8 +16,10 @@ from .models import *
 import razorpay
 import requests
 import json
-from datetime import datetime, timedelta
 from .forms import FilterForm
+
+import datetime
+from datetime import timedelta
 
 
 def delete_product_offer(slug):
@@ -55,36 +58,92 @@ def delete_category_offer(category):
         print("------------ Exception_01 worked ----------------")
 
 
-
 def cupon_code(request):
+    now = datetime.datetime.now()
+    date = now.day, now.month, now.year
+    time = now.hour, now.minute, now.second
+
+    # After expiry date cupon will be delete.
+    cc_del = CuponOffer.objects.all()
+    for cc in cc_del:
+        if str(cc.date_period) < str(date):
+            if str(cc.time_period) < str(time):
+                print(str(cc) + " - Deleted - -----------")
+                cc.delete()
+
     if request.method == 'POST':
         cupon_code = request.POST.get('cupon_code')
-        print(str(cupon_code) + "--- cupon code-----")
+        print(str(cupon_code)+"============== cupon ============")
+
+        #   CHECKING CUPON CODE IS AVAILABLE
         try:
             cupon_code_is_exists = CuponOffer.objects.get(cupon_code=cupon_code)
-            print("--- Try block worked cuponcode 01--------------------")
+            if cupon_code_is_exists.is_active == True:
+                error = ("Someone is using this coupon.")
+                return render(request, 'User/cupon_code.html', {'error':error})
+            if cupon_code_is_exists:
+                cupon_code_is_exists.is_active = True
+                cupon_code_is_exists.user = request.user
+                cupon_code_is_exists.save()
+                return redirect('check_out')
 
-            request.session['cupon_code'] = cupon_code
-            print("---- session created -----" + str(request.session['cupon_code']))
+        except CuponOffer.DoesNotExist:
+            print("------------- CUPON DOES NOT EXISTS------------")
+            # CHECKING IS SIGNUP CUPON IS AVAILABLE
+            try:
+                signup_cupon = SignupCupon.objects.get(cupon_code=cupon_code)
+                if signup_cupon.is_active == True:
+                    error = ("Someone is using this coupon.")
+                    return render(request, 'User/cupon_code.html', {'error':error})
+                if signup_cupon:
+                    signup_cupon.is_active = True
+                    signup_cupon.taken_user = request.user
+                    signup_cupon.save()
+                    return redirect('check_out')
 
-            
-            
-            return redirect('check_out')
-        except:
-            print("--- Exception worked cuponcode 01--------------------")
-            error = "Invalid cupon code !"
-            return render(request, 'User/cupon_code.html', {'error':error})
+            except SignupCupon.DoesNotExist:
+                print("--------SIGNUP CUPON DOES NOT EXISTS-------------")
+                # CHECKING IS REFERRAL CUPON IS AVAILABLE
+                try:
+                    referral_cupon = ReferralCupon.objects.get(cupon_code=cupon_code)
+                    if referral_cupon:
+                        referral_cupon.is_active = True
+                        referral_cupon.taken_user = request.user
+                        referral_cupon.save()
+                        return redirect('check_out')
 
-        # if cupon_code_is_exists:
-        # else:
+                except ReferralCupon.DoesNotExist:
+                    print("--------REFFERAL CUPON DOES NOT EXISTS--------------")
+                    print("--- Exception worked cuponcode 01--------------------")
+                    error = "Invalid cupon code ! !"
+                    return render(request, 'User/cupon_code.html', {'error':error})
 
     return render(request, 'User/cupon_code.html')
 
 
-# def delete_cupon_code(request):
-#     print("---- session deleted -----" + str(request.session['cupon_code']))
-#     del request.session['cupon_code']
-#     return redirect('check_out')
+def delete_cupon_code(request):
+    try:
+        cupn_offr = CuponOffer.objects.get(is_active=True, user=request.user)
+        cupn_offr.is_active = False
+        cupn_offr.user = None
+        cupn_offr.save()
+        return redirect('check_out')
+    except CuponOffer.DoesNotExist:
+        try:
+            sign_cp = SignupCupon.objects.get(is_active=True, taken_user=request.user)
+            sign_cp.is_active = False
+            sign_cp.taken_user = None
+            sign_cp.save()
+            return redirect('check_out')
+        except SignupCupon.DoesNotExist:
+            try:
+                rfr_cp = ReferralCupon.objects.get(is_active=True, taken_user=request.user)
+                rfr_cp.is_active = False
+                rfr_cp.taken_user = None
+                rfr_cp.save()
+                return redirect('check_out')
+            except ReferralCupon.DoesNotExist:
+                pass
 
 
 def home(request):
@@ -117,16 +176,20 @@ def category_wised_product(request):
 def product_detail(request, slug):
     url_slug = slug
     product_detailed = Product.objects.get(slug=url_slug)
-    print(product_detailed.category)
+    cupon_code = CuponOffer.objects.all()
+    # refferal_code = RefLink.objects.get(user=request.user)
+    # print(product_detailed.category)
 
     delete_product_offer(url_slug) # product offer delete function called
     delete_category_offer(product_detailed.category) # Category offer delete function called
 
     try:
         product_offer_table = ProductOffer.objects.get(product=product_detailed)
+        # cupon_code = CuponOffer.objects.all()
         context = {
             'product_detailed':product_detailed,
             'product_offer_table':product_offer_table,
+            # 'cupon_code':cupon_code,
         }
         return render(request, 'User/productdetails.html', context)
     except:
@@ -142,7 +205,12 @@ def product_detail(request, slug):
     except:
         print("---------- Exception_02 worked -----------------")
 
-    return render(request, 'User/productdetails.html', {'product_detailed':product_detailed,})
+    context = {
+        'product_detailed':product_detailed,
+        'cupon_code':cupon_code,
+        # 'refferal_code':refferal_code,
+    }
+    return render(request, 'User/productdetails.html', context)
 
 
 
@@ -234,7 +302,7 @@ def filter_data(request):
         print("--------------------------------------------------")
         print(filter_ajax_data)
         print("--------------------------------------------------")
-    return JsonResponse({'data':'hello'})
+    return JsonRerfrl_cponse({'data':'hello'})
 
 
 def _cart_session_id(request):
@@ -265,6 +333,9 @@ def cart(request):
             # else:
         
         CartItem(sub_total=total)
+
+        # for x in cart_item:
+        #     print("ID: "+str(x.pk)+" -- PRD: "+ str(x.product.title)+"------ CArt Item ---------")
 
         context = {
             'cart_item':cart_item,
@@ -331,19 +402,20 @@ def add_to_cart(request, id):
 
 def add_to_cart_ajax(request):
     print("------------- still working  ---------------")
-    Disquantity = request.POST.get('Disquantity')
-    cartID = request.POST.get('cartID')
-    current_gnd_totl = request.POST.get('current_gnd_totl')
-    cart_of_cart_item = request.POST.get('cartOfCartItem')
+    disply_quantity = request.POST.get('displyQuantity')
+    cartProductID = request.POST.get('cartProductID')
 
-    # print("quantiy: " + str(Disquantity) + " cartID: "+str(cartID)+" each_tl_price: "+str(each_ttl_price)+" grand_total: "+str(all_ttl_price)+"----------------")
+    # current_gnd_totl = request.POST.get('current_gnd_totl')
+    # cart_of_cart_item = request.POST.get('cartOfCartItem')
 
-    cart_item = CartItem.objects.get(id=cartID)
-    cart_item_itarable = CartItem.objects.filter(cart=cart_of_cart_item)
+    # print("quantiy: " + str(disply_quantity) + " cartProductID: "+str(cartProductID)+" each_tl_price: "+str(each_ttl_price)+" grand_total: "+str(all_ttl_price)+"----------------")
+
+    cart_item = CartItem.objects.get(id=cartProductID)
+    cart_item_itarable = CartItem.objects.filter(cart=cart_item.cart)
     product = Product.objects.get(title=cart_item.product)
-    print("cart item: "+ str(cart_item) + " | product: " + str(product))
+    print(" disply_quantity: "+str(disply_quantity) +" | product_quantity: " + str(product.quantity)+"-------------")
 
-    if Disquantity == product.quantity:
+    if int(disply_quantity) == int(product.quantity):
         max_error = "Product quantity reached max level."
         print(max_error)
         data = {
@@ -351,7 +423,7 @@ def add_to_cart_ajax(request):
         }
         return JsonResponse(data)
     else:
-        final_qnty = int(Disquantity) + 1
+        final_qnty = int(disply_quantity) + 1
         cart_item.quantity = final_qnty
         cart_item.save()
         print("---- quantity increment working -----------")
@@ -374,28 +446,25 @@ def add_to_cart_ajax(request):
 
     data = {
         'success_quantity' : final_qnty,
-        'total_price' : product_total,
+        'produc_total_price' : product_total,
         'grand_total' : total_,
     }
-    print("------------- working add cart 02 ---------------")
+    print("------------- finished add cart ajax ---------------")
     return JsonResponse(data)
 
 
 def decrement_cart_quantity_ajax(request):
     print("------------- decrement_cart_quantity_ajax working  ---------------")
-    Disquantity = request.POST.get('Disquantity')
-    cartID = request.POST.get('cartID')
-    current_gnd_totl = request.POST.get('current_gnd_totl')
-    cart_of_cart_item = request.POST.get('cartOfCartItem')
+    disply_quantity = request.POST.get('displyQuantity')
+    cartProductID = request.POST.get('cartProductID')
+    print(type(disply_quantity))
 
-    # print("quantiy: " + str(Disquantity) + " cartID: "+str(cartID)+" each_tl_price: "+str(each_ttl_price)+" grand_total: "+str(all_ttl_price)+"----------------")
-
-    cart_item = CartItem.objects.get(id=cartID)
-    cart_item_itarable = CartItem.objects.filter(cart=cart_of_cart_item)
+    cart_item = CartItem.objects.get(id=cartProductID)
+    cart_item_itarable = CartItem.objects.filter(cart=cart_item.cart)
     product = Product.objects.get(title=cart_item.product)
     print("cart item: "+ str(cart_item) + " | product: " + str(product))
 
-    if Disquantity == 1:
+    if int(disply_quantity) == 1:
         max_error = "Product quantity reached min level."
         print(max_error)
         data = {
@@ -403,7 +472,7 @@ def decrement_cart_quantity_ajax(request):
         }
         return JsonResponse(data)
     else:
-        final_qnty = int(Disquantity) - 1
+        final_qnty = int(disply_quantity) - int(1)
         cart_item.quantity = final_qnty
         cart_item.save()
         print("--------- final quantity saved --------------------")
@@ -426,7 +495,7 @@ def decrement_cart_quantity_ajax(request):
 
     data = {
         'success_quantity' : final_qnty,
-        'total_price' : product_total,
+        'product_total_price' : product_total,
         'grand_total' : total_,
     }
     print("------------- decrement_cart_quantity_ajax finished ---------------")
@@ -490,13 +559,26 @@ def check_out(request):
         total += (crt_itm.price * crt_itm.quantity)
 
     # ----- CUPON OFFER --------------------------------------------
-    if request.session.has_key('cupon_code'):
-        session = request.session['cupon_code']
-        cupon_code_is_exists = CuponOffer.objects.get(cupon_code=session)
-        cupon_offer_total = total - cupon_code_is_exists.offer_price
-        print("--Check out part clear aaan -- total: "+str(total)+" ---cuopon code from database: "+str(cupon_code_is_exists)+" ----- offer price: "+str(cupon_code_is_exists.offer_price))
-    else:
-        cupon_offer_total = None
+    try:
+        cupon_offer = CuponOffer.objects.get(is_active=True, user=request.user)
+        if cupon_offer.user == request.user:
+            cupon_offer_total = total - cupon_offer.offer_price
+        print("---- cupon code try worked-------------")
+      
+    except CuponOffer.DoesNotExist:
+        try:
+            signup_cupon = SignupCupon.objects.get(is_active=True, taken_user=request.user)
+            if signup_cupon.taken_user == request.user:
+                cupon_offer_total = total - signup_cupon.offer_price
+        except SignupCupon.DoesNotExist:
+            try:
+                referral_cupon = ReferralCupon.objects.get(is_active=True, taken_user=request.user)
+                if referral_cupon.taken_user == request.user:
+                    cupon_offer_total = total - referral_cupon.offer_price
+            except ReferralCupon.DoesNotExist:
+                cupon_offer_total = None
+                print("---- cupon code DoesNotExist exception worked-------------")
+    
 
     count = cart_item.count()
     if count <= 0:
@@ -537,7 +619,7 @@ def check_out(request):
         item.cart.delete()
         
         if cupon_offer_total:
-            del request.session['cupon_code']
+            cupon_offer.delete()
         
         if payment_method == "paypal" or payment_method == "razorpay":
             return render(request, 'User/payment.html', {'payment_method':payment_method, 'total':total})
@@ -626,37 +708,83 @@ def cancel_order(request, id):
 def profile(request, id):
     user = User.objects.get(id=id)
     
-    referral_id = RefLink.objects.get(user=user)
-    referral_id_itarable = RefLink.objects.filter(recommended_by=user)
-    try:
+    # PROFILE IMAGE -----------------------------
+    profile_img = ProfileImage.objects.all()
+    for p_img in profile_img:
+        if p_img.user == request.user:
+            profile_image = ProfileImage.objects.get(user=user)
+            break
+        else:
+            profile_image = None
 
-        address = Address.objects.filter(user=user)
-        adrs_count = address.count()
-        profile = ProfileImage.objects.get(user=user)
+    # ADDRESS --------------------------------
+    all_adrs = Address.objects.all()
+    for add in all_adrs:
+        if add.user == request.user:
+            address = Address.objects.filter(user=user)
+            address_count = address.count()
+            break
+        else:
+            address = None
+            address_count = 0
 
-        context = {
-            'user':user,
-            'profile':profile,
-            'address':address,
-            'adrs_count':adrs_count,
-            'referral_id':referral_id,
-            'referral_id_itarable':referral_id_itarable,
-        }
+    # REFERRAL DETAILS ------------------------------
+    referral_link = RefLink.objects.all()
+    for rfr_lnk in referral_link:
+        if rfr_lnk.user == request.user:
+            referral_code = RefLink.objects.get(user=user)
+            referral_code_itarable = RefLink.objects.filter(recommended_by=user)
+            break
+        else:
+            referral_code_itarable = None
+            referral_code = None
+    
+    # SIGNUP CUPON --------------------------------
+    signup = SignupCupon.objects.all()
+    for sc in signup:
+        if sc.which_user == request.user:
+            signup_cupon = SignupCupon.objects.get(which_user=request.user)
+            break
+        else:
+            signup_cupon = None
 
-        return render(request, 'User/profile.html', context)
-    except:
-        print("------- Exception worker profile_010 -----------------")
-        address = Address.objects.filter(user=user)
-        error = 'Image does not exist'
+    # REFERRAL CUPON -------------------------------------
+    referral = ReferralCupon.objects.all()
+    for rf in referral:
+        if rf.which_user == request.user:
+            referral_cupon = ReferralCupon.objects.filter(which_user=request.user)
+            break
+        else:
+            referral_cupon = None
 
-        context = {
-            'address':address,
-            'error':error,
-            'referral_id':referral_id,
-            'referral_id_itarable':referral_id_itarable,
-        }
+    context = {
+        'user':user,
+        'profile_image':profile_image,
 
-        return render(request, 'User/profile.html', context)
+        'address':address,
+        'address_count':address_count,
+        
+        'referral_code':referral_code,
+        'referral_code_itarable':referral_code_itarable,
+
+        'signup_cupon':signup_cupon,
+        'referral_cupon':referral_cupon,
+    }
+
+    return render(request, 'User/profile.html', context)
+    # except:
+    #     print("------- Exception worker profile_010 -----------------")
+    #     address = Address.objects.filter(user=user)
+    #     error = 'Image does not exist'
+
+    # context = {
+    #     'address':address,
+    #     'error':error,
+    #     # 'referral_id':referral_id,
+    #     'referral_id_itarable':referral_id_itarable,
+    # }
+
+    return render(request, 'User/profile.html')
 
 
 

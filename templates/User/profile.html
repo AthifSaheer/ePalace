@@ -25,8 +25,8 @@
                 <hr>
 
                 <div class="col-md-4" id="img">
-                    {% if profile.image %}
-                    <img src="{{ profile.image.url }}" class="image" width="200px" height="200px" alt="{{ error }}">
+                    {% if profile_image.image %}
+                    <img src="{{ profile_image.image.url }}" class="image" width="200px" height="200px" alt="{{ error }}">
                     {% else %}
                     
                     <img src="/assets/img/avatar.png" class="image" width="200px" height="200px" alt="">
@@ -41,15 +41,25 @@
                 <div class="col-md-3" id="between-div">
                     <h5 id="title">Username:</h5>
                     <p id="sub-txt">{{ user.username }}</p>
-                    <h5 id="title">Gender:</h5>
-                    <p id="sub-txt">Male</p>
-                </div>
-                
-                <div class="col-md-3" id="between-div">
-                    <h5 id="title">Email:</h5>
-                    <p id="sub-txt">{{ user.email }}</p>
-                    <h5 id="title">Phone no:</h5>
-                    <p id="sub-txt">+91 90 8989 3898</p>
+                    <h5 id="title">Refferal Code:</h5>
+                    {% if referral_code %}
+                        <p id="sub-txt">{{ referral_code.code }}</p>
+                    {% else %}
+                        <p id="sub-txt">Not generated</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-3" id="between-div">
+                        <h5 id="title">Email:</h5>
+                        <p id="sub-txt">{{ user.email }}</p>
+                        <h5 id="title">Signup Cupon:</h5>
+                        {% if signup_cupon %}
+                            <p id="sub-txt">{{ signup_cupon.cupon_code }}</p>
+                        {% else %}
+                            <p id="sub-txt">No signup cupon.
+                                <br><span class="text-sm" id="perhaps">*perhaps you joined with no refertal code or already you used it.</span>
+                            </p>
+                        {% endif %}
                 </div>
                 
             </div>
@@ -64,28 +74,8 @@
                     <h4 id="title">Referal Details</h4>
                 </div>
 
-                <div class="col-md-5">
-                    <div class="referal-code-div">
-                        <span>Referal code:  </span>
-                        {% if referral_id %}
-                            {{ referral_id.code }}
-                        {% else %}
-                            Not Generated.
-                        {% endif %}
-                        <br><br>
-                        <!-- <span>Referal link:</span>
-                        {% if referral_id %}
-                        <a href="{% url 'signup_with_ref_code' referral_id.code %}">
-                            http://127.0.0.1:8000/accounts/signup/ref/link/{{ referral_id.code }}
-                        </a>
-                        {% else %}
-                        Link not available.
-                        {% endif %} -->
-                    </div>
-                </div>
-
-                <div class="col-md-7">
-                    <h4 class="text-info">Under ME:</h4>
+                <div class="col-md-6">
+                    <h5 class="text-info">Referral users:</h5>
                     <table class="table">
                         <thead>
                             <tr>
@@ -95,19 +85,54 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% if referral_id_itarable %}
-                        {% for rid in referral_id_itarable %}
+                        {% if referral_code_itarable %}
+                        {% for rid in referral_code_itarable %}
                           <tr>
                             <th scope="row">{{ forloop.counter }}</th>
                             <td>{{ rid.user }}</td>
                             <td>{{ rid.created_at }}</td>
                           </tr>
-                        {% endfor %}
+                          {% endfor %}
+                          {% else %}
+                            <tr>
+                                <td>No users under you.</td>
+                            </tr>
+                          {% endif %}
                         </tbody>
                       </table>
-                      {% else %}
-                        <p>No users under you.</p>
-                    {% endif %}
+                      
+                </div>
+
+                <div class="col-md-6">
+                    <h5 class="text-info">Referral cupon:</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Cupon Code</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if referral_cupon %}
+                        {% for rfr in referral_cupon %}
+                          <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ rfr.id }}</td>
+                            <td>{{ rfr.cupon_code }}</td>
+                            <td>&#8377;{{ rfr.offer_price }}/-</td>
+                          </tr>
+                          {% endfor %}
+                          {% else %}
+                            <tr>
+                                <td></td>
+                                <td>No referral cupons.</td>
+                            </tr>
+                          {% endif %}
+                        </tbody>
+                      </table>
+                      
                 </div>
                 
             </div>
@@ -127,8 +152,8 @@
                     <a href="{% url 'add_address' user.id %}"><button class="btn btn-outline-success btn-sm">Add address</button></a>
                 </div>
 
-                {% if adrs_count <= 0 %}
-                <p class="ml-3 text-dark">No address, Add new address</p>
+                {% if address_count <= 0 %}
+                    <p class="ml-3 text-dark">No address, Please add address</p>
                 {% endif %}
 
                 {% for adrs in address %}
@@ -141,6 +166,7 @@
                     </p>
                 </div>
                 {% endfor %}
+
                 
             </div>
 
@@ -148,6 +174,7 @@
 
     </div>
 </div>
+
 
 
 <style>
@@ -224,6 +251,10 @@
         color: rgb(58, 204, 204);
     }
 
-
+    #perhaps {
+        color: rgb(138, 138, 138);
+        font-size: 11px;
+        /* background: #000; */
+    }
 </style>
 {% endblock content %}

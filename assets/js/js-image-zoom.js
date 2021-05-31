@@ -177,11 +177,11 @@
                 img.src = options.img;
                 data.sourceImg.element = container.appendChild(img);
             }
-
+            
             // or get sourceImg element from specified container
             else {
                 data.sourceImg.element = container.children[0];
-
+                
                 // if sourceImg is not an img (might be a picture element), try to find one
                 if (data.sourceImg.element.nodeName !== "IMG") {
                     data.sourceImg.element = data.sourceImg.element.querySelector('img');
@@ -192,11 +192,11 @@
             container.style.position = 'relative';
             data.sourceImg.element.style.width = options.fillContainer ? '100%' : options.width ? options.width + 'px' : 'auto';
             data.sourceImg.element.style.height = options.fillContainer ? '100%' : options.height ? options.height + 'px' : 'auto';
-
+            
             data.zoomLens.element = container.appendChild(lensDiv);
             data.zoomLens.element.style.display = 'none';
             data.zoomLens.element.classList.add('js-image-zoom__zoomed-area');
-
+            
             data.zoomedImg.element = data.zoomContainer.appendChild(div);
             data.zoomedImg.element.classList.add('js-image-zoom__zoomed-image');
             data.zoomedImg.element.style.backgroundImage = "url('" + data.sourceImg.element.src + "')";

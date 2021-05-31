@@ -71,11 +71,21 @@
                             {% endif %}
                         </div>
                         <br>
+                        
                         <div id="offer">
                             <span class="mt-3 text-dark font-weight-bold">Availble offers</span><br>
-                            <img src="/assets/img/offer-icon.png" width="19px" height="19px" alt=""><span class="mt-3 text-secondary"> <span class="font-weight-bold">Partner Offer</span> Add referral code of recommended user. 15% off</span></s>
-                            <br>
-                            <img src="/assets/img/offer-icon.png" width="19px" height="19px" alt=""><span class="mt-3 text-secondary"> <span class="font-weight-bold">Cupon Code</span> Add "EID2021" code. 12% off</span></s>
+                            {% if cupon_code or refferal_code %}
+                            <img src="/assets/img/offer-icon.png" width="19px" height="19px" alt=""><span class="mt-3 text-secondary"> <span class="font-weight-bold">Invite Offer: </span> Invite friends get &#8377;1000 voucher.</span></s>
+                                {% if refferal_code.recommended_by %}
+                                {% endif %}
+                                <br>
+                                {% for cp in cupon_code %}
+                                <img src="/assets/img/offer-icon.png" width="19px" height="19px" alt=""><span class="mt-3 text-secondary"> <span class="font-weight-bold">Cupon Code: </span> Add "{{cp.cupon_code}}" code. &#8377;{{cp.offer_price}} off</span></s>
+                                <br>
+                                {% endfor %}
+                            {% else %}
+                                <p>No offer available.</p>
+                            {% endif %}
                         </div>
                         <br>
                         {% if product_detailed.quantity <= 0 %}

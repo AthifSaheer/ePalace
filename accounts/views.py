@@ -1,9 +1,10 @@
+from admin_panel.views import cupon_offer
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.core.checks import messages
 from django.db.models import query
 from django.db.models.expressions import Ref
 from django.views.generic.base import TemplateView, View
-from user_panel.views import _cart_session_id
+from user_panel.views import _cart_session_id, cupon_code
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -25,6 +26,10 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.contrib.sessions.models import Session
 from django.contrib.sites.shortcuts import get_current_site
+from admin_panel.models import *
+
+import datetime
+from datetime import datetime, timedelta
 
 
 
@@ -41,7 +46,9 @@ def login(request):
                 
             try:
                 user_obj = User.objects.get(username=username)
+                print("--------- print01 -----------------------")
             except User.DoesNotExist:
+                print("--------- print -----------------------")
                 if user is None:
                     uname_error = 'Invalid creditials ! !'
                     context = {
@@ -49,12 +56,14 @@ def login(request):
                     }
                     return render(request, 'User/login.html', context)
 
-            block_user_login = user_obj.is_active
-            print(user_obj)
-
-            if block_user_login == False:
+            if user_obj.is_active == False:
                 block_error = 'This user was blocked'
                 context = {'block_error':block_error,}
+                return render(request, 'User/login.html', context)
+            
+            elif user is None:
+                error = "Invalid creditials ! !"
+                context = {'block_error':error,}
                 return render(request, 'User/login.html', context)
                 
             elif user is not None:
@@ -99,10 +108,16 @@ def signup(request):
             email = request.POST.get('email')
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm-password')
+
+            if User.objects.filter(username=username).exists():
+                print("-------------- TRUE --------------exist aanu -----")
+                uname_error = "Username already exist."
+                return render(request, 'User/signup.html', {'uname_error':uname_error})
+
             if password == confirm_password:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 auth_login(request, user)
-                print("user created")
+                
                 return redirect('user_home')
             else:
                 pword_error = "Password did not match ! !"
@@ -119,14 +134,16 @@ def logout(request):
 
 # def admin_session(request):
 #     if request.session.has_key('admin'):
+#         # return redirect('admin_home')
 #         return render(request, 'Admin/dashboard.html')
 #     else:
+#         # return redirect('admin_login')
 #         return render(request, 'Admin/admin_login.html')
 
 def admin_login(request):
+    # admin_session(request)
     if request.session.has_key('admin'):
-        # return render(request, 'Admin/dashboard.html')
-        return redirect('admin_login')
+        return redirect('admin_home')
     else:
 
         if request.method == 'POST':
@@ -139,13 +156,10 @@ def admin_login(request):
             if username == admin.username and password == admin.password:
                 print('admin logged in')
                 request.session['admin'] = True
-                # return JsonResponse({'status': 'ok'});
                 return redirect('admin_home')
             else:
                 invalid_error = "Invalid creditials ! !"
                 print(invalid_error)
-                # return JsonResponse({'status': 'login failed'})
-                # return redirect('admin_login')
                 return render(request, 'Admin/admin_login.html', {'invalid_error':invalid_error})
         else:
             return render(request, 'Admin/admin_login.html')
@@ -276,22 +290,6 @@ def ref_link(request, *args, **kwargs):
     return render(request, 'User/signup.html', {})
 
 
-# signup
-def ABCD(request):
-    session_id = request.session.get('ref_session')
-    # sesssion nil ulla user eduthu
-    recommended_user = RefLink.objects.get(id=session_id)
-
-    # ippo register cheytha user eduthu
-    user = User.objects.get(id=signup_user)
-
-    # register cheytha user nte REflink table get cheythu
-    now_registered_user = RefLink.objects.get(id=user)
-    now_registered_user.recommended_by = recommended_user
-
-
-
-
 
 def signup_with_ref_code(request, ref_code):
     user = request.user
@@ -307,8 +305,6 @@ def signup_with_ref_code(request, ref_code):
                 user = User.objects.create_user(username=username, email=email, password=password)
 
                 if ref_code:
-                    # session_id = request.session.get('ref_session')
-                    # session_id = ref_code
                     recommended_user = RefLink.objects.get(code=ref_code)
                     user = User.objects.get(username=username)
 
@@ -316,13 +312,29 @@ def signup_with_ref_code(request, ref_code):
 
                     # register cheytha user nte REflink table get cheythu
                     now_registered_user = RefLink.objects.get(user=user)
-                    print("-----------    ----------- Passed away-------------------    -------------;;")
                     now_registered_user.recommended_by = recommended_user.user
                     now_registered_user.save()
-                    print("--------------- recom-by keri------------------------")
+
+                    # Recommended user offer
+                    current_date = datetime.date(datetime.now())
+                    current_time = datetime.time(datetime.now())
+                    tommorrow_date = current_date + timedelta(days=1)
+
+                    rf_cp = ReferralCupon()
+                    # rf_cp.cupon_code = str(recommended_user.user)+"2021" #cupon_code max lenght 15. username have more than 15 then comes error.
+                    rf_cp.offer_price = 1000
+                    rf_cp.which_user = recommended_user.user
+                    rf_cp.save()
 
                 auth_login(request, user)
-                print("user created")
+
+                # User Signup offer
+                sgn_cp = SignupCupon()
+                # sgn_cp.cupon_code = username+"2021" #cupon_code max lenght 15. username have more than 15 then comes error.
+                sgn_cp.offer_price = 1000
+                sgn_cp.which_user = user
+                sgn_cp.save()
+
                 return redirect('user_home')
             else:
                 pword_error = "Password did not match ! !"

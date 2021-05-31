@@ -16,7 +16,11 @@
                 <input type="date" name="from_date" min="2021-01-01" max="2021-12-31" onblur="func()">
                 <label for="">To</label>
                 <input type="date" name="to_date" min="" max="2021-12-31">
-                <button class="btn btn-info btn-sm">submit</button>    
+                <button class="btn btn-info btn-sm">submit</button>  
+                {% if count > 0 %}
+                  <a href="{% url 'convert_pdf' from to %}"><i class="fas fa-file-pdf fa-lg ml-3 text-danger"></i></a>
+                  <a href="{% url 'convert_csv' from to %}"><i class="fas fa-file-csv fa-lg ml-3 text-info"></i></a>
+                {% endif %}  
             </form>
         </div>
     </div>
@@ -29,6 +33,9 @@
       }
     </script>
 
+    {% if count > 0 %}
+      <p>{{count}} result(s) found.</p>
+    {% endif %}
     <table class="table">
       <thead id="myHeader">
         <tr>

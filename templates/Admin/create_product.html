@@ -13,24 +13,95 @@
 
     <!-- ============================ COMPONENT REGISTER   ================================= -->
     <link rel="stylesheet" href="{% static '/css/cropper.min.css' %}">
-        <div class="card mx-auto" style="max-width:870px; margin-top:40px;">
+        <div class="card mx-auto mb-3" style="max-width:1100px; margin-top:40px;">
           <article class="card-body">
             <header class="mb-4 text-center text-info"><h4 class="card-title">Add Product</h4></header>
             <form method="POST" action="" enctype="multipart/form-data">
                      
-                <textarea name="pro_img1" id="pro_img1" style="display: none;"></textarea>
-                <img src="" id="imageview1" style="height: auto;width: 100px;">
-                <textarea name="pro_img2" id="pro_img2" style="display: none;"></textarea>
-                <img src="" id="imageview2" style="height: auto;width: 100px;">
-                <textarea name="pro_img3" id="pro_img3" style="display: none;"></textarea>
-                <img src="" id="imageview3" style="height: auto;width: 100px;">
-                <textarea name="pro_img4" id="pro_img4" style="display: none;"></textarea>
-                <img src="" id="imageview4" style="height: auto;width: 100px;">
+                
+                
+                
+                
                 
                    {% csrf_token %}
-                   {{ create_prd_form|crispy }}
-                    {{ form.docfile }}
-                        
+                   <!-- {{ create_prd_form|crispy }} -->
+                    <h5>{{ create_prd_form.title.label }}</h5>                      
+                    {{ create_prd_form.title }}
+
+                    <h5>{{ create_prd_form.slug.label }}</h5>                     
+                    {{ create_prd_form.slug }}
+
+                    <h5>{{ create_prd_form.category.label }}</h5>                      
+                    {{ create_prd_form.category }}   
+
+                    <h5>{{ create_prd_form.brand.label }}</h5>                    
+                    {{ create_prd_form.brand }} 
+
+                    <h5>{{ create_prd_form.image.label }}</h5> 
+                    {{ create_prd_form.image }}
+                    <textarea name="pro_img1" id="pro_img1" style="display: none;"></textarea>
+                    <img src="" id="imageview1" style="height: auto;width: 100px;">                      
+                    <br>
+
+                    <h5>{{ create_prd_form.more_image_one.label }}</h5>                         
+                    {{ create_prd_form.more_image_one }}
+                    <textarea name="pro_img2" id="pro_img2" style="display: none;"></textarea>
+                    <img src="" id="imageview2" style="height: auto;width: 100px;">                      
+                    <br>
+
+                    <h5>{{ create_prd_form.more_image_two.label }}</h5>                   
+                    {{ create_prd_form.more_image_two }}
+                    <textarea name="pro_img3" id="pro_img3" style="display: none;"></textarea>
+                    <img src="" id="imageview3" style="height: auto;width: 100px;">                  
+                    <br>
+
+                    <h5>{{ create_prd_form.more_image_three.label }}</h5>                     
+                    {{ create_prd_form.more_image_three }}
+                    <textarea name="pro_img4" id="pro_img4" style="display: none;"></textarea>
+                    <img src="" id="imageview4" style="height: auto;width: 100px;">                       
+                    <br>
+                    
+                    <h5>{{ create_prd_form.marked_price.label }}</h5>               
+                    {{ create_prd_form.marked_price }}                        
+                    
+                    <h5>{{ create_prd_form.selling_price.label }} </h5>                       
+                    {{ create_prd_form.selling_price }}                        
+
+                    <h5>{{ create_prd_form.quantity.label }}</h5>             
+                    {{ create_prd_form.quantity }} 
+
+                    {{ create_prd_form.guarandeed }}         
+                    <h5>{{ create_prd_form.guarandeed.label }}</h5>                  
+
+                    <h5>{{ create_prd_form.description.label }}</h5>                    
+                    {{ create_prd_form.description }}   
+
+                    <h5>{{ create_prd_form.model_number.label }}</h5>                    
+                    {{ create_prd_form.model_number }} 
+
+                    <h5>{{ create_prd_form.model_name.label }}</h5>                 
+                    {{ create_prd_form.model_name }}   
+
+                    <h5>{{ create_prd_form.color.label }}</h5>              
+                    {{ create_prd_form.color }}  
+
+                    <h5>{{ create_prd_form.battery_backup.label }}</h5>                         
+                    {{ create_prd_form.battery_backup }}  
+
+                    <h5>{{ create_prd_form.processor_brand.label }}</h5>                    
+                    {{ create_prd_form.processor_brand }}  
+
+                    <h5>{{ create_prd_form.processor_name.label }}</h5>                  
+                    {{ create_prd_form.processor_name }}  
+
+                    <h5>{{ create_prd_form.storage.label }}</h5>            
+                    {{ create_prd_form.storage }}   
+
+                    <h5>{{ create_prd_form.ram.label }}</h5>               
+                    {{ create_prd_form.ram }}   
+
+                    <h5>{{ create_prd_form.size.label }}</h5>                    
+                    {{ create_prd_form.size }}                        
                        
                     
                            

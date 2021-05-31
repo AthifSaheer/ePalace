@@ -43,10 +43,6 @@ class RefLink(models.Model):
         if self.code == "":
             code = generate_ref_code()
             self.code = code
-
-        # tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-        # datetime.ti
-        # CuponOffer.objects.create(offer_for, cupon_code=code, offer_price=750, date_period, time_period)
         super().save(*args, **kwargs)
     
 

@@ -197,9 +197,9 @@
 
             <span>Price details
                 {% if cupon_offer_total %}
-                    <!-- <a href=""><small class="text-primary ml-2" style="font-size: 18px;">Delete cupon code</small></a> -->
+                    <a href="{% url 'delete_cupon_code' %}"><small class="text-primary ml-2" style="font-size: 18px;">Delete cupon code</small></a>
                 {% else %}
-                <a href="{% url 'cupon_code' %}"><small class="text-primary ml-2" style="font-size: 18px;">Add cupon code</small></a>
+                    <a href="{% url 'cupon_code' %}"><small class="text-primary ml-2" style="font-size: 18px;">Add cupon code</small></a>
                 {% endif %}
             </span>
 

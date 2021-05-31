@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import *
+from .models import CategoryOffer, ProductOffer, CuponOffer, SignupCupon, ReferralCupon
 
 
-admin.site.register([CategoryOffer, CuponOffer, ProductOffer])
+admin.site.register([CategoryOffer, ProductOffer, CuponOffer, SignupCupon, ReferralCupon])
+# admin.site.register([])

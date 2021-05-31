@@ -16,15 +16,11 @@
               <label for="">To</label>
               <input type="month" name="to_date" max="2022-12" id="to_date">
               <button class="btn btn-outline-primary btn-sm">submit</button>    
-              <i class="fas fa-file-pdf fa-lg ml-3 text-info" onclick="window.print()"></i>
+              {% if count > 0 %}
+                <a href="{% url 'convert_pdf' from to %}"><i class="fas fa-file-pdf fa-lg ml-3 text-danger"></i></a>
+                <a href="{% url 'convert_csv' from to %}"><i class="fas fa-file-csv fa-lg ml-3 text-info"></i></a>
+              {% endif %}
             </form>
-            {% if dowload_pdf %}
-            <!-- <form action="{% url 'convert_to_pdf' %}" method="GET" class="mr-2">
-              <input type="month" hidden name="from_date" min="2021-01" max="2022-12" id="from_date_pdf">
-              <input type="month" hidden name="to_date" max="2022-12" id="to_date_pdf">
-            </form> -->
-              <!-- <button class="btn btn-outline-info btn-sm">{{ dowload_pdf }}</button> -->
-            {% endif %}
             <script>
               function func(){
                 var from = document.getElementsByName('from_date')[0].value
@@ -36,6 +32,9 @@
     </div>
 
     <table class="table">
+      {% if count > 0 %}
+        <p>{{count}} result(s) found.</p>
+      {% endif %}
       <thead id="myHeader">
         <tr>
           <th scope="col">No</th>

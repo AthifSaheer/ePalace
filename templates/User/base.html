@@ -23,7 +23,11 @@
   
 
         <!--========== ICON ==========-->
-        <link rel="shortcut icon" href="{% static '../assets/img/logo.svg' %}" type="image/x-icon">
+        <!-- <link rel="shortcut icon" href="/assets/img/logo.svg" type="image/x-icon"> -->
+
+
+        <!-- FAVICON -->
+        <link href="/assets/img/logo.svg" rel="shortcut icon" />
 
         <title>{% block title %} Home | ePalace {% endblock title %}</title>
     </head>
@@ -81,13 +85,13 @@
         
         {% endblock content %}
 
+        <div class="mt-5"></div>
 
         <!--========== FOOTER ==========-->
-        <footer class="footer section bd-container">
+        <!-- <footer class="footer section bd-container">
             <div class="footer__container bd-grid">
 
                 <div class="footer__content">
-                    <!-- <a href="#" class="footer__logo">ePalace</a> -->
                     <div>
                         <br><br><br>
                         <a href="#" class="footer__social"><i class='bx bxl-facebook'></i></a>
@@ -117,7 +121,7 @@
 
             </div>
 
-        </footer>
+        </footer> -->
 
         <!--========== SCROLL REVEAL ==========-->
         <script src="https://unpkg.com/scrollreveal"></script>

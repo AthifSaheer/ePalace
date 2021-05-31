@@ -43,5 +43,5 @@ urlpatterns = [
 
     # OFFER ------------------------------------------
     path('cupon/code/', views.cupon_code, name="cupon_code"),
-    # path('delete/cupon/code/', views.delete_cupon_code, name="delete_cupon_code"),
+    path('delete/cupon/code/', views.delete_cupon_code, name="delete_cupon_code"),
 ]
