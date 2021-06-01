@@ -567,14 +567,14 @@ def check_out(request):
       
     except CuponOffer.DoesNotExist:
         try:
-            signup_cupon = SignupCupon.objects.get(is_active=True, taken_user=request.user)
-            if signup_cupon.taken_user == request.user:
-                cupon_offer_total = total - signup_cupon.offer_price
+            cupon_offer = SignupCupon.objects.get(is_active=True, taken_user=request.user)
+            if cupon_offer.taken_user == request.user:
+                cupon_offer_total = total - cupon_offer.offer_price
         except SignupCupon.DoesNotExist:
             try:
-                referral_cupon = ReferralCupon.objects.get(is_active=True, taken_user=request.user)
-                if referral_cupon.taken_user == request.user:
-                    cupon_offer_total = total - referral_cupon.offer_price
+                cupon_offer = ReferralCupon.objects.get(is_active=True, taken_user=request.user)
+                if cupon_offer.taken_user == request.user:
+                    cupon_offer_total = total - cupon_offer.offer_price
             except ReferralCupon.DoesNotExist:
                 cupon_offer_total = None
                 print("---- cupon code DoesNotExist exception worked-------------")
