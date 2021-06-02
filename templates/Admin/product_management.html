@@ -3,16 +3,16 @@
 {% block title %} Product Management | Admin panel {% endblock title %}
 {% block content %}
 
-<style>
-  #search_input{
-    border: 1px solid rgb(175, 175, 175);
-    margin-right: 300px;
-    /* border-radius: 100px; */
-    padding: 5px;
-    background: rgb(255, 255, 255);
-    width: 440px;
-  }
-</style>
+  <style>
+    #search_input{
+      border: 1px solid rgb(175, 175, 175);
+      margin-right: 300px;
+      /* border-radius: 100px; */
+      padding: 5px;
+      background: rgb(255, 255, 255);
+      width: 440px;
+    }
+  </style>
 
     <!-- Recent Order Table -->
     <div class="card card-table-border-none" id="recent-orders">
@@ -112,7 +112,7 @@
     })
   </script>
   
-  <!-- // - ------------------- DELETE PRODUCT SCRIPT ------------------- --> -->
+  <!-- // - ------------------- DELETE PRODUCT SCRIPT ------------------- --> 
   <script>
     function deletePrd() {
       var x = confirm("Do you want delete this item?")
@@ -129,29 +129,5 @@
     }
   </script>
 
-  <!--======= Search Item =======-->
-  <script>
-    // function myFunction() {
-    //   var input, filter, table, tr, td, i, txtValue;
-    //   input = document.getElementById("myInput");
-    //   filter = input.value.toUpperCase();
-    //   table = document.getElementById("myTable");
-    //   tr = table.getElementsByTagName("tr");
-    //   for (i = 0; i < tr.length; i++) {
-    //     td = tr[i].getElementsByTagName("td")[0];
-    //     if (td) {
-    //       txtValue = td.textContent || td.innerText;
-    //       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //         tr[i].style.display = "";
-    //       } else {
-    //         tr[i].style.display = "none";
-    //       }
-    //     }       
-    //   }
-    // }
-    </script> 
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-
-                
 
 {% endblock content %}

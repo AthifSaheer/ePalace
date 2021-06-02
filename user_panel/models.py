@@ -1,10 +1,12 @@
-from re import U
 from django.core.validators import MaxValueValidator
 from django.contrib.auth.models import User
 from colorfield.fields import ColorField
+from django.conf import settings
+
 from django.urls import reverse
 from django.db import models
-from django.conf import settings
+from re import U
+
 
 class Category(models.Model):
     category = models.CharField(max_length=30)
@@ -89,6 +91,7 @@ class Cart(models.Model):
     def __str__(self):
         return self.cart_id
 
+
 class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -106,7 +109,6 @@ class CartItem(models.Model):
     def __str__(self):
         return self.product.title
       
-    
 
 class ProfileImage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

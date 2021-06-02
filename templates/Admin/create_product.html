@@ -6,8 +6,6 @@
 {% block content %}
 
 
-
-<!-- <link rel="stylesheet" type="text/css" href=" static '/css/style.css'%}"> -->
 <div class="container" >
 <section class="section-content padding-y">
 
@@ -16,259 +14,243 @@
         <div class="card mx-auto mb-3" style="max-width:1100px; margin-top:40px;">
           <article class="card-body">
             <header class="mb-4 text-center text-info"><h4 class="card-title">Add Product</h4></header>
-            <form method="POST" action="" enctype="multipart/form-data">
-                     
+
+            <form method="POST" action="" enctype="multipart/form-data">    
+                {% csrf_token %}
+                <!-- {{ create_prd_form|crispy }}  -->
+                <h5>{{ create_prd_form.title.label }}</h5>                      
+                {{ create_prd_form.title }}
+
+                <h5>{{ create_prd_form.slug.label }}</h5>                     
+                {{ create_prd_form.slug }}
+
+                <h5>{{ create_prd_form.category.label }}</h5>                      
+                {{ create_prd_form.category }}   
+
+                <h5>{{ create_prd_form.brand.label }}</h5>                    
+                {{ create_prd_form.brand }} 
+
+                <h5>{{ create_prd_form.image.label }}</h5> 
+                {{ create_prd_form.image }}
+                <textarea name="pro_img1" id="pro_img1" style="display: none;"></textarea>
+                <img src="" id="imageview1" style="height: auto;width: 100px;">                      
+                <br>
+
+                <h5>{{ create_prd_form.more_image_one.label }}</h5>                         
+                {{ create_prd_form.more_image_one }}
+                <textarea name="pro_img2" id="pro_img2" style="display: none;"></textarea>
+                <img src="" id="imageview2" style="height: auto;width: 100px;">                      
+                <br>
+
+                <h5>{{ create_prd_form.more_image_two.label }}</h5>                   
+                {{ create_prd_form.more_image_two }}
+                <textarea name="pro_img3" id="pro_img3" style="display: none;"></textarea>
+                <img src="" id="imageview3" style="height: auto;width: 100px;">                  
+                <br>
+
+                <h5>{{ create_prd_form.more_image_three.label }}</h5>                     
+                {{ create_prd_form.more_image_three }}
+                <textarea name="pro_img4" id="pro_img4" style="display: none;"></textarea>
+                <img src="" id="imageview4" style="height: auto;width: 100px;">                       
+                <br>
                 
+                <h5>{{ create_prd_form.marked_price.label }}</h5>               
+                {{ create_prd_form.marked_price }}                        
                 
-                
-                
-                
-                   {% csrf_token %}
-                   <!-- {{ create_prd_form|crispy }} -->
-                    <h5>{{ create_prd_form.title.label }}</h5>                      
-                    {{ create_prd_form.title }}
+                <h5>{{ create_prd_form.selling_price.label }} </h5>                       
+                {{ create_prd_form.selling_price }}                        
 
-                    <h5>{{ create_prd_form.slug.label }}</h5>                     
-                    {{ create_prd_form.slug }}
+                <h5>{{ create_prd_form.quantity.label }}</h5>             
+                {{ create_prd_form.quantity }} 
 
-                    <h5>{{ create_prd_form.category.label }}</h5>                      
-                    {{ create_prd_form.category }}   
+                {{ create_prd_form.guarandeed }}         
+                <h5>{{ create_prd_form.guarandeed.label }}</h5>                  
 
-                    <h5>{{ create_prd_form.brand.label }}</h5>                    
-                    {{ create_prd_form.brand }} 
+                <h5>{{ create_prd_form.description.label }}</h5>                    
+                {{ create_prd_form.description }}   
 
-                    <h5>{{ create_prd_form.image.label }}</h5> 
-                    {{ create_prd_form.image }}
-                    <textarea name="pro_img1" id="pro_img1" style="display: none;"></textarea>
-                    <img src="" id="imageview1" style="height: auto;width: 100px;">                      
-                    <br>
+                <h5>{{ create_prd_form.model_number.label }}</h5>                    
+                {{ create_prd_form.model_number }} 
 
-                    <h5>{{ create_prd_form.more_image_one.label }}</h5>                         
-                    {{ create_prd_form.more_image_one }}
-                    <textarea name="pro_img2" id="pro_img2" style="display: none;"></textarea>
-                    <img src="" id="imageview2" style="height: auto;width: 100px;">                      
-                    <br>
+                <h5>{{ create_prd_form.model_name.label }}</h5>                 
+                {{ create_prd_form.model_name }}   
 
-                    <h5>{{ create_prd_form.more_image_two.label }}</h5>                   
-                    {{ create_prd_form.more_image_two }}
-                    <textarea name="pro_img3" id="pro_img3" style="display: none;"></textarea>
-                    <img src="" id="imageview3" style="height: auto;width: 100px;">                  
-                    <br>
+                <h5>{{ create_prd_form.color.label }}</h5>              
+                {{ create_prd_form.color }}  
 
-                    <h5>{{ create_prd_form.more_image_three.label }}</h5>                     
-                    {{ create_prd_form.more_image_three }}
-                    <textarea name="pro_img4" id="pro_img4" style="display: none;"></textarea>
-                    <img src="" id="imageview4" style="height: auto;width: 100px;">                       
-                    <br>
-                    
-                    <h5>{{ create_prd_form.marked_price.label }}</h5>               
-                    {{ create_prd_form.marked_price }}                        
-                    
-                    <h5>{{ create_prd_form.selling_price.label }} </h5>                       
-                    {{ create_prd_form.selling_price }}                        
+                <h5>{{ create_prd_form.battery_backup.label }}</h5>                         
+                {{ create_prd_form.battery_backup }}  
 
-                    <h5>{{ create_prd_form.quantity.label }}</h5>             
-                    {{ create_prd_form.quantity }} 
+                <h5>{{ create_prd_form.processor_brand.label }}</h5>                    
+                {{ create_prd_form.processor_brand }}  
 
-                    {{ create_prd_form.guarandeed }}         
-                    <h5>{{ create_prd_form.guarandeed.label }}</h5>                  
+                <h5>{{ create_prd_form.processor_name.label }}</h5>                  
+                {{ create_prd_form.processor_name }}  
 
-                    <h5>{{ create_prd_form.description.label }}</h5>                    
-                    {{ create_prd_form.description }}   
+                <h5>{{ create_prd_form.storage.label }}</h5>            
+                {{ create_prd_form.storage }}   
 
-                    <h5>{{ create_prd_form.model_number.label }}</h5>                    
-                    {{ create_prd_form.model_number }} 
+                <h5>{{ create_prd_form.ram.label }}</h5>               
+                {{ create_prd_form.ram }}   
 
-                    <h5>{{ create_prd_form.model_name.label }}</h5>                 
-                    {{ create_prd_form.model_name }}   
-
-                    <h5>{{ create_prd_form.color.label }}</h5>              
-                    {{ create_prd_form.color }}  
-
-                    <h5>{{ create_prd_form.battery_backup.label }}</h5>                         
-                    {{ create_prd_form.battery_backup }}  
-
-                    <h5>{{ create_prd_form.processor_brand.label }}</h5>                    
-                    {{ create_prd_form.processor_brand }}  
-
-                    <h5>{{ create_prd_form.processor_name.label }}</h5>                  
-                    {{ create_prd_form.processor_name }}  
-
-                    <h5>{{ create_prd_form.storage.label }}</h5>            
-                    {{ create_prd_form.storage }}   
-
-                    <h5>{{ create_prd_form.ram.label }}</h5>               
-                    {{ create_prd_form.ram }}   
-
-                    <h5>{{ create_prd_form.size.label }}</h5>                    
-                    {{ create_prd_form.size }}                        
+                <h5>{{ create_prd_form.size.label }}</h5>                    
+                {{ create_prd_form.size }}                        
                        
-                    
-                           
-                        </div> 
-                        <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="result1"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                            </button>
-                            <button type="button" id="btnCrop1" class="btn save1 btn-primary">Save changes
-                            </button>
+                <!-- MODAL 1 -->
+                <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="result1"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                </button>
+                                <button type="button" id="btnCrop1" class="btn save1 btn-primary">Save changes
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
- 
-        {#            modal#}
-        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
-             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="box-2">
-                            <div style="max-width: 100%;" class="result2"></div>
+
+                <!-- MODAL 2 -->
+                <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box-2">
+                                    <div style="max-width: 100%;" class="result2"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                </button>
+                                <button type="button" id="btnCrop2" class="btn save2 btn-primary">Save changes
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                        </button>
-                        <button type="button" id="btnCrop2" class="btn save2 btn-primary">Save changes
-                        </button>
-                    </div>
                 </div>
-            </div>
-        </div>
-        {#            modal#}
-        {#            modal#}
-        <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog"
-             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="box-2">
-                            <div style="width:10em;height: 100%" class="result3"></div>
+                
+                <!-- MODAL 3 -->
+                <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box-2">
+                                    <div style="width:10em;height: 100%" class="result3"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                </button>
+                                <button type="button" id="btnCrop3" class="btn save3 btn-primary">Save changes
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                        </button>
-                        <button type="button" id="btnCrop3" class="btn save3 btn-primary">Save changes
-                        </button>
+                </div>
+
+                <!-- MODAL 4 -->
+                <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="box-2">
+                                    <div style="width:10em;height: 100%" class="result4"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                </button>
+                                <button type="button" id="btnCrop4" class="btn save4 btn-primary">Save changes
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        {# modal 4 #}
-        <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-       <div class="modal-dialog modal-dialog-centered" role="document">
-           <div class="modal-content">
-               <div class="modal-header">
-                   <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
-                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                       <span aria-hidden="true">&times;</span>
-                   </button>
-               </div>
-               <div class="modal-body">
-                   <div class="box-2">
-                       <div style="width:10em;height: 100%" class="result4"></div>
-                   </div>
-               </div>
-               <div class="modal-footer">
-                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                   </button>
-                   <button type="button" id="btnCrop4" class="btn save4 btn-primary">Save changes
-                   </button>
-               </div>
-           </div>
-       </div>
-   </div>
-
-
-                       <button class="btn btn-outline-info btn-block">Add Product</button>
-                       <a href="" class="btn btn-outline-primary btn-block mb-5">Cancel</a>
-                        
+                <button class="btn btn-outline-info btn-block">Add Product</button>
+                <a href="" class="btn btn-outline-primary btn-block mb-5">Cancel</a>
+                            
             </form>
+        </div>
 
-    <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
-    
-
-    
    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        
     </section>
 </div>
 
 <script>
     let result1 = document.querySelector('.result1'),
-        save1 = document.querySelector('.save1'),
-        cropped1 = document.querySelector('.imageview1'),
-        upload1 = document.querySelector('#id_image'),
-        cropper1 = '';
+    save1 = document.querySelector('.save1'),
+    cropped1 = document.querySelector('.imageview1'),
+    upload1 = document.querySelector('#id_image'),
+    cropper1 = '';
 
     upload1.addEventListener('change', (e) => {
-            var fileName = document.getElementById("id_image").value;
-            var idxDot = fileName.lastIndexOf(".") + 1;
-            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
-                if (e.target.files.length) {
-                    // start file reader
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        if (e.target.result) {
-                            // create new image
-                            $("#exampleModalCenter1").modal("show");
-                            let img1 = document.createElement('img');
-                            img1.id = 'image1';
-                            img1.src = e.target.result
-                            // clean result before
-                            result1.innerHTML = '';
-                            // append new image
-                            result1.appendChild(img1);
-                            // init cropper
-                            cropper1 = new Cropper(img1, {
-                                aspectRatio: 3 / 4,
-                                viewMode: 2,
-                            });
-                        }
-                    };
-                    reader.readAsDataURL(e.target.files[0]);
-                }
-            }
-            else {
-                swal("this file type is not supported", {
-                    icon: "error",
-                })
-                fileName = "";
-                console.log(fileName)
+        var fileName = document.getElementById("id_image").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+            if (e.target.files.length) {
+                // start file reader
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    if (e.target.result) {
+                        // create new image
+                        $("#exampleModalCenter1").modal("show");
+                        let img1 = document.createElement('img');
+                        img1.id = 'image1';
+                        img1.src = e.target.result
+                        // clean result before
+                        result1.innerHTML = '';
+                        // append new image
+                        result1.appendChild(img1);
+                        // init cropper
+                        cropper1 = new Cropper(img1, {
+                            aspectRatio: 3 / 4,
+                            viewMode: 2,
+                        });
+                    }
+                };
+                reader.readAsDataURL(e.target.files[0]);
             }
         }
-    );
+        else {
+            swal("this file type is not supported", {
+                icon: "error",
+            })
+            fileName = "";
+            console.log(fileName)
+        }
+    });
 
     save1.addEventListener('click', (e) => {
         e.preventDefault();

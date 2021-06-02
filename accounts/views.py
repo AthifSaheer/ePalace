@@ -1,35 +1,33 @@
-from admin_panel.views import cupon_offer
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.core.checks import messages
-from django.db.models import query
-from django.db.models.expressions import Ref
-from django.views.generic.base import TemplateView, View
-from user_panel.views import _cart_session_id, cupon_code
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.http import JsonResponse
-from user_panel.models import *
-from .models import Admin, RefLink, UserMobileNumber
-import requests
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from .twilio import send_sms, gen_otp
-
-from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse
-from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.models import User
-from django.template.loader import render_to_string
-from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
-from django.contrib.sessions.models import Session
 from django.contrib.sites.shortcuts import get_current_site
-from admin_panel.models import *
+from user_panel.views import _cart_session_id, cupon_code
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordResetForm
 
-import datetime
+from django.core.mail import send_mail, BadHeaderError
+from .models import Admin, RefLink, UserMobileNumber
+from django.template.loader import render_to_string
+from django.contrib.sessions.models import Session
+from django.http import HttpResponse, JsonResponse
+from django.utils.encoding import force_bytes
+from django.shortcuts import render, redirect
+from django.db.models.expressions import Ref
+from django.contrib.auth.models import User
+from django.db.models.query_utils import Q
+
+from admin_panel.views import cupon_offer
 from datetime import datetime, timedelta
+from django.core.checks import messages
+from .twilio import send_sms, gen_otp
+from django.contrib import messages
+
+from django.db.models import query
+from admin_panel.models import *
+from user_panel.models import *
+import requests
+import datetime
 
 
 
@@ -46,9 +44,7 @@ def login(request):
                 
             try:
                 user_obj = User.objects.get(username=username)
-                print("--------- print01 -----------------------")
             except User.DoesNotExist:
-                print("--------- print -----------------------")
                 if user is None:
                     uname_error = 'Invalid creditials ! !'
                     context = {
@@ -82,12 +78,9 @@ def login(request):
                 
                 auth_login(request, user)
                 url = request.META.get('HTTP_REFERER')
-                print(str(url) + '--- url variable -------')
                 try:
                     query = requests.utils.urlparse(url).query
-                    print(str(query) + '---login query-------')
                     params = dict(x.split('=') for x in query.split('&'))
-                    print(str(params) + '--- params-------')
 
                     if 'next' in params:
                         next_page = params['next']
@@ -110,7 +103,6 @@ def signup(request):
             confirm_password = request.POST.get('confirm-password')
 
             if User.objects.filter(username=username).exists():
-                print("-------------- TRUE --------------exist aanu -----")
                 uname_error = "Username already exist."
                 return render(request, 'User/signup.html', {'uname_error':uname_error})
 
@@ -121,7 +113,6 @@ def signup(request):
                 return redirect('user_home')
             else:
                 pword_error = "Password did not match ! !"
-                print(pword_error)
                 return render(request, 'User/signup.html', {'pword_error':pword_error})
 
     return render(request, 'User/signup.html')
@@ -154,12 +145,10 @@ def admin_login(request):
             password = request.POST.get('password')
 
             if username == admin.username and password == admin.password:
-                print('admin logged in')
                 request.session['admin'] = True
                 return redirect('admin_home')
             else:
                 invalid_error = "Invalid creditials ! !"
-                print(invalid_error)
                 return render(request, 'Admin/admin_login.html', {'invalid_error':invalid_error})
         else:
             return render(request, 'Admin/admin_login.html')
@@ -228,36 +217,21 @@ def change_password(request, id, uidb64, token):
 
     return render(request, 'change_password/change_password.html')
 
-# from ePalace import settings
-
-
 
 def login_with_otp(request):
     if request.method == 'POST':
         mobile_no = request.POST.get('mobile-number')
-        # mobile_no_with_country_code = "+91" + mobile_no
-        # print(str(mobile_no_with_country_code) + "-----------mobile_no_with_country_code")
-
         # try:
         mobile_no_table = UserMobileNumber.objects.get(mobile_no=mobile_no)
-        print(str(mobile_no_table) + " 000000000000000000000000000000")
 
         username = mobile_no_table.user.username
         
         if mobile_no_table:
-            print('------- mobile_no_table true--- -----')
             otp = gen_otp()
             message = "Hi, I hope you are going well. OTP: {}" .format(otp)
             send_sms(message, mobile_no)
-            print(str(message) + "--- this is sended message -----")
             return redirect('enter_otp', otp, username)
-            # else:
-                
-        # except:
-        #     print("------exeption worked----------------------------")
-        #     error_message = "Invalid number !"
-        #     return render(request, 'User/logn_with_otp.html', {'error_message':error_message})
-
+           
     return render(request, 'User/logn_with_otp.html')
 
 
@@ -286,7 +260,6 @@ def ref_link(request, *args, **kwargs):
     except:
         pass
 
-    print(request.session.get_expiry_age())
     return render(request, 'User/signup.html', {})
 
 
@@ -308,20 +281,15 @@ def signup_with_ref_code(request, ref_code):
                     recommended_user = RefLink.objects.get(code=ref_code)
                     user = User.objects.get(username=username)
 
-                    print(str(user) + "---------------------- user -------------;;")
-
-                    # register cheytha user nte REflink table get cheythu
                     now_registered_user = RefLink.objects.get(user=user)
                     now_registered_user.recommended_by = recommended_user.user
                     now_registered_user.save()
 
-                    # Recommended user offer
                     current_date = datetime.date(datetime.now())
                     current_time = datetime.time(datetime.now())
                     tommorrow_date = current_date + timedelta(days=1)
 
                     rf_cp = ReferralCupon()
-                    # rf_cp.cupon_code = str(recommended_user.user)+"2021" #cupon_code max lenght 15. username have more than 15 then comes error.
                     rf_cp.offer_price = 1000
                     rf_cp.which_user = recommended_user.user
                     rf_cp.save()
@@ -330,7 +298,6 @@ def signup_with_ref_code(request, ref_code):
 
                 # User Signup offer
                 sgn_cp = SignupCupon()
-                # sgn_cp.cupon_code = username+"2021" #cupon_code max lenght 15. username have more than 15 then comes error.
                 sgn_cp.offer_price = 1000
                 sgn_cp.which_user = user
                 sgn_cp.save()
@@ -338,40 +305,7 @@ def signup_with_ref_code(request, ref_code):
                 return redirect('user_home')
             else:
                 pword_error = "Password did not match ! !"
-                print(pword_error)
                 return render(request, 'User/signup.html', {'pword_error':pword_error})
 
     return render(request, 'User/signup.html')
-
-
-
-
-# def password_reset_request(request, token):
-# 	if request.method == "POST":
-# 		password_reset_form = PasswordResetForm(request.POST)
-# 		if password_reset_form.is_valid():
-# 			data = password_reset_form.cleaned_data['email']
-# 			associated_users = User.objects.filter(Q(email=data))
-# 			if associated_users.exists():
-# 				for user in associated_users:
-# 					subject = "Password Reset Requested"
-# 					email_template_name = "main/password/password_reset_email.txt"
-# 					c = {
-# 					"email":user.email,
-# 					'domain':'127.0.0.1:8000',
-# 					'site_name': 'Website',
-# 					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
-# 					"user": user,
-# 					'token': default_token_generator.make_token(user),
-# 					'protocol': 'http',
-# 					}
-# 					email = render_to_string(email_template_name, c)
-# 					try:
-# 						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
-# 					except BadHeaderError:
-# 						return HttpResponse('Invalid header found.')
-# 					return redirect ("/password_reset/done/")
-# 	password_reset_form = PasswordResetForm()
-# 	return render(request=request, template_name="main/password/password_reset.html", context={"password_reset_form":password_reset_form})
-
 

@@ -7,151 +7,76 @@
         
 {% block content %} 
 
-        <main>
-            <div class="container">
-                <div class="row" id="section">
+    <main>
+        <div class="container">
+            <div class="row" id="section">
 
-                    <div class="col-3" id="filter-div">
+                <div class="col-3" id="filter-div">
 
-                        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-                      
-                        <h5 class="mt-3">Filter Product</h5>
-                        <span class="badge badge-info">Filter: {{ filter_item }},</span>
-                        <form action="" method="get">
-                          <input type="text" hidden name="keyword" value="{{keyword}}" size="20">
-                          {{ form|crispy }}
-                          <button class="btn btn-outline-info btn-sm btn-block">Submit</button>
-                        </form>
-                        
-                        
-                        <!-- <h5 class="mt-3">Price</h5> -->
-                        <!-- <div class="form-check ml-2"> -->
-                          <!-- <form action="" method="GET"> -->
-                            <!-- <input type="text" hidden name="keyword" value="{{keyword}}" size="20"> -->
-                            <!-- <input class="form-check-input" type="checkbox" name="price01" id="checkbox01" value="92000" {{checked01}}> -->
-                            <!-- <label class="form-check-label">Under 50,000</label> -->
-                            <!-- <input type="text" id="input"> -->
-                            <!-- <button hidden id="submitBtn01">submit</button> -->
-                          <!-- </form> -->
-                        <!-- </div> -->
-
-                        <!-- <div class="form-check ml-2"> -->
-                          <!-- <form action="" method="GET"> -->
-                            <!-- <input type="text" hidden name="keyword" value="{{keyword}}" size="20"> -->
-                            <!-- <input class="form-check-input" type="checkbox" name="price02" value="100000" {{checked02}}> -->
-                            <!-- <label class="form-check-label">Under 1,00,000</label> -->
-                            <!-- <button hidden id="submitBtn02">submit</button> -->
-                          <!-- </form> -->
-                        <!-- </div> -->
-
-                        <!-- <div class="form-check ml-2"> -->
-                          <!-- <form action="" method="GET"> -->
-                            <!-- <input type="text" hidden name="keyword" value="{{keyword}}" size="20"> -->
-                            <!-- <input class="form-check-input" type="checkbox" name="price03" value="150000" {{checked03}}> -->
-                            <!-- <label class="form-check-label">Under 1,50,000</label> -->
-                            <!-- <button hidden id="submitBtn03">submit</button> -->
-                          <!-- </form> -->
-                        <!-- </div> -->
-
-
-                        
-
-                        <!-- ----------------- FILTER PRODUCT SCRIPT ----------------- -->
-                        <script>
-                          // function btnClick01(){
-                          //   submitBtn = document.getElementById("submitBtn01").click()
-                          // }
-                          // function btnClick02(){
-                          //   submitBtn = document.getElementById("submitBtn02").click()
-                          // }
-                          // function btnClick03(){
-                          //   submitBtn = document.getElementById("submitBtn03").click()
-                          // }
-                        </script>
-
-
-                        <!-- <h5 class="mt-3">Ram</h5>
-
-                        <div class="form-check ml-2">
-                            <input class="form-check-input" data-filter="ram" type="checkbox" data-filter="ram" value="92000" id="ramCheckBox01" name="one">
-                            <label class="form-check-label" for="ramCheckBox01">
-                              4GB
-                            </label>
-                        </div>
-
-                        <div class="form-check ml-2">
-                            <input class="form-check-input" data-filter="ram" type="checkbox" value="8" id="ramCheckBox02" name="one">
-                            <label class="form-check-label" for="ramCheckBox02">
-                              8GB
-                            </label>
-                        </div>
-
-                        <div class="form-check ml-2">
-                            <input class="form-check-input" data-filter="ram" type="checkbox" value="16" id="ramCheckBox03" name="one">
-                            <label class="form-check-label" for="ramCheckBox03">
-                              16GB
-                            </label>
-                        </div> -->
-
-                    </div>
-                    
-                    <div class="col-9" id="box">
-                        {% if count == 0 %}
-                        <h5 class="text-primary m-3">No Items...</h5>
-                        {% else %}
-                        <p>{{ count }} Item(s) found</p>
-                        {% endif %}
-                        <div class="row" id="filteredProducts">
-                          {{ message }}
-                          {% for prd in search_product %}
-                          <!-- <div id="checkValue01"> -->
-                              <!-- <p id="conditionCheck01"></p> -->
-                          
-                              <div class="col-4">
-                                <a href="{% url 'prd_detail' prd.slug %}"><img src="{{ prd.image.url }}" alt="" ></a>
-                              </div>
-                              
-                              <div class="col-8 mt-3">
-                                  <h5 class="text-info">{{ prd.title }}</h5>
-                                  <p>{{ prd.description }} 
-                                      {% if prd.guarandeed %}
-                                      <span class="badge badge-success">guarandeed</span>
-                                      {% endif%}
-                                      <br>
-                                      <span class="mt-3 text-danger" >&#8377;{{ prd.selling_price  }}</span> <s class="text-secondary"><small>&#8377;{{ prd.marked_price }}</small></s>
-                                      <!-- <input type="text" id="sellingPrice" value="{{ prd.selling_price }}" style="display: none;"> -->
-                                  </p>
-                              </div>
-                              <!-- <p id="conditionCheck01End"></p> -->
-
-                            <hr>
-                            {% endfor %}
-
-                        </div>
-                    </div>
+                    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+                  
+                    <h5 class="mt-3">Filter Product</h5>
+                    <span class="badge badge-info">Filter: {{ filter_item }},</span>
+                    <form action="" method="get">
+                      <input type="text" hidden name="keyword" value="{{keyword}}" size="20">
+                      {{ form|crispy }}
+                      <button class="btn btn-outline-info btn-sm btn-block">Submit</button>
+                    </form>
 
                 </div>
+                
+                <div class="col-9" id="box">
+                    {% if count == 0 %}
+                    <h5 class="text-primary m-3">No Items...</h5>
+                    {% else %}
+                    <p>{{ count }} Item(s) found</p>
+                    {% endif %}
+                    <div class="row" id="filteredProducts">
+                      {{ message }}
+                      {% for prd in search_product %}
+                          <div class="col-4">
+                            <a href="{% url 'prd_detail' prd.slug %}"><img src="{{ prd.image.url }}" alt="" ></a>
+                          </div>
+                          
+                          <div class="col-8 mt-3">
+                              <h5 class="text-info">{{ prd.title }}</h5>
+                              <p>{{ prd.description }} 
+                                  {% if prd.guarandeed %}
+                                  <span class="badge badge-success">guarandeed</span>
+                                  {% endif%}
+                                  <br>
+                                  <span class="mt-3 text-danger" >&#8377;{{ prd.selling_price  }}</span> <s class="text-secondary"><small>&#8377;{{ prd.marked_price }}</small></s>
+                              </p>
+                          </div>
+
+                        <hr>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
             </div>
-        </main>
-        
-        
-        <script type="text/javascript" src="{% static 'home/jquery.js' %}"></script>
-        
-        <script>
-          var $j = jQuery.noConflict();
-        </script>
+        </div>
+    </main>
+    
+    
+    <script type="text/javascript" src="{% static 'home/jquery.js' %}"></script>
+    
+    <script>
+      var $j = jQuery.noConflict();
+    </script>
 
-<script>
-  const data = '{{ search_product_json_data }}'
-  console.log(data)
-  const redata = JSON.parse(data. replace(/&quot;/g, '"'))
-  console.log(redata)
+    <script>
+    const data = '{{ search_product_json_data }}'
+    console.log(data)
+    const redata = JSON.parse(data. replace(/&quot;/g, '"'))
+    console.log(redata)
 
-  // var checkboxValue01 = document.getElementById('checkbox01')
-  var ramCheckBox01 = document.getElementById('ramCheckBox01')
+    // var checkboxValue01 = document.getElementById('checkbox01')
+    var ramCheckBox01 = document.getElementById('ramCheckBox01')
 
-  let filterData = []
-  ramCheckBox01.addEventListener('click', (e)=>{
+    let filterData = []
+    ramCheckBox01.addEventListener('click', (e)=>{
     box.innerHTML = ""
     filterData = redata.filter(product=> product['selling_price'].includes(e.target.value))
     console.log(filterData+"----------------01--")
@@ -169,77 +94,11 @@
     } else {
       box.innerHTML += `<p>No result found...</p>`
     }
-  })
-</script>
+    })
+    </script>
 
-        <script>
-          // var countjson = JSON.parse({'fsdfd'})
-          // var countjson = JSON.stringify({{ countjson }})
-          // console.log(countjson + "------------ countjson--------------")
 
-          // console.log("------------ script worked --------------")
-          
-          // list = []
-          // productPrice = {{ prd_price_json }}
-          // for (i=0; i<2; i++) {
-          //   list.push(productPrice[i])
-          // }
-          // console.log( list + " ------------ productPrice list --------------")
-          
-          // function func01(){
-          //   console.log("------------ Function working --------------")
-            
-          //   checkBox01 = document.getElementById('checkbox01')
-            
-          //   filteredProductsDiv = document.getElementById('filteredProducts')
-            
-          //   // conditionCheck01 = document.getElementById('conditionCheck01')
-          //   // conditionCheck01End = document.getElementById('conditionCheck01End')
-            
-          //   sellingPrice = document.getElementById('sellingPrice')
-
-            
-            
-          //   // console.log("checkBox01.value: " + checkBox01.value)
-          //   if (checkBox01.checked == true) {
-          //     // conditionCheck01.innerHTML = "{% if prd.selling_price <= 4500 %}"
-          //     // conditionCheck01End.innerHTML = "{% endif %}"
-          //     // $("#filteredProductsDiv").load(window.location.href + " #filteredProductsDiv")
-          //     // // location.reload(true)
-              
-          //     for (i=0; i<2; i++) {
-          //       console.log(list[i] + "------------ checkBox01 value --------------")
-
-          //       if (checkBox01.value > list[i]) {
-          //         if (list[i] == sellingPrice.value) {
-          //           this.filteredProductsDiv.style.display = "block";
-          //           console.log("------------ filteredProductsDiv div showed --------------")
-          //         } else {
-          //           this.filteredProductsDiv.style.display = "none";
-          //           console.log("------------ filteredProductsDiv div hidded --------------")
-          //         }
-          //       } else {
-          //         // conditionCheck01.hidden = false;
-          //         this.filteredProductsDiv.style.display = "none";
-          //         // console.log("------------ filteredProductsDiv div hided --------------")
-          //       }
-                
-          //     }
-              
-          //   } else if (checkBox01.checked == false){
-          //     // console.log("selling price 45000 ne kaal kooduthal aaan")
-          //     filteredProductsDiv.style.display = "block";
-          //   }
-
-          // }
-        </script>
-
-        <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> -->
-        <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-        <script src="/assets/js/filterProduct.js"></script>
-        
-        <!-- JQuery -->
-
+    <script src="/assets/js/filterProduct.js"></script>
         
 
 {% endblock content %}

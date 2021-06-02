@@ -33,22 +33,9 @@
   <script src="/assets/plugins/nprogress/nprogress.js"></script>
 </head>
 
-
   <body class="sidebar-fixed sidebar-dark header-light header-fixed" id="body">
-    <!-- <script>
-      NProgress.configure({ showSpinner: false });
-      NProgress.start();
-    </script> -->
-
     <div class="mobile-sticky-body-overlay"></div>
-
     <div class="wrapper">
-      
-              <!--
-          ====================================
-          ——— LEFT SIDEBAR WITH FOOTER
-          =====================================
-        -->
         <aside class="left-sidebar bg-sidebar">
           <div id="sidebar" class="sidebar sidebar-with-footer">
             <!-- Aplication Brand -->
@@ -62,103 +49,75 @@
 
               <!-- sidebar menu -->
               <ul class="nav sidebar-inner" id="sidebar-menu">
+
+                <li  class="has-sub" >
+                  <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#dashboard"
+                    aria-expanded="false" aria-controls="dashboard">
+                    <i class="mdi mdi-view-dashboard-outline"></i>
+                    <span class="nav-text">Dashboard</span> <b class="caret"></b>
+                  </a> <!--- class="show" (Show the sub dashboardname then you add neara collapse it.---> 
+                  <ul  class="collapse" id="dashboard" data-parent="#sidebar-menu">
+                    <div class="sub-menu">
+                      <li  class="" >
+                        <a class="sidenav-item-link" href="{% url 'admin_home' %}">
+                          <span class="nav-text">Dashboard</span>
+                          
+                        </a>
+                      </li>
+                      
+                      <li  class="" >
+                        <a class="sidenav-item-link" href="{% url 'monthly_sales_report' %}">
+                          <span class="nav-text">Monthly Sales report</span>
+                          
+                        </a>
+                      </li>
             
+                      <li  class="" >
+                        <a class="sidenav-item-link" href="{% url 'yearly_sales_report' %}">
+                          <span class="nav-text">Yearly Sales report</span>
+                        </a>
+                      </li>
                             
-                  <li  class="has-sub" >
-                    <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#dashboard"
-                      aria-expanded="false" aria-controls="dashboard">
-                      <i class="mdi mdi-view-dashboard-outline"></i>
-                      <span class="nav-text">Dashboard</span> <b class="caret"></b>
-                    </a> <!--- class="show" (Show the sub dashboardname then you add neara collapse it.---> 
-                    <ul  class="collapse" id="dashboard"
-                      data-parent="#sidebar-menu">
-                      <div class="sub-menu">
-                        
-                        
+                    </div>
+                  </ul>
+                </li>
+              
+                <li  class="has-sub expand" > <!--active-->
+                  <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#ui-elements"
+                    aria-expanded="false" aria-controls="ui-elements">
+                    <i class="mdi mdi-account"></i>
+                    <span class="nav-text">User manage</span> <b class="caret"></b>
+                  </a>
+
+                  <ul  class="collapse"  id="ui-elements" data-parent="#sidebar-menu">
+                    <div class="sub-menu">
+                      <li class=""> <!--active-->
+                        <a class="sidenav-item-link" href="{% url 'users' %}">
+                          <span class="nav-text">User manage</span> 
+                        </a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+                
+                <li  class="has-sub" >
+                  <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#charts"
+                    aria-expanded="false" aria-controls="charts">
+                    <i class="mdi mdi-format-list-bulleted"></i>
+                    <span class="nav-text">Order manage</span> <b class="caret"></b>
+                  </a>
+                  <ul  class="collapse"  id="charts" data-parent="#sidebar-menu">
+                    <div class="sub-menu">
+                      <li >
+                        <a class="sidenav-item-link" href="{% url 'orders' %}">
+                          <span class="nav-text">Order manage</span>
                           
-                            <li  class="" >
-                              <a class="sidenav-item-link" href="{% url 'admin_home' %}">
-                                <span class="nav-text">Dashboard</span>
-                                
-                              </a>
-                            </li>
-
-                            <li  class="" >
-                              <a class="sidenav-item-link" href="{% url 'monthly_sales_report' %}">
-                                <span class="nav-text">Monthly Sales report</span>
-                                
-                              </a>
-                            </li>
-
-                            <li  class="" >
-                              <a class="sidenav-item-link" href="{% url 'yearly_sales_report' %}">
-                                <span class="nav-text">Yearly Sales report</span>
-                                
-                              </a>
-                            </li>
-                          
-                        
-
-                        
-                      </div>
-                    </ul>
-                  </li>
-                
-                  <li  class="has-sub expand" > <!--active-->
-                    <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#ui-elements"
-                      aria-expanded="false" aria-controls="ui-elements">
-                      <i class="mdi mdi-account"></i>
-                      <span class="nav-text">User manage</span> <b class="caret"></b>
-                    </a>
-                    <ul  class="collapse"  id="ui-elements"
-                      data-parent="#sidebar-menu">
-                      <div class="sub-menu">
-                        
-                        <li class=""> <!--active-->
-                            <a class="sidenav-item-link" href="{% url 'users' %}">
-                              <span class="nav-text">User manage</span>
-                              
-                            </a>
-                          </li>
-                        
-                      </div>
-                    </ul>
-                  </li>
-                
-
-                
-
-                
-                  <li  class="has-sub" >
-                    <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#charts"
-                      aria-expanded="false" aria-controls="charts">
-                      <i class="mdi mdi-format-list-bulleted"></i>
-                      <span class="nav-text">Order manage</span> <b class="caret"></b>
-                    </a>
-                    <ul  class="collapse"  id="charts"
-                      data-parent="#sidebar-menu">
-                      <div class="sub-menu">
-                        
-                        
-                          
-                            <li >
-                              <a class="sidenav-item-link" href="{% url 'orders' %}">
-                                <span class="nav-text">Order manage</span>
-                                
-                              </a>
-                            </li>
-                          
-                        
-
-                        
-                      </div>
-                    </ul>
-                  </li>
-                
-
-                
-
-                
+                        </a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+                    
                   <li  class="has-sub" >
                     <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#pages"
                       aria-expanded="false" aria-controls="pages">
@@ -169,94 +128,81 @@
                     <ul  class="collapse"  id="pages"
                       data-parent="#sidebar-menu">
                       <div class="sub-menu">
+                        <li >
+                          <a class="sidenav-item-link" href="{% url 'products' %}">
+                            <span class="nav-text">Product manage</span>
+                          </a>
+                        </li>
+                  </div>
+                </ul>
+              </li>
                         
+              <li  class="has-sub" >
+                <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#documentation"
+                  aria-expanded="false" aria-controls="documentation">
+                  <i class="mdi mdi-book-open-page-variant"></i>
+                  <span class="nav-text">Category manage</span> <b class="caret"></b>
+                </a>
+                <ul  class="collapse"  id="documentation" data-parent="#sidebar-menu">
+                  <div class="sub-menu">
+                    <li >
+                      <a class="sidenav-item-link" href="{% url 'categories' %}">
+                        <span class="nav-text">Category manage</span>
+                      </a>
+                    </li>
+                  </div>
+                </ul>
+              </li>
                         
-                          
-                            <li >
-                              <a class="sidenav-item-link" href="{% url 'products' %}">
-                                <span class="nav-text">Product manage</span>
-                                
-                              </a>
-                            </li>
-                          
-                        
-                      </div>
-                    </ul>
-                  </li>
-                
-
-                
-
-                
-                  <li  class="has-sub" >
-                    <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#documentation"
-                      aria-expanded="false" aria-controls="documentation">
-                      <i class="mdi mdi-book-open-page-variant"></i>
-                      <span class="nav-text">Category manage</span> <b class="caret"></b>
-                    </a>
-                    <ul  class="collapse"  id="documentation"
-                      data-parent="#sidebar-menu">
-                      <div class="sub-menu">
-                        
-                        
-                            <li >
-                                <a class="sidenav-item-link" href="{% url 'categories' %}">
-                                  <span class="nav-text">Category manage</span>
-                                  
-                                </a>
-                              </li>
-                          
-                        
-                        
-                      </div>
-                    </ul>
-                  </li>
-
-
-
-                  <li  class="has-sub" >
-                    <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#offer"
-                      aria-expanded="false" aria-controls="offer">
-                      <i class="mdi mdi-octagram"></i>
-                      <span class="nav-text">Offer manage</span> <b class="caret"></b>
-                    </a>
-                    <ul  class="collapse"  id="offer"
-                      data-parent="#sidebar-menu">
-                      <div class="sub-menu">
-                        
-                        
-                            <li >
-                                <a class="sidenav-item-link" href="{% url 'product_offer' %}">
-                                  <span class="nav-text">Product Offer</span>
-                                </a>
-                            </li>
-
-                            <li >
-                              <a class="sidenav-item-link" href="{% url 'category_offer' %}">
-                                <span class="nav-text">Category Offer</span>
-                              </a>
-                          </li>
-
-                          <li >
-                            <a class="sidenav-item-link" href="{% url 'cupon_offer' %}">
-                              <span class="nav-text">Cupon Offer</span>
+              <li class="has-sub" >
+                <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse" data-target="#offer"
+                  aria-expanded="false" aria-controls="offer">
+                  <i class="mdi mdi-octagram"></i>
+                  <span class="nav-text">Offer manage</span> <b class="caret"></b>
+                </a>
+                <ul  class="collapse"  id="offer"
+                  data-parent="#sidebar-menu">
+                  <div class="sub-menu">
+                    
+                        <li >
+                            <a class="sidenav-item-link" href="{% url 'product_offer' %}">
+                              <span class="nav-text">Product Offer</span>
                             </a>
                         </li>
+
+                        <li >
+                          <a class="sidenav-item-link" href="{% url 'category_offer' %}">
+                            <span class="nav-text">Category Offer</span>
+                          </a>
+                      </li>
+
+                      <li >
+                        <a class="sidenav-item-link" href="{% url 'cupon_offer' %}">
+                          <span class="nav-text">Cupon Offer</span>
+                        </a>
+                    </li>
+                    
+                  </div>
+                </ul>
+              </li>
                           
-                        
-                        
-                      </div>
-                    </ul>
-                  </li>
-                
-
-                
-              </ul>
-
-            </div>
+            </ul>
 
           </div>
-        </aside>
+
+        </div>
+      </aside>
+                
+
+                
+
+                
+
+
+
+                
+
+                
 
       
 

@@ -8,25 +8,25 @@ class CreateProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['title', 'slug', 'category', 'brand', 'image', 'more_image_one', 'more_image_two', 'more_image_three', 'marked_price', 'selling_price', 'quantity', 'guarandeed', 'description', 'model_number', 'model_name', 'color', 'battery_backup', 'processor_brand', 'processor_name', 'storage', 'ram', 'size']
-        # fields = ('__all__')
-        # widgets = {
-        #     # 'color': forms.ClorField(attrs={'type': 'color'}),
-        # }
+ 
 
 class CreateCategory(forms.ModelForm):
     class Meta:
         model = Category
         fields = ('__all__')
 
+
 class CreateSubCategory(forms.ModelForm):
     class Meta:
         model = SubCategory
         fields = ('__all__')
 
+
 class ChangeProfileImageForm(forms.ModelForm):
     class Meta:
         model = ProfileImage
         fields = ['image',]
+
 
 class OrderStatusChangeForm(forms.ModelForm):
     

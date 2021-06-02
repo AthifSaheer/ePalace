@@ -63,7 +63,6 @@
                         <a href="{% url 'edit_address' adrs.id %}?next=/check_out/">Edit</a>
                     </div>
 
-                    <!-- <button class="btn btn-success btn-sm">Delivery here</button> -->
                 {% endfor %}
 
                     <!-- <hr>
@@ -185,7 +184,6 @@
                         });  
                     
                 </script>
-
             </div>
 
         </div>
@@ -245,94 +243,94 @@
 </div>
 
 
-<style>
-    #right-div {
-        background: rgb(247, 247, 247);
-        margin-top: 93px;
-        border-radius: 20px;
-        /* box-shadow: 2px 3px 3px 2px #e2e2e2; */
-        padding: 20px;
-        margin-left: 20px;
-        position: sticky;
-    }
-    #between-div {
-        margin-top: 3%;
-    }
+    <style>
+        #right-div {
+            background: rgb(247, 247, 247);
+            margin-top: 93px;
+            border-radius: 20px;
+            /* box-shadow: 2px 3px 3px 2px #e2e2e2; */
+            padding: 20px;
+            margin-left: 20px;
+            position: sticky;
+        }
+        #between-div {
+            margin-top: 3%;
+        }
 
-    #title {
-        font-weight: bold;
-        color: rgb(184, 184, 184);
-    }
+        #title {
+            font-weight: bold;
+            color: rgb(184, 184, 184);
+        }
 
-    #sub-txt {
-        color: seagreen;
-        font-weight: bold;
-    }
+        #sub-txt {
+            color: seagreen;
+            font-weight: bold;
+        }
 
-    a {
-        text-decoration: none;
-    }
+        a {
+            text-decoration: none;
+        }
 
-    #top-div{
-        background: rgb(255, 255, 255);
-        margin-top: 93px;
-        border-radius: 20px;
-        box-shadow: 2px 3px 3px 2px #e2e2e2;
-        padding: 20px;
-    }
-        
-    .image {
-        opacity: 1;
-        display: block;
-        width: 70%;
-        height: auto;
-        transition: .5s ease;
-        backface-visibility: hidden;
-    }
+        #top-div{
+            background: rgb(255, 255, 255);
+            margin-top: 93px;
+            border-radius: 20px;
+            box-shadow: 2px 3px 3px 2px #e2e2e2;
+            padding: 20px;
+        }
+            
+        .image {
+            opacity: 1;
+            display: block;
+            width: 70%;
+            height: auto;
+            transition: .5s ease;
+            backface-visibility: hidden;
+        }
 
-    .middle {
-        transition: .5s ease;
-        opacity: 0;
-        position: absolute;
-        top: 30%;
-        left: 30%;
-        transform: translate(-30%, -30%);
-        -ms-transform: translate(-30%, -30%);
-        text-align: center;
-    }
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 30%;
+            left: 30%;
+            transform: translate(-30%, -30%);
+            -ms-transform: translate(-30%, -30%);
+            text-align: center;
+        }
 
-    #img:hover .image {
-        opacity: 1;
-    }
+        #img:hover .image {
+            opacity: 1;
+        }
 
-    #img:hover .middle {
-        opacity: 1;
-    }
+        #img:hover .middle {
+            opacity: 1;
+        }
 
-    .text {
-        margin-top: 180px;
-        background-color: #04AA6D;
-        color: white;
-        /* width: 70%; */
-        font-size: 16px;
-        padding: 8px 16px;
-    }
+        .text {
+            margin-top: 180px;
+            background-color: #04AA6D;
+            color: white;
+            /* width: 70%; */
+            font-size: 16px;
+            padding: 8px 16px;
+        }
 
-    #input {
-        width: 30px;
-        padding-left: 8px;
-        border: 2px solid rgb(238, 238, 238);
-        background: rgb(216, 216, 216);
-        color: white;
-    }
+        #input {
+            width: 30px;
+            padding-left: 8px;
+            border: 2px solid rgb(238, 238, 238);
+            background: rgb(216, 216, 216);
+            color: white;
+        }
 
-    .plu-min-btn{
-        border: 2px solid gray;
-        color: white;
-        background: rgb(160, 160, 160);
-    }
+        .plu-min-btn{
+            border: 2px solid gray;
+            color: white;
+            background: rgb(160, 160, 160);
+        }
 
-</style>
+    </style>
     <!-- Add the PayPal JavaScript SDK with both buttons and marks components -->
     <!-- Epalace official store client id added -->
     <script src="https://www.paypal.com/sdk/js?client-id=Aag8H93IJlWr6GnfLYHU2zrwQ3-z4Fo48DvPQ9stfAcWVFxo8QAgkQ90VHfrwd7ci58PSk9i1RqEAAZi&currency=USD"></script>
@@ -352,11 +350,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
-    <script>
-           
-    </script>
-    
+
     <script>
 
         function increaseValue() {
@@ -373,7 +367,7 @@
           document.getElementById('number').value = value;
         }
         
-        </script>
+    </script>
 
     
 </body>

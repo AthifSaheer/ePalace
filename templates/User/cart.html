@@ -5,8 +5,6 @@
         
 {% block content %}
 
-
-
 <div class="container">
     <div class="row">
         
@@ -23,8 +21,6 @@
                 <p class="text-info ">Cart is empty</p>
                 {% endif %}
                 
-                <!-- ================================================================================== -->
-                <!-- ================================================================================== -->
                 {% for crt in cart_item %}
 
                 <input type="text" hidden id="cartOfCartItem" value="{{crt.cart.id}}">

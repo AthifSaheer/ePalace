@@ -7,98 +7,85 @@
 {% block content %} 
 
 
-<div class="container" id="container">
-    <div class="row">
-        <h3 class="text-center text-info mt-3">Change profile image</h3>
-        <div class="col-md-10 ml-5">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.image.label }}
-                <input type="file" name="image" id="image">
-                <img id="blah" src="#" alt="" width="400px" height="auto" />
-                <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
-            </form>
-            <a href="{% url 'profile' user.id %}"><button class="btn btn-outline-success btn-block mt-2 mb-5">Cancel</button></a>
-        </div>
-        
-    </div>
-
-    <!--======= Image crop html ==============-->
-    
-    <!-- <div class="alert-box">
-        <div class="image-box">
-
-            <form method="POST" enctype="multipart/form-data" id="image-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-            </form>
-            <button type="submit" class="btn btn-outline-primary btn-block not-visible" id="confirm-btn">Submit</button>
+    <div class="container" id="container">
+        <div class="row">
+            <h3 class="text-center text-info mt-3">Change profile image</h3>
+            <div class="col-md-10 ml-5">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.image.label }}
+                    <input type="file" name="image" id="image">
+                    <img id="blah" src="#" alt="" width="400px" height="auto" />
+                    <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
+                </form>
+                <a href="{% url 'profile' user.id %}"><button class="btn btn-outline-success btn-block mt-2 mb-5">Cancel</button></a>
+            </div>
             
         </div>
-    </div> -->
+    </div>
 
-<style>
-    #container {
-        margin-top: 90px;
-    }
-    .not-visible {
-        display: none;
-    }
-    /*========== Crop image css =============*/
+    <style>
+        #container {
+            margin-top: 90px;
+        }
+        .not-visible {
+            display: none;
+        }
+        /*========== Crop image css =============*/
 
-</style>
+    </style>
 
-<!-- Image Cropping -->
-<!-- <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script> -->
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/cropper.min.js' %}"></script>
+    <!-- Image Cropping -->
+    <!-- <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script> -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/cropper.min.js' %}"></script>
 
-<script>
+    <script>
 
-imgInp = document.getElementById("image")
+    imgInp = document.getElementById("image")
 
-imgInp.onchange = evt => {
-  const [file] = imgInp.files
-  if (file) {
-        blah.src = URL.createObjectURL(file)
-      }
-    }
-    
-    /* ============= Crop image javascript ============*/
-    
-    const alertBox = document.getElementById("alert-box")
-    const imageBox = document.getElementById("image-box")
-    const imageform = document.getElementById("image-form")
-    const confirmBtn = document.getElementById("confirm-btn")
-    const input = document.getElementById("id_file")
-    const csrf = document.getElementById("csrfmiddlewaretoken")
+    imgInp.onchange = evt => {
+    const [file] = imgInp.files
+    if (file) {
+            blah.src = URL.createObjectURL(file)
+        }
+        }
+        
+        /* ============= Crop image javascript ============*/
+        
+        const alertBox = document.getElementById("alert-box")
+        const imageBox = document.getElementById("image-box")
+        const imageform = document.getElementById("image-form")
+        const confirmBtn = document.getElementById("confirm-btn")
+        const input = document.getElementById("id_file")
+        const csrf = document.getElementById("csrfmiddlewaretoken")
 
-    input.addEventListener("change", ()=>{
-        const image_data = input.files[0]
-        const url = URL.createObjectURL(image_data)
-        imageBox.innerHTML = `<img src="{$url}" id="image" width="500px" >`
+        input.addEventListener("change", ()=>{
+            const image_data = input.files[0]
+            const url = URL.createObjectURL(image_data)
+            imageBox.innerHTML = `<img src="{$url}" id="image" width="500px" >`
 
-        var $image = $('#image');
+            var $image = $('#image');
 
-        $image.cropper({
-            aspectRatio: 16 / 9,
-            crop: function(event) {
-                console.log(event.detail.x);
-                console.log(event.detail.y);
-                console.log(event.detail.width);
-                console.log(event.detail.height);
-                console.log(event.detail.rotate);
-                console.log(event.detail.scaleX);
-                console.log(event.detail.scaleY);
-            }
-        });
+            $image.cropper({
+                aspectRatio: 16 / 9,
+                crop: function(event) {
+                    console.log(event.detail.x);
+                    console.log(event.detail.y);
+                    console.log(event.detail.width);
+                    console.log(event.detail.height);
+                    console.log(event.detail.rotate);
+                    console.log(event.detail.scaleX);
+                    console.log(event.detail.scaleY);
+                }
+            });
 
-            // Get the Cropper.js instance after initialized
-            var cropper = $image.data('cropper');
-    })
+                // Get the Cropper.js instance after initialized
+                var cropper = $image.data('cropper');
+        })
 
 
 
-</script>
+    </script>
 
 {% endblock content %}

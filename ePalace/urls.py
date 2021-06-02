@@ -11,6 +11,7 @@ urlpatterns = [
     path('', include('user_panel.urls')),
     path('admin/', include('admin_panel.urls')),
 ] 
+
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
