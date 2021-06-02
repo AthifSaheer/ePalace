@@ -151,12 +151,13 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # remove this line whem hosting
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+from ePalace.email import EMAIL, PASSWORD
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "liteboook@gmail.com"
-EMAIL_HOST_PASSWORD = "************"
+EMAIL_HOST_USER = EMAIL
+EMAIL_HOST_PASSWORD = PASSWORD
 
 PASSWORD_RESET_TIMEOUT_DAYS=1
 

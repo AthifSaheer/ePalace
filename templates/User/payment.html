@@ -115,6 +115,7 @@
 
 
         }).render('#paypal-button-container');
+        // window.location.href = '/order';
     </script>
     <a href="{% url 'user_home' %}"> Back to home page</a>
 
@@ -129,21 +130,22 @@
             <form action="{% url 'razorpay' %}" method="POST">
                 {% csrf_token %}
                 <script
-                src="https://checkout.razorpay.com/v1/payment-button.js"
-                data-key="rzp_test_DdZJYvM3465Ujr"
-                data-payment_button_id="pl_HFRW3E993b9ijp"
-                data-button_theme="brand-color"
-                data-amount="{{ total }}00"
-                data-currency="INR"
-                data-buttontext="Pay with Razorpay"
-                data-name="Acme Corp"
-                data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
-                data-image="https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
-                data-prefill.name="Gaurav Kumar"
-                data-prefill.email="gaurav.kumar@example.com"
-                data-theme.color="#F37254"
-                async
-                ></script>
+                    src="https://checkout.razorpay.com/v1/payment-button.js"
+                    data-key="rzp_test_DdZJYvM3465Ujr"
+                    data-payment_button_id="pl_HFRW3E993b9ijp"
+                    data-button_theme="brand-color"
+                    data-amount="{{ total }}00"
+                    data-currency="INR"
+                    data-buttontext="Pay with Razorpay"
+                    data-name="Acme Corp"
+                    data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+                    data-image="https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
+                    data-prefill.name="Gaurav Kumar"
+                    data-prefill.email="gaurav.kumar@example.com"
+                    data-theme.color="#F37254"
+                    async>
+                    window.location.href = '/order';
+                </script>
                 <input type="hidden" custom="Hidden Element" name="hidden">
             </form>
             <!-- <form>

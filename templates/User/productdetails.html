@@ -14,13 +14,17 @@
                             display: none;
                         }
                     </style>
+
+                    <script>
+                        
+                    </script>
                         
 
                     <div class="col-md-6" id="img-container" style="width: 500px; height:480px;" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
-                        <img id="imgbig" src="{{ product_detailed.image.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
-                        <img id="img1-big" src="{{ product_detailed.more_image_one.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
-                        <img id="img2-big" src="{{ product_detailed.more_image_two.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
-                        <img id="img3-big" src="{{ product_detailed.more_image_three.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
+                        <img id="imgbig" class="img_{{product_detailed.id}}" src="{{ product_detailed.image.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
+                        <img id="img1-big" class="img_{{product_detailed.id}}" src="{{ product_detailed.more_image_one.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
+                        <img id="img2-big" class="img_{{product_detailed.id}}" src="{{ product_detailed.more_image_two.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
+                        <img id="img3-big" class="img_{{product_detailed.id}}" src="{{ product_detailed.more_image_three.url }}" width="1500px" height="1500px" alt="" onmouseover="hideSideDiv()" onmouseout="showSideDiv()">
                         
                         <!-- <hr> -->
                         

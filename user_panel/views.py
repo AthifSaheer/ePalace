@@ -147,7 +147,6 @@ def delete_cupon_code(request):
 
 
 def home(request):
-    print(request)
     product = Product.objects.all().order_by('-id')
     context = {
         'product':product,

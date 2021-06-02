@@ -184,7 +184,7 @@
                 
                 // if sourceImg is not an img (might be a picture element), try to find one
                 if (data.sourceImg.element.nodeName !== "IMG") {
-                    data.sourceImg.element = data.sourceImg.element.querySelector('img');
+                    data.sourceImg.element = document.getElementsByClassName("img_{{product_detailed.id}}");
                 }
             }
 
