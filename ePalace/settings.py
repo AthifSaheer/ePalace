@@ -14,7 +14,7 @@ SECRET_KEY = 'h8=*egna-i4wk+3s3d-@+(2mi5^(+5280g@k604gzk5sf386+7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['ec2-13-235-87-53.ap-south-1.compute.amazonaws.com', '0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
