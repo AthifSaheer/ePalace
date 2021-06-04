@@ -1,5 +1,5 @@
 import os
-# from ePalace.email import EMAIL, PASSWORD
+from ePalace.email import EMAIL, PASSWORD
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -155,8 +155,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "lite@fm.cm" #EMAIL
-EMAIL_HOST_PASSWORD = "*********" #PASSWORD
+EMAIL_HOST_USER = EMAIL
+EMAIL_HOST_PASSWORD = PASSWORD
 
 PASSWORD_RESET_TIMEOUT_DAYS=1
 
