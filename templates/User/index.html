@@ -51,7 +51,7 @@
             {% for prd in product %}
             
             <div class="menu__content">
-                <a href="{% url 'prd_detail' prd.slug %}"><img src="{% static '{{ prd.image.url }}' %}" width="1500px" height="1500px" alt="" class="menu__img"></a>
+                <a href="{% url 'prd_detail' prd.slug %}"><img src="{{ prd.image.url }}" width="1500px" height="1500px" alt="" class="menu__img"></a>
                 <a href="{% url 'prd_detail' prd.slug %}"><h3 class="menu__name">{{ prd.title }}</h3></a>
                 <span class="menu__detail">{{ prd.description|slice:':22' }}...</span>
                 
