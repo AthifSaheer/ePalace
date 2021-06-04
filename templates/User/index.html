@@ -21,10 +21,10 @@
             <img class="d-block w-100" src="{% static '../assets/img/canva_banner.png' %}" alt="First slide">
           </div>
           <div class="carousel-item">
-            <img class="d-block w-100" src="../assets/img/canva_banner01.png" alt="Second slide">
+            <img class="d-block w-100" src="{% static '../assets/img/canva_banner01.png' %}" alt="Second slide">
           </div>
           <div class="carousel-item mt-3">
-            <img class="d-block w-100" src="../assets/img/canva_banner02.png" alt="Third slide">
+            <img class="d-block w-100" src="{% static '../assets/img/canva_banner02.png' %}" alt="Third slide">
           </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -51,7 +51,7 @@
             {% for prd in product %}
             
             <div class="menu__content">
-                <a href="{% url 'prd_detail' prd.slug %}"><img src="{{ prd.image.url }}" width="1500px" height="1500px" alt="" class="menu__img"></a>
+                <a href="{% url 'prd_detail' prd.slug %}"><img src="{% static '{{ prd.image.url }}' %}" width="1500px" height="1500px" alt="" class="menu__img"></a>
                 <a href="{% url 'prd_detail' prd.slug %}"><h3 class="menu__name">{{ prd.title }}</h3></a>
                 <span class="menu__detail">{{ prd.description|slice:':22' }}...</span>
                 
