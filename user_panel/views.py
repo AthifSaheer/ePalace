@@ -285,12 +285,6 @@ def search(request):
 
 
 
-# Filter data
-def filter_data(request):
-    if request.method == "GET":
-        filter_ajax_data = request.body.get('filter')
-    return JsonRerfrl_cponse({'data':'hello'})
-
 
 def _cart_session_id(request):
     cart = request.session.session_key
