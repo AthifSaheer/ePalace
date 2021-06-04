@@ -1,7 +1,0 @@
-{
-   "error": {
-      "code": "BAD_REQUEST_ERROR",
-      "description": "The amount is invalid",
-      "field": "amount"
-   }
-}
