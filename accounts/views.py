@@ -285,9 +285,9 @@ def signup_with_ref_code(request, ref_code):
                     now_registered_user.recommended_by = recommended_user.user
                     now_registered_user.save()
 
-                    current_date = datetime.date(datetime.now())
-                    current_time = datetime.time(datetime.now())
-                    tommorrow_date = current_date + timedelta(days=1)
+                    # current_date = datetime.date(datetime.now())
+                    # current_time = datetime.time(datetime.now())
+                    # tommorrow_date = current_date + timedelta(days=1)
 
                     rf_cp = ReferralCupon()
                     rf_cp.offer_price = 1000
