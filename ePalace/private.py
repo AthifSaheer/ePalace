@@ -1,0 +1,6 @@
+EMAIL = "liteboook@gmail.com"
+PASSWORD = "Liteboook.email.com29"
+
+
+ACCOUNT_SID = 'AC18c664854e0518c87a3bd6e0d2e1c5a5'
+AUTH_TOKEN = 'b71428ec4a1112027082d14701470169'
