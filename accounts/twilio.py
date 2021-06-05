@@ -1,8 +1,10 @@
+from ePalace.private import ACCOUNT_SID, AUTH_TOKEN
+
 def send_sms(message, to_):
     from twilio.rest import Client
 
-    account_sid = 'AC18c664854e0518c87a3bd6e0d2e1c5a5'
-    auth_token = '7cd6336e89c98911a0343820aa1dc44d'
+    account_sid = ACCOUNT_SID
+    auth_token = AUTH_TOKEN
 
     client = Client(account_sid, auth_token)
 
