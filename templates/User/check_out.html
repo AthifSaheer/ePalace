@@ -39,12 +39,23 @@
 
                 <div class="col-md-8">
                     <h4 id="title">Delivery Address</h4>
+                    <p id="error" class="text-danger"></p>
+                    <div id="jkl" onclick="iop()">hai iam athif</div>
                 </div>
+                <script>
+                    document.getElementById("jkl").click()
+                    function iop(){
+                        alert("hwllo")
+                        console.log("--- erro fixed -------")
+                    }
+                </script>
+
                 <div class="col-md-4">
                     <a href="{% url 'add_address' user.id %}?next=/check_out/"><button class="btn btn-outline-warning btn-sm ml-3">Add new address</button></a>
                 </div>
 
                 {% if adrs_count <= 0 %}
+                <input type="radio" value="{{ adrs.id }}" name="address" id="addresInput" required hidden>
                 <p class="ml-3 text-dark">No address, Add new address</p>
                 {% endif %}
                 
@@ -54,7 +65,7 @@
 
                     <div class="col-md-10">
                         <label for="address">
-                            <input type="radio" value="{{ adrs.id }}" name="address" required>
+                            <input type="radio" value="{{ adrs.id }}" name="address" id="addresInput" required>
                             {{ adrs.name }}, +91 {{ adrs.mobile_number }}, {{ adrs.address }}, {{ adrs.city }}, Pincode: {{ adrs.pincode }}
                         </label>
                     </div>
@@ -64,34 +75,6 @@
                     </div>
 
                 {% endfor %}
-
-                    <!-- <hr>
-
-                    <div class="col-md-12">
-                        <h5 id="title">Add Cupon code or Referral code</h5>
-                    </div>
-                    {% for prd in products %}
-                    <div class="col-md-12">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th><h5>{{ prd.product.title }}</h5></th>
-                                    <th><p>{{ prd.quantity }}</p></th>
-                                    <th><p>&#8377;{{ total }}</p></th>
-                                    <th><img src="{{ prd.product.image.url }}" width="50px" height="50px" alt=""></th>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <input type="checkbox" value="{{ prd.quantity }}" name="product_quantity" hidden>
-                                        <input type="text" value="2000" name="total" hidden>
-                                        <input type="checkbox" name="prd_id" value="{{ prd.id }}">
-                                        <label for="">Confirm this product</label>
-                                    </th>
-                                </tr>
-                            </thead>
-                        </table>                        
-                    </div>
-                    {% endfor %} -->
 
                     <hr>
 
@@ -121,15 +104,15 @@
                         </label>
 
                         <div id="paypal-button-container">
-                            <button class="btn btn-info btn-block">Pay with Paypal</button>
+                            <button class="btn btn-info btn-block" onclick="validation()">Pay with Paypal</button>
                         </div>
                         
                         <div id="rzp-button-container">
-                            <button class="btn btn-info btn-block" id="rzp-button1">Pay with Razorpay</button>
+                            <button class="btn btn-info btn-block" id="rzp-button1" onclick="validation()">Pay with Razorpay</button>
                         </div>
                         
                         <div id="cod-button-container">
-                            <button class="btn btn-info btn-block" id="cnfrmOrdrBtn">Confirm Order</button>
+                            <button class="btn btn-info btn-block" id="cnfrmOrdrBtn" onclick="validation()">Confirm Order</button>
                         </div>
 
                     </div>
@@ -181,8 +164,17 @@
                                 .style.display = 'none';
                             }
                         });
-                        });  
+                        });
+
                     
+                    function validation() {
+                        var address = document.getElementById('addresInput').value
+                        if (address == ""){
+                            var error = document.getElementById("error")
+                            error.innerHTML = "Select address"
+                        }
+                    }
+
                 </script>
             </div>
 
