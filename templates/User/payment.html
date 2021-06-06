@@ -26,6 +26,7 @@
 
     {% if payment_method == "paypal" %}
 
+
     <div class="row">
         <div class="col-md-4"></div>
 
@@ -34,6 +35,7 @@
             <a href="{% url 'user_home' %}"> Back to home page</a>
         </div>
 
+
         <div class="col-md-4"></div>
     </div>
 
@@ -41,11 +43,9 @@
     <!-- Epalace official store client id added -->
     <script src="https://www.paypal.com/sdk/js?client-id=Aag8H93IJlWr6GnfLYHU2zrwQ3-z4Fo48DvPQ9stfAcWVFxo8QAgkQ90VHfrwd7ci58PSk9i1RqEAAZi&currency=USD"></script>
     
-
+    
 
     <script>
-        console.log("---hai athif worjking----------")
-
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -121,46 +121,43 @@
     </script>
     
 
-
     {% elif payment_method == "razorpay" %}
     <!-- ======================== Razorpay ======================== -->
-    <!--  -->
+
     <div class="row">
-        <div class="col-md-4"></div>
+        <div class="col-md-5"></div>
 
         <div class="col-md-4 center-div">
             <form action="{% url 'razorpay' %}" method="POST">
                 {% csrf_token %}
                 <script
-                    src="https://checkout.razorpay.com/v1/payment-button.js"
-                    data-key="rzp_test_DdZJYvM3465Ujr"
-                    data-payment_button_id="pl_HFRW3E993b9ijp"
-                    data-button_theme="brand-color"
-                    data-amount="{{ total }}00"
-                    data-currency="INR"
-                    data-buttontext="Pay with Razorpay"
-                    data-name="Acme Corp"
-                    data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
-                    data-image="https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
-                    data-prefill.name="Gaurav Kumar"
-                    data-prefill.email="gaurav.kumar@example.com"
-                    data-theme.color="#F37254"
-                    async>
-                    window.location.href = '/order';
-                </script>
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                data-key="rzp_test_DdZJYvM3465Ujr"
+                data-amount="{{ total }}00"
+                data-currency="INR"
+                data-buttontext="Pay with Razorpay"
+                data-name="Acme Corp"
+                data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+                data-image="https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fGF2YXRhcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                data-prefill.name="Gaurav Kumar"
+                data-prefill.email="gaurav.kumar@example.com"
+                data-theme.color="#F37254" >
+            </script>
                 <input type="hidden" custom="Hidden Element" name="hidden">
             </form>
-            <!-- <form>
-                <script
-                src="https://checkout.razorpay.com/v1/checkout.js"
-                data-subscription_button_id="pl_HF5aLL1F4aEVR5"
-                data-payment_button_id="pl_HFRW3E993b9ijp"
-                  async>
-                </script> 
-            </form> -->
         </div>
+        <style>
+            .razorpay-payment-button {
+                background: rgb(49, 104, 255);
+                border: 2px solid rgb(37, 90, 233);
+                color: white;
+            }
+        </style>
+        <script>
+            var button = document.getElementsByClassName('razorpay-payment-button')[0].click()
+        </script>
 
-        <div class="col-md-4"></div>
+        <div class="col-md-3"></div>
     </div>
 
     <!-- Razorpay script -->
