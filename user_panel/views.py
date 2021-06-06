@@ -61,16 +61,16 @@ def delete_category_offer(category):
 
 
 def cupon_code(request):
+    # After expiry date reached in cupon then that will be delete.
     now = datetime.datetime.now()
-    date = now.day, now.month, now.year
-    time = now.hour, now.minute, now.second
-
-    # After expiry date cupon will be delete.
     cc_del = CuponOffer.objects.all()
+    
     for cc in cc_del:
-        if str(cc.date_period) < str(date):
-            if str(cc.time_period) < str(time):
-                cc.delete()
+        offer_period = str(cc.date_period)+" "+str(cc.time_period)
+        if offer_period < str(now):
+            print(cc)
+            cc.delete()
+
 
     if request.method == 'POST':
         cupon_code = request.POST.get('cupon_code')
