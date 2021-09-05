@@ -1,6 +1,6 @@
-private.py
+ePalace/private.py
 db.sqlite3
-venv
+./venv
 __pycache__
 
 user/migrations
