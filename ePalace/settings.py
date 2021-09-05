@@ -69,35 +69,23 @@ WSGI_APPLICATION = 'ePalace.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ePalace',
+        'USER': 'username',
+        'PASSWORD': 'pass',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
-# DATABASES = {
-
-#     'default': {
-
-#         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-#         'NAME': 'sqlite3.db',
-
-#     }
-     
-# }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',
-#         'USER': 'username',
-#         'PASSWORD': 'pass',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
